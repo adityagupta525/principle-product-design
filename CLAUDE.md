@@ -42,6 +42,17 @@ Rules for that file:
 - Anything the library lacks goes to the **Library Gap list** (a DS version-sprint input) —
   it is **never hand-drawn, recreated, or forked locally**.
 
+**Staging model (amends "instances only") + BLOCKING exit criterion:** when a required
+component is genuinely absent from the published library, do not block the phase and do not
+wait for a DS publish. Instead: (a) build it on a **`_staging`** page as a local component at
+**full DS quality** (all system laws — Layout Laws, Typography v2, Iconography ladder + stroke
+matrix, copper-only, every value variable/style-bound to subscribed library tokens, props 1:1,
+states complete); (b) log it on the **Cover Library Gap list** with a gap ID (`LG-01…`) + a
+**PROMOTE TO DS** tag; (c) consume it in screens as **instances of the staged component**.
+**HARD RULE — a phase's quality gate CANNOT pass until every Library Gap item is promoted into
+the DS file, published in a version sprint, and swapped into the screens as published-library
+instances.** Staged local components are a temporary bridge, never a phase end-state.
+
 ---
 
 ## (b) POINTERS (authority map)
