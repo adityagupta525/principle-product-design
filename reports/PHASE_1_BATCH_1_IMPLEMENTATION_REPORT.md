@@ -50,3 +50,29 @@ Each screen carries the spec §10 8-state baseline; frames named `screen ID / st
 - **State Gate / Component Gate / Token Gate:** on track — all values variable/style-bound; reuse-before-create honored; only one true gap (LG-01), staged not forked.
 - **⛔ Blocking exit criterion (recorded in CLAUDE.md + Cover):** Phase 1 gate cannot pass until **LG-01 is promoted into the DS file, published, and swapped** into A01/A17 as published-library instances.
 - **Next:** Batch 2 — A03 Login + A04 PAN Verification.
+
+---
+
+## 6. Polish pass (materials, chrome, structure)
+
+Applied across all of Batch 1 + the staged component:
+
+- **Materials** (the core fix): the DS material recipe now sits on every hand-composed elevated
+  container — CountrySelector field (`surface/raised` + 4% grain image `2e0d44be…` + `elevation/raised`),
+  the picker sheet (`surface/sheet` + grain + `elevation/sheet` + grabber), and the Cover cards
+  (`surface/card` + grain + `elevation/card`). DS component instances already carried their own
+  materials. Recorded as a law in CLAUDE.md §(f).
+- **Spacers removed: 9** (all A01 states). Bottom-pinned CTAs now use `Content` (`layoutGrow=1`) +
+  a pinned `ActionBar`; no filler frames. All spacing via `itemSpacing`/padding.
+- **StatusBar + safe areas:** a local **StatusBar** component (time + signal/wifi/battery) is
+  placed full-bleed at the top of all 19 screen frames; action bars carry the bottom home-indicator
+  inset. Screens now read as real device screens.
+- **Search placeholder:** picker → "Search countries" (fixed now, not at promotion).
+- **Flags — environment-blocked (honest note):** real circular flag assets could not be embedded in
+  this session — `createImageAsync` is unsupported in the sandbox, `fetch` is undefined, and the
+  circle-flags raw/CDN URLs returned 404/403 via WebFetch. Flag slots are upgraded to proper **24px
+  circular slots** (INSTANCE_SWAP-ready) and will take real circle-flags assets at promotion or in a
+  fetch-capable session. No flags were faked.
+- **Taste addendum** recorded in CLAUDE.md §(f): Mobbin reference discipline (Revolut/Wise/N26/CRED,
+  layout-only) from Batch 2 onward; Linear/Raycast taste anchors; copper-blueprint illustration style
+  approved for future (no illustrations in Phase 1).

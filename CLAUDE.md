@@ -102,3 +102,30 @@ local-machine state to assume** — the container is fresh each session, the Fig
 is the live workspace, and everything durable must be committed to this repo or already live
 in the published DS library. Re-verify Figma page context and re-load fonts (Figtree) at every
 session start; never assume prior in-file state persists beyond what the file itself shows.
+
+---
+
+## (f) TASTE & MATERIALS (applies from Batch 2 onward)
+
+**Materials law (Anti-Drift #1 — flat fills on elevated surfaces are forbidden).** Every
+hand-composed elevated container carries the full Centricity material recipe, not just a solid
+fill: elevation **surface** (`surface/raised|card|sheet`) + the **4% grain overlay** (the DS
+grain image, `blend=OVERLAY, opacity 0.04, TILE` — reuse the DS grain image hash) + the correct
+**shadow effect style** (`elevation/raised|card|sheet`) + a 1px **hairline top highlight** where
+the glass/elevated recipe applies. Sheets use the real BottomSheet recipe (sheet surface + grain
++ grabber + `elevation/sheet`). Bake materials in from the first frame of every screen.
+
+**Chrome & structure.** Every screen frame includes the **StatusBar** instance (full-bleed, top
+safe area) and respects safe areas (bottom home-indicator inset on the action bar). **No spacer
+rectangles/frames** — all spacing via auto-layout `itemSpacing`/padding bound to `space/*`;
+bottom-pin CTAs via a `Content` region (`layoutGrow=1`) + a pinned `ActionBar`.
+
+**Reference discipline (Mobbin).** Before speccing each batch, use the **Mobbin** connector to
+pull **2–3 shipped-app reference patterns** for that batch's flows (security/auth: **Revolut,
+Wise, N26, CRED**) and note adopted/adapted patterns in the batch plan. References inform
+**LAYOUT PATTERNS ONLY** — visual identity stays **100% Centricity**.
+
+**Taste anchors.** Linear-grade restraint (typography-led, zero decoration); Raycast's
+single-glow focal discipline (one rim-glow/hero per screen). A **copper-blueprint** illustration
+style (technical copper line-art on obsidian, dotted grid) is approved for future empty-state /
+onboarding art — **taste note only; no illustrations in Phase 1.**
