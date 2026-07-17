@@ -19,7 +19,9 @@ built in a later hardening pass, never on the demo canvas:
 
 - **LG-01** CountrySelector — staged (`_staging`).
 - **LG-02** Wordmark — staged (`_staging`).
-- **LG-03** Floating numeric keypad — to stage (onboarding mobile+OTP, per visual language).
+- **LG-03** Floating numeric keypad — staged (`_staging` of product file "testing"
+  `uYsWb51fbZLwZoZnkmuPmi`, node 15:27): surface/glass + glass/blur + copper/shimmer hairline,
+  radius-xl; keys surface/glass-input, 44 touch-min; digits title/20-tabular. PROMOTE TO DS.
 - **Portfolio compositions** used in D1 (compose from published primitives now; promote later):
   Financial Snapshot (hero value card), Allocation Summary (donut + legend), Holding Row.
 
@@ -34,6 +36,9 @@ built in a later hardening pass, never on the demo canvas:
   segmented control sits below it, reconcile the duplication in the DS component.
 
 ## Deferred flows / screens
+
+- **ONB-02X KYC-not-found** — ONE handoff screen to 3rd-party KYC app + ONE return state
+  (sanctioned by scope amendment; deferred from ONB Batch 1 to respect the 3-frame cap).
 
 - Auth A01–A17 re-skin to the North Star visual language (split footer, two-tone headline, rich
   success) — paused; do not touch unprompted.
