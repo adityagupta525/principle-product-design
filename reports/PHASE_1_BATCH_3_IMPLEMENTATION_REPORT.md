@@ -39,3 +39,23 @@ Every frame carries a Figma **annotation naming its focal anchor** (e.g. "FOCAL 
 ## 5. Next
 
 Paused for review. Batch 4 on approval — A18 Device Recovery, A19 Active Sessions, A20 Trusted Devices (ALI `trailing=chip` security rows; BottomSheet revoke confirms; Mobbin pull for device/session management flows first).
+
+---
+
+## 6. Binding audit + pixel fixes (A01–A17, pre-Batch-4)
+
+**Binding law — product file now passes** (walk excludes DS instance internals, which are library-bound):
+
+| Page (frames) | Gaps bound (after) | Gaps snapped | Gap exceptions | Text bound | Text raw (after) | Paint bound | Paint raw |
+|---|---|---|---|---|---|---|---|
+| Batch 1 · A01+A02 (19) | 190 | 0 | 38 | 67 | 0 | 95 | 0 |
+| Batch 2 · A03+A04 (19) | 229 | 0 | 38 | 68 | 0 | 87 | 0 |
+| Batch 3 · A16+A17 (19) | 192 | 0 | 38 | 78 | 0 | 97 | 0 |
+| **Total (57)** | **611** | **0** | **114** | **213** | **0** | **279** | **0** |
+
+- **Zero snapping** on spacing — every gap/padding was already an exact `space/*` value; all now bound.
+- **Only 3 raw text nodes** existed (11px mono cooldowns "TRY AGAIN IN 4:59" / "14:59" / "UNDER REVIEW") — bound to the nearest `font-size/*` token.
+- **Documented exceptions = 114** (2 per frame): `paddingTop=50` (status-bar safe-area clearance) and `paddingBottom=34` (home-indicator inset) — device constants, not design spacing.
+- After: **0 raw values** outside documented exceptions across all 57 frames.
+
+**Pixel fixes:** P1 OTP boxes render native 48×56 (HUG, gap `space/2`); P2 filled boxes quieted (cream digit + hairline, copper reserved for active) — logged **CS-01**; P3 A04 gains the "Verify identity" back+title header; P4 all 38 Alert intent borders dropped to 20% alpha — logged **CS-02**. See `DS_CODE_SYNC_BACKLOG.md`.
