@@ -121,11 +121,34 @@ rectangles/frames** — all spacing via auto-layout `itemSpacing`/padding bound 
 bottom-pin CTAs via a `Content` region (`layoutGrow=1`) + a pinned `ActionBar`.
 
 **Reference discipline (Mobbin).** Before speccing each batch, use the **Mobbin** connector to
-pull **2–3 shipped-app reference patterns** for that batch's flows (security/auth: **Revolut,
-Wise, N26, CRED**) and note adopted/adapted patterns in the batch plan. References inform
-**LAYOUT PATTERNS ONLY** — visual identity stays **100% Centricity**.
+pull **2–3 shipped-app reference patterns** for that batch's flows, searching **by app name**
+(security/auth: **Revolut, Wise, N26, CRED, Monzo**) and note adopted/adapted patterns in the
+batch plan. **References must be fintech/banking unless explicitly approved otherwise** — if a
+named app doesn't surface, SAY SO and list fintech alternatives; never silently substitute
+non-fintech. References inform **LAYOUT PATTERNS ONLY** — visual identity stays **100% Centricity**.
 
-**Taste anchors.** Linear-grade restraint (typography-led, zero decoration); Raycast's
-single-glow focal discipline (one rim-glow/hero per screen). A **copper-blueprint** illustration
-style (technical copper line-art on obsidian, dotted grid) is approved for future empty-state /
-onboarding art — **taste note only; no illustrations in Phase 1.**
+**Type & presence rules (permanent, checkable).**
+- **Type drama:** every screen opens at **title/24-bold minimum** (A01-class landing screens may
+  use **32/40**); **one support line max** under the headline — deeper nuance moves into field
+  helper lines, never a paragraph.
+- **Meta/counters** (step counters, timers-as-labels, section eyebrows) are always **mono
+  datalabel uppercase** (Tabular, letter-spaced, `text/meta`).
+- **One stated focal anchor per screen** (A02 = the OTP row, visibly active first box + caret;
+  A01 = the headline block) — everything else one step quieter. Raycast single-glow discipline:
+  at most one rim-glow/hero.
+- **Empty space is premium** — never fill it; but content that exists must have presence
+  (scale + contrast). Sparse-and-weak reads unfinished; sparse-and-confident reads premium.
+- **Brand header:** landing screens open with the **Wordmark** instance (~20px, left) + ghost
+  copper `Help`, hairline divider under the header row. Sub-screens use the back+title
+  PageHeader composition.
+- **Rhythm:** vertical gaps only from the section scale (**16/24/32/40**); headline-group →
+  first field = 32; label → field = 8; field → helper = 8.
+- **Density diet:** max **5 visual blocks** between header and CTA; legal footer = single
+  caption line in `text/tertiary`; secondary exits are ghost copper links, no underline.
+- **Depth check at 1x:** before a batch closes, render key frames at full res — the hairline
+  top highlight must be visible on every raised field and the CTA; an elevated surface that
+  reads flat at 1x has an incomplete material recipe.
+
+A **copper-blueprint** illustration style (technical copper line-art on obsidian, dotted grid)
+is approved for future empty-state / onboarding art — **taste note only; no illustrations in
+Phase 1.**

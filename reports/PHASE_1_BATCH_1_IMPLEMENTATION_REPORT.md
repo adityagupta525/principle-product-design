@@ -76,3 +76,30 @@ Applied across all of Batch 1 + the staged component:
 - **Taste addendum** recorded in CLAUDE.md §(f): Mobbin reference discipline (Revolut/Wise/N26/CRED,
   layout-only) from Batch 2 onward; Linear/Raycast taste anchors; copper-blueprint illustration style
   approved for future (no illustrations in Phase 1).
+
+---
+
+## 7. Taste calibration — surgical redlines (applied to all Batch 1 frames)
+
+- **R1** Brand header: `Wordmark` instance (~20px) + copper ghost Help + hairline divider on all 9 A01
+  frames. **No wordmark asset exists in the DS** — a typographic Wordmark component was staged as
+  **LG-02 · PROMOTE TO DS** (honest gap, not a faked brand asset).
+- **R2** A01 headline → 32/40 Bold (2 lines); support → one line ("Start in minutes — first, confirm
+  the country you invest from."); the KYC nuance moved into the CountrySelector helper line.
+- **R3** A02 OTP as focal anchor: first box set to its real `active` variant (copper border + caret);
+  headline 24/30 Bold; resend countdown already Tabular.
+- **R4** Duplication killed: stepper caption → mono uppercase `STEP 2 OF 3` (Tabular, letter-spaced,
+  `text/meta`); redundant screen-name text deleted. Stepper rail overridden from the 7-segment preset
+  to 3 segments / 2 filled to match.
+- **R5** Flag slots hidden (13 slots — trigger + picker) until real circle-flags assets land; absence
+  reads intentional, empty grey squares read broken.
+- **R6** Density diet verified: ≤5 blocks header→CTA; single-caption legal footer; ghost copper sign-in.
+- **R7** Rhythm: content gaps 32; label→field and field→helper 8; hero/context internal 8.
+- **R8** Depth check at 1x passed: hairline top highlight visible on raised fields
+  (`hairline/top` strokeTop on CountrySelector default/disabled) and the metal CTA.
+- **Rules made permanent** in CLAUDE.md §(f): type drama (24-bold min, 32 for landing), mono datalabel
+  meta, one focal anchor, empty-space-premium, rhythm scale, density diet, 1x depth check, and the
+  **fintech-only reference rule** (search by app name; never silently substitute non-fintech).
+- **Mobbin correction:** A03 references re-pulled by app name — all five named fintech apps surfaced
+  (Revolut, Wise, N26, CRED, Monzo); the earlier retail substitutes are discarded. A04 references
+  (Chime/Ubank/Kit) stay — fintech.
