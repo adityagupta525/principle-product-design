@@ -1,0 +1,41 @@
+# BACKLOG — Centricity Product Screens
+
+Deferred work. Nothing here is built on canvas until the product owner pulls it into a batch.
+Per the Token Protocol, ideas for audits/passes/migrations are **logged here, never run
+unprompted.**
+
+## Hardening (all non-happy states — deferred from every screen)
+
+Happy flows only ship now (`default` / `filled` / `success`). These states are captured here and
+built in a later hardening pass, never on the demo canvas:
+
+- **Error** — validation, service, region-level failures + retry.
+- **Empty** — no data / no holdings / no activity / no trusted factor.
+- **Offline** — cached/stale, actions disabled.
+- **Suspended / Restricted** — account hold, policy blocks, step-up required.
+- **Loading** — skeletons / region loading (only if a screen needs it for the happy demo).
+
+## Library Gaps (stage at DS quality, tag PROMOTE TO DS)
+
+- **LG-01** CountrySelector — staged (`_staging`).
+- **LG-02** Wordmark — staged (`_staging`).
+- **LG-03** Floating numeric keypad — to stage (onboarding mobile+OTP, per visual language).
+- **Portfolio compositions** used in D1 (compose from published primitives now; promote later):
+  Financial Snapshot (hero value card), Allocation Summary (donut + legend), Holding Row.
+
+## DS code-sync (design supersedes code — for a version sprint)
+
+- See `reports/DS_CODE_SYNC_BACKLOG.md` (CS-01 OTP filled-state quiet; CS-02 Alert border @20%).
+- **font-size/40 token** — hero portfolio value is display/40; no 40 size token exists in DS
+  Typography. Add `font-size/40` in a version sprint; hero value uses a raw 40 until then.
+- **Holding Row → ALI trailing=value** — once the ALI value-text slot is exposed, swap composed
+  holdings rows to `ActionListItem trailing=value`.
+- **LineChart period labels** — chart carries its own faint period-label row; when a period
+  segmented control sits below it, reconcile the duplication in the DS component.
+
+## Deferred flows / screens
+
+- Auth A01–A17 re-skin to the North Star visual language (split footer, two-tone headline, rich
+  success) — paused; do not touch unprompted.
+- Batch 4 Device & Session (A18–A20), Batch 5 Account Recovery (A21–A22) — stopped; return later.
+- Portfolio P02 Holdings, P03 Holding Detail, P05 Transactions — after the Overview is approved.
