@@ -8,6 +8,19 @@ Read it before any other document and before touching Figma.
 
 ## (a) CURRENT STATE
 
+> **⚑ ACTIVE PHASING — DEMO-FIRST (manager demo, supersedes the batch plan).**
+> The auth work (Batches 1–3: A01–A04, A16–A17) is **committed and PAUSED** — good, kept, not
+> reopened. Batch 4 (device/session) is **stopped mid-flight** and returns later. The live
+> sequence is now **manager-demo driven, HAPPY FLOWS ONLY**:
+> **D1 Portfolio → D2 Investing → D3 Home (existing user).**
+> - **3–4 frames per screen MAX** — `default`, `filled/interacting`, `success`. **Zero
+>   error/edge/offline/restricted states for now** (they return in a later hardening pass).
+> - Every demo screen obeys **§(g) PRODUCT VISUAL LANGUAGE** from frame one.
+> - **Retroactive auth migration** (re-skinning A01–A17 to §(g)) is **deferred** — do not touch
+>   the paused auth frames during the demo push.
+> - Cadence per screen: Mobbin fintech pull → build → screenshot → **pause for review** before
+>   the next demo module.
+
 **Centricity DS v1.5 — PUBLISHED.** The design system library is live and is the single
 source of truth for every component, variable, token, and text style used in the screens
 phase.
@@ -152,3 +165,50 @@ non-fintech. References inform **LAYOUT PATTERNS ONLY** — visual identity stay
 A **copper-blueprint** illustration style (technical copper line-art on obsidian, dotted grid)
 is approved for future empty-state / onboarding art — **taste note only; no illustrations in
 Phase 1.**
+
+---
+
+## (g) PRODUCT VISUAL LANGUAGE — NORTH STAR (supreme composition truth)
+
+Extracted from the hi-fi designs on the **`_reference — North Star`** page (the *Existing_User*
+home + activation homes are the composition/density truth). **These laws apply to ALL demo
+screens from frame one.** They sit *on top of* the DS material/type/chrome laws in §(f) — never
+in place of them: every surface still carries the full Centricity material recipe, every value is
+still token-bound, every component is still a published-library instance. The North Star governs
+**composition, generosity, and hero treatment**; the DS governs **materials and tokens**.
+
+1. **SPLIT FOOTER.** Sub-screen action bars are a **square raised back-IconButton** (56×56,
+   `radius/lg`) on the **left** + a **metal CTA filling the remaining width**, gap `space/3`.
+   (Replaces the stacked primary-over-ghost auth footer on demo screens.) The back-IconButton
+   uses the raised material recipe; the CTA is the metal/copper-gradient button.
+2. **TWO-TONE HEADLINE.** Screen headlines are **display/34 Bold**, leading words in **cream**,
+   the **final word in `text/tertiary`** (quieted) — e.g. "Your **portfolio**" with *portfolio*
+   dropped to tertiary. One headline per screen; still one support line max (§f type drama).
+3. **PROGRESS RAIL (where used).** Step rails are **6px, `radius/full` segments**; the filled
+   segment is the **metal gradient + a faint copper glow**; unfilled segments are quiet
+   hairline/`surface` tracks. (Meta counter above stays mono datalabel uppercase.)
+4. **RADIUS & BREATHING.** Fields/cards **`radius/lg` minimum**; **selection cards `radius/xl`**;
+   **field height 56**; **card padding 16–20**. Nothing important sits at a tight radius.
+5. **SUCCESS MOMENTS = RICH PANEL.** A success state is a **composed panel** — tinted panel +
+   **check tile** + **detail rows** (datalabel key · Tabular value) — **never a bare Alert line**.
+   (The DS `ConfirmationSuccess` recipe is the reference; routine confirmations still use Toast.)
+6. **REFERENCE DENSITY / GENEROSITY.** Match the **Existing_User home card rhythm**: sectioned
+   blocks with a **section header + ghost-copper `See all →`**, a mix of **full-bleed hero cards**
+   and **horizontal card rows**, generous 16/24/32 vertical rhythm. **The DS components carry the
+   materials; the composition must carry the reference's generosity** — sparse-and-confident, hero
+   first, never a thin wireframe.
+
+**Portfolio-specific presence (D1), from the hero value card in the reference:**
+- **Hero value card** (one per Overview, the single rim-glow anchor): `TOTAL PORTFOLIO VALUE`
+  datalabel eyebrow → **huge Tabular ₹ value, Indian digit grouping** (₹3,42,18,650) → **delta
+  line** (absolute + %) → **Invested / Today's G-L** stat columns → **privacy eye** toggle. Copper
+  accents on obsidian; the ONE rim-glow/hero on the screen.
+- **Numerals:** every monetary/percentage value is **Tabular** with **Indian grouping**
+  (lakh/crore comma placement), tagged to the DS `numeral/*` styles.
+- **One metal CTA per screen** (single-glow discipline); period/segment controls are the DS
+  `ButtonGroup`/segmented control; chips are `Tag`; rows are `ActionListItem`.
+- **Bottom nav** (existing-user context): Home · Portfolio · Invest · Taxation with the center
+  copper FAB — use the DS App Shell / bottom-nav instance, never hand-drawn.
+
+**Retroactive note:** the paused auth screens (A01–A17) predate §(g) and are **not** migrated
+during the demo push; a later pass re-skins them (split footer, two-tone headline, rich success).
