@@ -22,6 +22,9 @@ built in a later hardening pass, never on the demo canvas:
 - **LG-03** Floating numeric keypad — staged (`_staging` of product file "testing"
   `uYsWb51fbZLwZoZnkmuPmi`, node 15:27): surface/glass + glass/blur + copper/shimmer hairline,
   radius-xl; keys surface/glass-input, 44 touch-min; digits title/20-tabular. PROMOTE TO DS.
+- **LG-04** SelectionCard — staged (`_staging` of product file "testing" `uYsWb51fbZLwZoZnkmuPmi`,
+  set 51:292): radius-xl surface/card, copper-gradient (copper/400→copper/200) selected border,
+  copper radio dot, 40px icon-tile slot, state=default|selected. PROMOTE TO DS.
 - **Portfolio compositions** used in D1 (compose from published primitives now; promote later):
   Financial Snapshot (hero value card), Allocation Summary (donut + legend), Holding Row.
 
