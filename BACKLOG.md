@@ -42,7 +42,10 @@ Risk profiling is explicitly NOT in onboarding (scope amendment). Flagged out-of
 - **B12** — Investment experience (suitability).
 - **Borderline (confirm keep/fold):** B09 CRS self-certification, B10 tax residency — real NRI
   compliance minimums but beyond the amendment's named "FATCA (dropdown-led)" step.
-- **Gap:** A02 OTP has no floating numeric keypad (LG-03) — retrofit item.
+- **Gap:** A02 OTP floating numeric keypad — **DONE** (staged LG-03 `KeypadNumeric`, placed on A02).
+- **Step renumber (needs owner OK — it's a pass):** onboarding rails still read "STEP X OF 16".
+  After removing B11/B12 the flow is **14 steps** — renumber captions + rail fill-segments across
+  B02–B17 (B13→step 10 … B17→step 14).
 
 ## Deferred flows / screens
 
