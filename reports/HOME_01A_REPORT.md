@@ -14,3 +14,10 @@
 - SIP module elevated directly under the trust card: copper shimmer border, 56px 3D FeatureIcon, bold 18px title, short line "Begin small, build steadily in India.", "From ₹500" cue chip + "See SIP funds" copper link.
 - Popular with NRIs + Tax-smart kept visible but secondary (below the focused SIP block).
 - One rim glow (trust-card only) and one metal CTA (Explore funds) preserved; no returns/charts/recommendations; DS v1.5 only.
+
+## HOME-01c · ready to explore
+- Cloned from 01b; layout kept identical (wordmark, welcome, trust card, SIP focus, Popular/Tax, TabBar Home active).
+- Primary CTA → "Continue to funds" (clean handoff into Fund Discovery — not built here).
+- Added compact selected-intent strip atop the SIP module: copper-tint + check-circle, "SIP path selected" / "We'll show funds suited for first-time NRI investors."
+- No fake recommendations, returns, or charts; DS v1.5 only.
+- One rim glow (trust-card) and one metal CTA (Continue to funds) — verified.
