@@ -14,3 +14,11 @@
 - Kept 2 category cards (Index funds, ELSS tax-saver); no fund detail, no returns, no guarantees, no recommendations.
 - CTA updated to "Show SIP funds".
 - DS v1.5 only (Tag copper/neutral variants). DISC-01c not built (awaiting approval).
+
+## DISC-01c · ready to choose fund · success/ready
+- Cloned from 01b; layout, Invest TabBar, wash, context-bar rim glow, selected copper filters, and one metal CTA preserved.
+- Added compact ready strip: "SIP funds matched · Choose a fund to review details before investing." (copper-tint + check, shimmer stroke — not a second glow).
+- Index funds card focused with copper-gradient selected border + SELECTED datalabel; ELSS stays neutral/secondary.
+- CTA → "Review selected fund" (handoff into Fund Detail — not built here).
+- No fund performance, no returns, no suitability/recommendation claims; 2 cards max; DS v1.5 only.
+- Completes DISC-01 trio (a/b/c). Fund Detail / Investment Journey / Portfolio not started.
