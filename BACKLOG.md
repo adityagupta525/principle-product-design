@@ -31,6 +31,12 @@ built in a later hardening pass, never on the demo canvas:
 - **Portfolio compositions** used in D1 (compose from published primitives now; promote later):
   Financial Snapshot (hero value card), Allocation Summary (donut + legend), Holding Row.
 
+## Prototype gaps
+
+- **View terms disclosure** — ONB-07 Review "View terms" link is unwired; DS has no
+  disclosure/legal-sheet component or state to open. Stage a compact legal BottomSheet (or a DS
+  disclosure state) in a later batch, then wire it. Do not invent it on canvas meanwhile.
+
 ## DS code-sync (design supersedes code — for a version sprint)
 
 - See `reports/DS_CODE_SYNC_BACKLOG.md` (CS-01 OTP filled-state quiet; CS-02 Alert border @20%).
