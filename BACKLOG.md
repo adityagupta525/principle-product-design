@@ -33,6 +33,17 @@ built in a later hardening pass, never on the demo canvas:
 - **LineChart period labels** — chart carries its own faint period-label row; when a period
   segmented control sits below it, reconcile the duplication in the DS component.
 
+## Descope candidates — LOGIN/ONBOARDING page (pending owner confirm before canvas removal)
+
+Risk profiling is explicitly NOT in onboarding (scope amendment). Flagged out-of-scope on the
+`LOGIN/ONBOARDING HAPPY FLOW` page — logged here, **not removed from canvas without owner OK**:
+
+- **B11** — Risk profile ("Markets fall 20%…", Q4 of 5).
+- **B12** — Investment experience (suitability).
+- **Borderline (confirm keep/fold):** B09 CRS self-certification, B10 tax residency — real NRI
+  compliance minimums but beyond the amendment's named "FATCA (dropdown-led)" step.
+- **Gap:** A02 OTP has no floating numeric keypad (LG-03) — retrofit item.
+
 ## Deferred flows / screens
 
 - Auth A01–A17 re-skin to the North Star visual language (split footer, two-tone headline, rich
