@@ -10,6 +10,9 @@ Happy flows only ship now (`default` / `filled` / `success`). These states are c
 built in a later hardening pass, never on the demo canvas:
 
 - **Error** — validation, service, region-level failures + retry.
+- **ONB-06 Nominee** — multi-nominee allocation split, minor-nominee guardian fields.
+- **ONB-07 Review & eSign** — eSign provider handoff/return, eSign declined/expired, section
+  re-verification after edit.
 - **Empty** — no data / no holdings / no activity / no trusted factor.
 - **Offline** — cached/stale, actions disabled.
 - **Suspended / Restricted** — account hold, policy blocks, step-up required.
