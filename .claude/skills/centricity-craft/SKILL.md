@@ -62,7 +62,14 @@ every value stays token-bound.
 Centricity is **execution-only**. **No directive / advice / instructional language anywhere** on
 canvas — no "stay the course", "hold on", "you should", "consider", "buy/sell now". State facts, not
 counsel. Perspective lines are **factual only** (e.g. "+₹56,10,400 since you started"). This sits on
-top of the warm-Indian-friend voice in (a).
+top of the warm-Indian-friend voice in (a). On an **Insights/attention** surface: findings are
+**facts**, actions are **navigation** ("Compare funds →", "Review allocation →", "Retry SIP →") —
+never advice ("consider switching" is forbidden).
+
+- **DATA HONESTY:** on-canvas selection states must never contradict the values shown — a quick-
+  amount chip (25% / 50% / All) reads *selected* only when the amount equals that computed value; a
+  custom amount **deselects all chips**. Figures without an authoritative spec source are marked
+  representative placeholder in the frame description — never presented as spec-backed.
 
 ## (c) TOKEN PROTOCOL — hard rules
 

@@ -76,7 +76,9 @@ Risk profiling is explicitly NOT in onboarding (scope amendment). Flagged out-of
   value + return chip), asset-class **Group Card** (mono class label + subtotal + rows), **Portfolio
   Tabs** segmented control (Overview·Holdings·Transactions — no DS segmented-control exists),
   **Return chip** (sage/brick tinted pill), **Position hero** (from HeroValueCard), **SIP status
-  card**, **Recent-activity row**, **NRE/NRO source tag**.
+  card**, **Recent-activity row**, **NRE/NRO source tag**, **AttentionRow tone variant** (composed sage "all set" + amber "N funds
+  need attention →" as one pattern — promote a `tone` = sage/amber variant to DS), **Insights
+  attention card** (finding + single action link).
 - **Overview needs the Portfolio Tabs control (pass — needs owner OK):** P01 Overview states
   (1–5) don't yet carry the Overview·Holdings·Transactions control that Holdings/Position use; add
   for demo consistency in a later pass. Not applied to approved screens unprompted.
