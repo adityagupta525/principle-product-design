@@ -51,6 +51,18 @@ every value stays token-bound.
   ONLY.**
 - Numerals **Tabular + Indian grouping**; **mono datalabels quieter than content**; one rim-glow +
   one metal CTA per screen.
+- **PRIVACY / HIDE LAW:** when values are hidden, **EVERY rupee amount on the screen masks** (hero
+  value, return cards, holding values, metric tiles) → `₹••••••` Tabular dots. Percentages may stay.
+  **Layout must not shift.**
+- **CHART PATTERN LAW:** a LineChart card **never renders its x-axis period-label row when a period
+  ButtonGroup is present** — chips are the only period control. Applies everywhere.
+
+## (a2) COPY LAW — execution-only voice
+
+Centricity is **execution-only**. **No directive / advice / instructional language anywhere** on
+canvas — no "stay the course", "hold on", "you should", "consider", "buy/sell now". State facts, not
+counsel. Perspective lines are **factual only** (e.g. "+₹56,10,400 since you started"). This sits on
+top of the warm-Indian-friend voice in (a).
 
 ## (c) TOKEN PROTOCOL — hard rules
 

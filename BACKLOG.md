@@ -70,6 +70,21 @@ Risk profiling is explicitly NOT in onboarding (scope amendment). Flagged out-of
 - Batch 4 Device & Session (A18–A20), Batch 5 Account Recovery (A21–A22) — stopped; return later.
 - Portfolio P02 Holdings, P03 Holding Detail, P05 Transactions — after the Overview is approved.
 
+## Portfolio module — composed gaps + deferred states
+
+- **Composed from primitives (promote to DS):** Holding Row (logo tile + name + units·NAV mono +
+  value + return chip), asset-class **Group Card** (mono class label + subtotal + rows), **Portfolio
+  Tabs** segmented control (Overview·Holdings·Transactions — no DS segmented-control exists),
+  **Return chip** (sage/brick tinted pill), **Position hero** (from HeroValueCard), **SIP status
+  card**, **Recent-activity row**, **NRE/NRO source tag**.
+- **Overview needs the Portfolio Tabs control (pass — needs owner OK):** P01 Overview states
+  (1–5) don't yet carry the Overview·Holdings·Transactions control that Holdings/Position use; add
+  for demo consistency in a later pass. Not applied to approved screens unprompted.
+- **Data note:** fund-holdings subtotal (₹3,35,70,900) sits below total portfolio (₹3,42,18,650)
+  by design — gold + cash (10%) are non-fund allocation, so they don't appear as holding rows.
+- **Hardening (deferred, not on canvas):** Holdings empty/one-fund, all-negative day, redeem-
+  blocked/lock-in, SIP paused/failed, transaction failed-retry states.
+
 ## Investment module — composed gaps + deferred states
 
 - **Composed from primitives:** invest-type radio-cards (copper-gradient selected border),
