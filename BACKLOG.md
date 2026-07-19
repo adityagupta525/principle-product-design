@@ -84,6 +84,13 @@ Risk profiling is explicitly NOT in onboarding (scope amendment). Flagged out-of
   by design — gold + cash (10%) are non-fund allocation, so they don't appear as holding rows.
 - **Hardening (deferred, not on canvas):** Holdings empty/one-fund, all-negative day, redeem-
   blocked/lock-in, SIP paused/failed, transaction failed-retry states.
+- **TDS rate — UNKNOWN (never invented):** no authoritative NRI redemption TDS % exists in the Tax
+  Center spec or lifecycle contract (spec: *state whether TDS is deducted / estimated / source-
+  reported*; never present tax as fact). Redeem Review renders the TDS row **structure** with
+  "rate applies per your residency" — the real rate must be wired from the taxation service.
+- **Settlement / credit timing — UNKNOWN:** Portfolio spec marks the settlement model UNKNOWN.
+  Redeem success uses "credited per fund settlement cycle" (no invented T+N date). **Exit load
+  omitted** — not defined per-fund in spec; wire when the fund service exposes it.
 
 ## Investment module — composed gaps + deferred states
 
