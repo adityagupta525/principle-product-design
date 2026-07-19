@@ -31,6 +31,9 @@ built in a later hardening pass, never on the demo canvas:
   No DS segmented-control component exists; promote one.
 - Present in DS + used: **FundSearchBar**, **RiskMeter** (SEBI), **LineChart**, **Accordion**,
   **BottomSheet**, **Tag**.
+- **SEBI Riskometer compliance (confirm before ship):** the Riskometer is a *prescribed
+  standardized graphic*. Compliance team to confirm whether the copper-toned custom gauge is
+  permissible, or the mandated colour version is required. No design change made now.
 - **Hardening (deferred, not on canvas):** Fund Discovery no-results / empty / offline / stale-data
   / restricted-eligibility states; Fund Detail unavailable-data + restricted-purchase states.
 - Mobbin: **Groww/INDmoney/Revolut did not surface** — used fintech alternatives (Fidelity,
