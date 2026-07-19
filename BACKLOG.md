@@ -69,3 +69,14 @@ Risk profiling is explicitly NOT in onboarding (scope amendment). Flagged out-of
   success) — paused; do not touch unprompted.
 - Batch 4 Device & Session (A18–A20), Batch 5 Account Recovery (A21–A22) — stopped; return later.
 - Portfolio P02 Holdings, P03 Holding Detail, P05 Transactions — after the Overview is approved.
+
+## Investment module — composed gaps + deferred states
+
+- **Composed from primitives:** invest-type radio-cards (copper-gradient selected border),
+  quick-amount chips (Tag). AmountInput, LG-03 keypad, and a rich success panel used directly.
+- **Payment handoff (INV-04) is a note/handoff screen only** — the 3rd-party UPI/netbanking
+  payment flow itself is never designed (same rule as KYC handoff).
+- **Hardening (deferred, not on canvas):** below-minimum amount error, payment failure/timeout/
+  retry, insufficient-eligibility/cut-off block, order pending/reversed states.
+- Mobbin: Groww/INDmoney/Revolut didn't surface → fintech alternatives (Wealthsimple, Public,
+  Wealthfront, KakaoBank, Plum) for layout patterns only.
