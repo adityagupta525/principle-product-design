@@ -70,3 +70,6 @@ top of the warm-Indian-friend voice in (a).
 - **NEVER propose or run audits / passes / migrations unprompted** — log to `BACKLOG.md`.
 - **Reuse validated frames by cloning.**
 - **Reports ≤10 lines.**
+- **PLACEMENT LAW:** every new frame is created **inside a titled Section**, placed **adjacent to
+  its module's existing sections** on the correct page — never at arbitrary/far coordinates. Keep a
+  module's frames grouped under titled Sections (e.g. Overview · Holdings/Position · Transactions).
