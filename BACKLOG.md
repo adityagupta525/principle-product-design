@@ -23,6 +23,19 @@ built in a later hardening pass, never on the demo canvas:
 - **Portfolio compositions** used in D1 (compose from published primitives now; promote later):
   Financial Snapshot (hero value card), Allocation Summary (donut + legend), Holding Row.
 
+## Fund Discovery — composed gaps + deferred states
+
+- **FundCard** — composed from primitives (AMC line-glyph tile + name/AMC + category Tags + 3Y
+  CAGR + min SIP). Promote to a DS component.
+- **Period ButtonGroup / segmented control** — composed from Tag chips (period + filter rows).
+  No DS segmented-control component exists; promote one.
+- Present in DS + used: **FundSearchBar**, **RiskMeter** (SEBI), **LineChart**, **Accordion**,
+  **BottomSheet**, **Tag**.
+- **Hardening (deferred, not on canvas):** Fund Discovery no-results / empty / offline / stale-data
+  / restricted-eligibility states; Fund Detail unavailable-data + restricted-purchase states.
+- Mobbin: **Groww/INDmoney/Revolut did not surface** — used fintech alternatives (Fidelity,
+  Sucorinvest, KakaoBank, Acorns) for layout patterns only.
+
 ## DS code-sync (design supersedes code — for a version sprint)
 
 - See `reports/DS_CODE_SYNC_BACKLOG.md` (CS-01 OTP filled-state quiet; CS-02 Alert border @20%).
