@@ -48,6 +48,24 @@ export interface Fund {
   minSip: number; // ₹
   risk: FundRisk;
   crisil: number; // ★ 1–5
+  benchmark?: string;
+  inception?: string;
+}
+
+/** One row of the peer-comparison table on a fund-detail screen. */
+export interface PeerRow {
+  name: string;
+  expense: number | null; // % — null for the benchmark row
+  returns: number; // % — same period basis as the fund's cagr3Y
+  isBenchmark?: boolean;
+  isThisFund?: boolean;
+}
+
+/** One underlying holding of a fund. */
+export interface Holding {
+  name: string;
+  amc: string;
+  weight: number; // %
 }
 
 const ELIGIBLE = { eligible: true, repatriable: true, flag: 'ELIGIBLE' } as const;
@@ -174,7 +192,41 @@ export const FUNDS = {
     risk: 'Very High',
     crisil: 5,
   },
+  kotakGoldFund: {
+    id: 'kotakGoldFund',
+    name: 'Kotak Gold Fund',
+    amc: 'Kotak',
+    category: 'Hybrid',
+    subCategory: 'Precious Metals',
+    nri: REPATRIABLE, // eligible NRE/NRO; repatriable via NRE
+    cagr3Y: 22.42, // matches the peer-table "this fund" row
+    nav: 56.6, // NAV on 17-07-2026
+    expense: 0.63,
+    aum: 6422,
+    minSip: 100,
+    risk: 'High',
+    crisil: 3,
+    benchmark: 'Domestic Price of Physical Gold TR INR',
+    inception: '1 January 2013',
+  },
 } satisfies Record<string, Fund>;
+
+// -----------------------------------------------------------------------------
+// FD-03 detail extras — Kotak Gold Fund peer set + top holdings.
+// Peer `returns` share the same 3Y basis as `cagr3Y`; the this-fund row (22.42)
+// equals FUNDS.kotakGoldFund.cagr3Y so the peer table and NAV headline agree.
+// -----------------------------------------------------------------------------
+export const KOTAK_GOLD_PEERS: PeerRow[] = [
+  { name: 'LIC MF Gold ETF FOF Direct Growth', expense: 0.4, returns: 22.9 },
+  { name: 'SBI Gold Fund Direct Plan Growth', expense: 0.3, returns: 22.68 },
+  { name: 'HDFC Gold ETF FoF Direct Plan-Growth', expense: 0.2, returns: 22.6 },
+  { name: 'Benchmark', expense: null, returns: 22.57, isBenchmark: true },
+  { name: 'Kotak Gold Fund Growth - Direct', expense: 0.63, returns: 22.42, isThisFund: true },
+];
+
+export const KOTAK_GOLD_HOLDINGS: Holding[] = [
+  { name: 'Kotak Gold ETF', amc: 'Kotak', weight: 99.85 },
+];
 
 export type FundId = keyof typeof FUNDS;
 
@@ -198,12 +250,15 @@ export const FD_COLLECTIONS = {
   fd02Detail: 'paragParikhFlexiCap',
   /** FD-04 · Category Browse — Equity (SEBI equity sub-taxonomy) */
   fd04EquityBrowse: ['paragParikhFlexiCap', 'nipponIndiaSmallCap', 'miraeLargeCap', 'axisMidcap'],
+  /** FD-03 · Fund Detail (deep) — Kotak Gold Fund */
+  fd03Detail: 'kotakGoldFund',
 } satisfies {
   fd00TopRated: FundId[];
   fd00MostInvested: FundId[];
   fd01SearchResults: FundId[];
   fd02Detail: FundId;
   fd04EquityBrowse: FundId[];
+  fd03Detail: FundId;
 };
 
 // -----------------------------------------------------------------------------
