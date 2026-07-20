@@ -44,6 +44,29 @@ built in a later hardening pass, never on the demo canvas:
   screen); fill real values when their detail screens are built.
 - **"Most invested" secondary metric:** rows are ranked by investor count but show 3Y CAGR — add an
   investor-count metric to the compact row if the ranking basis should be visible (pass, needs owner OK).
+
+## FD-03 Fund Detail (deep) — new composed assets → propose for DS promotion
+
+Built on canvas as composed frames for FD-03; promote each to a DS component in a version sprint:
+
+- **Dual-line chart** (copper fund line + muted off-white benchmark, copper area gradient, obsidian) —
+  currently a generated SVG; DS component should take `series[]` + `benchmark[]` + period props.
+- **What-if calculator block** — One-Time/SIP toggle + metal-gradient rail slider + result card
+  (invested vs projected + illustrative disclaimer). Slider thumb/rail need real interaction in code.
+- **Peer-comparison table + row** — quiet 3-col table (name·expense·returns) with a **rim-highlight
+  "this fund" variant** (copper tint + stroke + glow). Promote table + both row variants.
+- **Holdings row** — AMC logo-chip + name + weight% (tabular).
+- **AMC logo-chip token** — desaturated/duotone container (copper@12% fill + copper@35% ring +
+  monogram placeholder). Real AMC logos land in `_staging` from the owner pipeline; keep duotone,
+  never full-colour.
+- **Toolbar glyphs** — compare / watchlist / share as custom stroked SVGs (quiet-tier); fold into the
+  DS Icon-glyph set. **info-tooltip glyph** proposed but not yet placed (add when a tooltip is needed).
+- **Binding note:** metal-gradient + copper accents in the new modules use literal copper-500 values
+  (not yet token-bound) — bind on DS promotion.
+- **Invest sheet NOT built:** FD-03 "Invest now" routes to the existing Investment module (INV-01–04)
+  to avoid duplicating the invest flow. Build a FD→INV in-context sheet only if the owner wants it.
+- **RiskMeter:** SEBI copper-gauge compliance confirm still pending (see earlier entry) — now used at
+  levelIndex=4 (High) on FD-03.
 - **Period ButtonGroup / segmented control** — composed from Tag chips (period + filter rows).
   No DS segmented-control component exists; promote one.
 - Present in DS + used: **FundSearchBar**, **RiskMeter** (SEBI), **LineChart**, **Accordion**,
