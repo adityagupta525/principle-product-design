@@ -38,6 +38,16 @@ built in a later hardening pass, never on the demo canvas:
   / restricted-eligibility states; Fund Detail unavailable-data + restricted-purchase states.
 - Mobbin: **Groww/INDmoney/Revolut did not surface** — used fintech alternatives (Fidelity,
   Sucorinvest, KakaoBank, Acorns) for layout patterns only.
+- **FD-A re-architecture composed components (promote to DS):** **CollectionCarousel** (title +
+  objective-rule caption + horizontal fund-card row), **FundCard NRI-variant** (5-point card:
+  name+AMC tile, category tag, 3Y-primary return, risk label, rating + one NRI flag),
+  **EligibilityFlag** (✓ Eligible / REPATRIABLE / USD tones), **CorridorChip** (country-of-
+  residence default, e.g. UAE ▾), **CategoryTile** (SEBI taxonomy grid). Later FD-B/FD-C:
+  ComparisonTable (locked first column), FilterSheet (NRI facets), NRIPanel (detail).
+- **Representative data (mark, never spec-backed):** FD-00 fund counts, CRISIL ratings, and
+  collection membership are representative placeholders pending the ratings/analytics data source.
+- **Mobbin (FD-A):** Groww/INDmoney/Kuvera/Belong/Endowus did not surface — used Plum, Lightyear,
+  Wealthsimple, Vivid (fintech) for collections-first layout patterns only.
 
 ## DS code-sync (design supersedes code — for a version sprint)
 

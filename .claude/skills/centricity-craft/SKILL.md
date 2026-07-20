@@ -71,6 +71,27 @@ never advice ("consider switching" is forbidden).
   custom amount **deselects all chips**. Figures without an authoritative spec source are marked
   representative placeholder in the frame description — never presented as spec-backed.
 
+## (a3) FUND DISCOVERY — compliance + card-data laws
+
+- **EXECUTION-ONLY / NOT AN RIA:** collections use **objective-criteria framing only**, with the
+  sorting rule shown as a caption ("Top rated by CRISIL", "Most invested by Centricity users",
+  "Lowest expense ratio", "Index funds"). **NEVER** "we recommend / best fund for you / risk-
+  profiled picks / personalised top funds / wealth adviser". Third-party ratings (CRISIL / Value
+  Research) are **attributed**, never proprietary verdicts. User-driven filtering is not advice.
+- **CARD DATA LAW — max 5 points** per fund card: (1) name + AMC tile, (2) category tag, (3) **3Y
+  return PRIMARY** (1Y/5Y secondary — never 1Y-default; 3Y is deliberate anti-anchoring), (4) risk
+  label (text, not the gauge), (5) rating + **ONE** NRI flag (eligible ✓ / USD / repatriable).
+  Returns right-aligned Tabular; **Indian grouping for INR, USD grouping for USD**.
+- **NRI MOAT (the differentiator):** country-of-residence filter **defaulted to the user's corridor
+  (UAE/SG)**; every card carries an eligibility/repatriability/USD flag; fund detail gets a dedicated
+  **NRI panel** (eligibility for your country, NRE/NRO repatriability, USD/GIFT-City §10(4D)
+  framing, tax/TDS note). Attributed figures OK (NRE fully repatriable / NRO ≤ US$1M per FY; LTCG
+  12.5% over ₹1.25L equity; §10(4D) tax-free for eligible non-residents); **TDS rate stays
+  residency-framed / UNKNOWN — never invent a %.** US/Canada FATCA restriction is per-AMC.
+- **DETAIL ORDER (canonical):** NAV+1d → chart (period toggles + benchmark) → returns table
+  (1Y/3Y/5Y vs category vs benchmark) → riskometer → NRI panel → expense → exit load → AUM → fund
+  manager → holdings/allocation → SIP calculator → minimums (USD+INR) → taxation → Invest CTA.
+
 ## (c) TOKEN PROTOCOL — hard rules
 
 - **Batches of MAX 2 screens.** **Screenshot ONLY at batch end.**
