@@ -26,7 +26,18 @@ built in a later hardening pass, never on the demo canvas:
 ## Fund Discovery — composed gaps + deferred states
 
 - **FundCard** — composed from primitives (AMC line-glyph tile + name/AMC + category Tags + 3Y
-  CAGR + min SIP). Promote to a DS component.
+  CAGR + min SIP). Promote to a DS component. **FD-A:** FundCard now carries an NRI eligibility
+  flag pill (✓ELIGIBLE / REPATRIABLE, green-tint radius-full) — fold the flag slot into the DS
+  component.
+- **NRICard** (FD-02 eligibility panel) — composed card: Eligibility / Repatriation / USD / Tax·DTAA
+  rows + source-freshness footnote. USD + Tax show **UNKNOWN** (not spec-backed). Promote to DS once
+  launch-country tax/DTAA wording is signed off.
+- **FD-01 search cards dropped the "SIP FROM ₹X" microcopy** to seat the NRI flag in the (full) tag
+  row. Restore via a taller card / r3 line if owner wants SIP-from back — **pass, needs owner OK.**
+- **FD-00 "Most invested" = 2-row list** (reduction pass — one hero carousel + list + grid; a
+  mini-card second rail was built then discarded as still too dense).
+- **Category-tile glyphs use nearest available DS glyphs** (no coins/gold/scales glyph in the set):
+  Debt=chart-bar, Gold&silver=star. Add coins/gold glyphs in a DS sprint for a truer mapping.
 - **Period ButtonGroup / segmented control** — composed from Tag chips (period + filter rows).
   No DS segmented-control component exists; promote one.
 - Present in DS + used: **FundSearchBar**, **RiskMeter** (SEBI), **LineChart**, **Accordion**,
