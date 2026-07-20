@@ -38,6 +38,12 @@ built in a later hardening pass, never on the demo canvas:
   mini-card second rail was built then discarded as still too dense).
 - **Category-tile glyphs use nearest available DS glyphs** (no coins/gold/scales glyph in the set):
   Debt=chart-bar, Gold&silver=star. Add coins/gold glyphs in a DS sprint for a truer mapping.
+- **Fund data = `src/data/funds.fixtures.ts` (single source of truth).** Figma frames are
+  hand-synced to it; when FD is coded, every screen imports fixtures — no inline numbers. NAV /
+  expense / AUM / minSip for non-detail funds are representative (only Parag Parikh has a detail
+  screen); fill real values when their detail screens are built.
+- **"Most invested" secondary metric:** rows are ranked by investor count but show 3Y CAGR — add an
+  investor-count metric to the compact row if the ranking basis should be visible (pass, needs owner OK).
 - **Period ButtonGroup / segmented control** — composed from Tag chips (period + filter rows).
   No DS segmented-control component exists; promote one.
 - Present in DS + used: **FundSearchBar**, **RiskMeter** (SEBI), **LineChart**, **Accordion**,
