@@ -23,10 +23,13 @@ Five beats, from the sheet: Compare → Calculate → Share → Book → end car
   @vanshika.motion): mid-size kinetic captions with exactly one accent word, floating
   rounded-square tiles, product panels that rise under soft shadows, rows that blur so one
   row can hold focus, and fast 1–2s beats. Ported in `src/lib/atoms.tsx`.
-- **Palette and type** — read from the Figma file itself (Centricity FD — Partner App,
-  node 196-7021) over the Figma MCP bridge: `--accent-primary` `#B69377`,
-  `--cen-family-brand` Montserrat, plus the screens' own white surfaces, near-black chrome
-  and `#17A05A` for every rate. Captured in `brands/centricity.json`.
+- **Palette, type and layout** — read from the Figma file itself (Centricity FD — Partner
+  App, node 196-7021) over the Figma MCP bridge, down to layer level: `--accent-primary`
+  `#B69377`, `--cen-family-brand` Montserrat, text `#212121`, headings `#2B1E19`, tenure
+  `#7A828A`, rates `#12B76A`, row rule `#F1ECE4`, tab bar `#6B4B41` active / `#7D736C` idle.
+  The Compare screen is laid out at the frame's own coordinates (header 24–80, filter band
+  80–152, section title 168, column strip 204, list 231, rows 72 + 8 gap, "View more" 703).
+  Captured in `brands/centricity.json`.
 - **Screen content** — real issuers, rates, tenures, names and labels lifted from the
   FINAL DESIGN board, so the film shows what the product shows.
 
@@ -54,14 +57,20 @@ beat length never means touching animation logic.
 
 ## Known gaps — what still needs you
 
-1. **Issuer logos are flat colour tiles.** `figma.com` is blocked by this session's network
-   egress policy, so the MCP bridge could serve metadata and screenshots but not asset
-   files. Drop the real marks into `public/logos/` and swap `<LogoTile>` for `<Img>` in
-   `src/screens/AppScreens.tsx` — nothing else changes.
-2. **Screens are rebuilt in code, not exported.** They match the Figma layout, copy and
-   colour, but they are a rebuild. If you want pixel-exact, export each screen at 3× and
-   replace the component bodies with `<Img src={staticFile(...)} />`; the scenes mount these
-   five components and nothing else.
+1. **Issuer logos are flat colour tiles — the one thing still missing.** The Figma MCP
+   bridge is connected and serves metadata, screenshots and layer specs, but the asset
+   *files* it returns are URLs on `www.figma.com`, and this session's network egress policy
+   denies that host (403). So the six bank marks cannot be fetched here. Drop the real PNGs
+   into `public/logos/` and swap `<LogoTile>` for `<Img>` in `src/screens/AppScreens.tsx` —
+   the tile colours are already the brands' own, so it is a one-line change per row.
+   The tab-bar and utility icons (SquareHalf, Calculator, FileArrowDown, ShoppingBag,
+   chevron, sliders, caret) were redrawn as inline SVG to the same Phosphor silhouettes for
+   the same reason.
+2. **Screens are rebuilt in code, not exported.** Compare is laid out at the Figma frame's
+   exact coordinates and type values; the other four match layout, copy and colour but are
+   a rebuild. If you want pixel-exact everywhere, export each screen at 3× and replace the
+   component bodies with `<Img src={staticFile(...)} />`; the scenes mount these five
+   components and nothing else.
 3. **Rates need compliance sign-off.** Every rate on screen is carried over from the Figma
    mockups (7.50%, 8.25%, 7.80%…). Before release each needs an approved value and its
    "as on ⟨date⟩" qualifier.

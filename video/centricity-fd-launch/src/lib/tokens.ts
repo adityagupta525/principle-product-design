@@ -10,7 +10,10 @@ export const C = brand.colors;
  * mono face, and importing one would be inventing a token.
  */
 export const FONT = {
+  /** The film's voice — captions, hook, end card. The owner's primary. */
   display: "Urbanist",
+  /** The product's voice. Every app screen is Montserrat, per the Figma file. */
+  app: "Montserrat",
   brand: "Montserrat",
   data: "Urbanist",
 };

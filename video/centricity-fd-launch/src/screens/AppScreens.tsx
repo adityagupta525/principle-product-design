@@ -18,12 +18,38 @@ import { C, FONT } from "../lib/tokens";
 import { at, EASE } from "../lib/motion";
 import { Pill } from "../lib/atoms";
 
+/**
+ * Type ramp taken verbatim from the Figma layers. The app is Montserrat
+ * throughout; sizes, weights, leading and tracking are the file's own.
+ */
 const T = {
-  h1: { fontFamily: FONT.display, fontSize: 17, fontWeight: 700, color: C.textPrimary },
-  row: { fontFamily: FONT.display, fontSize: 13, fontWeight: 600, color: C.textPrimary },
-  meta: { fontFamily: FONT.display, fontSize: 11, fontWeight: 500, color: C.textMuted },
-  col: { fontFamily: FONT.display, fontSize: 10, fontWeight: 600, letterSpacing: "0.08em", color: C.textMuted },
-  rate: { fontFamily: FONT.data, fontSize: 13, fontWeight: 700, color: C.gain, fontVariantNumeric: "tabular-nums" as const },
+  /** "Compare FD rates" — Montserrat SemiBold 14 / 20, -0.42px, #2B1E19 */
+  h1: { fontFamily: FONT.app, fontSize: 14, fontWeight: 600, lineHeight: "20px", letterSpacing: "-0.42px", color: C.textHeading },
+  /** Issuer name — Montserrat Bold 12 / 18, -0.12px, #212121 */
+  row: { fontFamily: FONT.app, fontSize: 12, fontWeight: 700, lineHeight: "18px", letterSpacing: "-0.12px", color: C.textPrimary },
+  /** Tenure — Montserrat SemiBold 12, #7A828A */
+  meta: { fontFamily: FONT.app, fontSize: 12, fontWeight: 600, color: C.textMuted },
+  /** Column headers — Montserrat SemiBold 12, 1px tracking, uppercase, #414141 */
+  col: { fontFamily: FONT.app, fontSize: 12, fontWeight: 600, letterSpacing: "1px", color: C.textSecondary, textTransform: "uppercase" as const },
+  /** Rate — Montserrat SemiBold 12, #12B76A */
+  rate: { fontFamily: FONT.app, fontSize: 12, fontWeight: 600, color: C.gain },
+};
+
+/* Phosphor icons, redrawn as inline SVG — the file references them by name
+   (SquareHalf, Calculator, FileArrowDown, ShoppingBag) but the SVG files sit
+   behind the blocked host, so these are hand-cut to the same silhouettes. */
+const Ico: React.FC<{ d: React.ReactNode; size?: number; color: string }> = ({ d, size = 20, color }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth={1.7}
+       strokeLinecap="round" strokeLinejoin="round">
+    {d}
+  </svg>
+);
+
+const TAB_ICONS: Record<string, React.ReactNode> = {
+  Compare: (<><rect x="3" y="3" width="18" height="18" rx="3" /><path d="M12 3v18" /><path d="M3 12h9" opacity="0" /><rect x="3" y="3" width="9" height="18" rx="3" fill="currentColor" stroke="none" opacity="0.28" /></>),
+  Calculator: (<><rect x="4" y="2.5" width="16" height="19" rx="3" /><path d="M8 7h8" /><path d="M8.5 12h.01M12 12h.01M15.5 12h.01M8.5 16.5h.01M12 16.5h.01M15.5 16.5h.01" /></>),
+  Collaterals: (<><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z" /><path d="M14 3v5h5" /><path d="M12 11v6" /><path d="M9.5 14.5 12 17l2.5-2.5" /></>),
+  "My FDs": (<><path d="M4.5 8h15l-1 12a2 2 0 0 1-2 1.8H7.5a2 2 0 0 1-2-1.8z" /><path d="M8.5 10V6.5a3.5 3.5 0 0 1 7 0V10" /></>),
 };
 
 const StatusBar: React.FC<{ onInk?: boolean }> = ({ onInk = true }) => (
@@ -32,9 +58,10 @@ const StatusBar: React.FC<{ onInk?: boolean }> = ({ onInk = true }) => (
       display: "flex",
       justifyContent: "space-between",
       padding: "10px 18px 0",
-      fontFamily: FONT.display,
+      fontFamily: FONT.app,
       fontSize: 12,
       fontWeight: 600,
+      letterSpacing: "-0.24px",
       color: onInk ? "#FFF" : C.textPrimary,
     }}
   >
@@ -48,13 +75,71 @@ const Header: React.FC<{ title: string }> = ({ title }) => (
     <StatusBar />
     <div style={{ display: "flex", alignItems: "center", gap: 14, padding: "14px 18px 0" }}>
       <span style={{ color: "#FFF", fontSize: 19 }}>←</span>
-      <span style={{ fontFamily: FONT.display, fontSize: 17, fontWeight: 600, color: "#FFF" }}>{title}</span>
+      <span
+        style={{
+          fontFamily: FONT.app,
+          fontSize: 16,
+          fontWeight: 600,
+          lineHeight: "18px",
+          letterSpacing: "-0.24px",
+          color: "#FFF",
+        }}
+      >
+        {title}
+      </span>
     </div>
   </div>
 );
 
-const LogoTile: React.FC<{ color: string; size?: number }> = ({ color, size = 34 }) => (
-  <span style={{ width: size, height: size, borderRadius: 7, background: color, flex: "none" }} />
+/**
+ * Logo tile with its select badge. In the file the 40×40 tile (radius 3) sits
+ * inside a 50px box at 10,10 and the 20px checkbox overlaps its top-left
+ * corner at 2,2 — a badge on the logo, not a control in the row flow.
+ */
+const LogoTile: React.FC<{ color: string; size?: number; checked?: boolean; plain?: boolean }> = ({
+  color,
+  size = 40,
+  checked,
+  plain,
+}) => (
+  <span style={{ position: "relative", width: size + 10, height: size + 10, flex: "none" }}>
+    <span
+      style={{
+        position: "absolute",
+        left: 10,
+        top: 10,
+        width: size,
+        height: size,
+        borderRadius: 3,
+        background: color,
+      }}
+    />
+    {/* The shared card is an output artefact, not a control surface — it
+        carries no select badge. */}
+    <span
+      hidden={plain}
+      style={{
+        position: "absolute",
+        left: 2,
+        top: 2,
+        width: 20,
+        height: 20,
+        borderRadius: 10,
+        background: checked ? C.textPrimary : C.checkboxIdle,
+        border: "1.5px solid #FFFFFF",
+        display: plain ? "none" : "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        color: "#FFFFFF",
+        fontFamily: FONT.app,
+        fontSize: 11,
+        fontWeight: 700,
+        lineHeight: 1,
+      }}
+    >
+      {checked ? "✓" : "+"}
+    </span>
+  </span>
 );
 
 const TabBar: React.FC<{ active: string }> = ({ active }) => (
@@ -65,74 +150,97 @@ const TabBar: React.FC<{ active: string }> = ({ active }) => (
       left: 0,
       right: 0,
       display: "flex",
-      borderTop: `1px solid ${C.hairline}`,
-      background: C.surface,
-      padding: "9px 0 14px",
+      alignItems: "flex-start",
+      borderTop: `1px solid ${C.tabBorder}`,
+      background: "rgba(255,255,255,0.95)",
+      padding: "7px 8px 12px",
     }}
   >
-    {["Compare", "Calculator", "Collaterals", "My FDs"].map((t) => (
-      <div key={t} style={{ flex: 1, textAlign: "center" }}>
-        <span
-          style={{
-            width: 17,
-            height: 17,
-            margin: "0 auto 5px",
-            borderRadius: 4,
-            border: `1.5px solid ${t === active ? C.accent : C.textMuted}`,
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            gap: 2,
-            padding: "0 3px",
-          }}
-        >
-          <span style={{ height: 1.5, background: t === active ? C.accent : C.textMuted, borderRadius: 1 }} />
-          <span style={{ height: 1.5, width: "62%", background: t === active ? C.accent : C.textMuted, borderRadius: 1 }} />
-        </span>
-        <span
-          style={{
-            fontFamily: FONT.display,
-            fontSize: 10,
-            fontWeight: 600,
-            color: t === active ? C.accent : C.textMuted,
-          }}
-        >
-          {t}
-        </span>
-      </div>
-    ))}
+    {["Compare", "Calculator", "Collaterals", "My FDs"].map((t) => {
+      const on = t === active;
+      const ink = on ? C.tabActive : C.tabIdle;
+      return (
+        <div key={t} style={{ flex: 1, position: "relative", paddingTop: 8, paddingBottom: 4, textAlign: "center" }}>
+          {/* The active marker is a pill ABOVE the icon, not an underline. */}
+          {on && (
+            <span
+              style={{
+                position: "absolute",
+                top: -7,
+                left: "50%",
+                transform: "translateX(-50%)",
+                width: 32,
+                height: 2.5,
+                borderRadius: 999,
+                background: C.tabActive,
+              }}
+            />
+          )}
+          <span style={{ display: "block", height: 20, color: ink }}>
+            <Ico d={TAB_ICONS[t]} color={ink} />
+          </span>
+          <span
+            style={{
+              display: "block",
+              marginTop: 4,
+              fontFamily: FONT.app,
+              fontSize: 10,
+              fontWeight: 500,
+              lineHeight: "14px",
+              letterSpacing: "-0.064px",
+              color: ink,
+            }}
+          >
+            {t}
+          </span>
+        </div>
+      );
+    })}
   </div>
 );
 
 const FilterChips: React.FC = () => (
-  <div style={{ display: "flex", gap: 8, padding: "12px 16px 0", alignItems: "center" }}>
+  <div style={{ display: "flex", gap: 8, alignItems: "center", height: 36, overflow: "hidden" }}>
     <span
       style={{
-        width: 30,
-        height: 30,
-        borderRadius: 8,
-        border: `1px solid ${C.hairline}`,
+        width: 32,
+        height: 32,
+        borderRadius: 50,
+        border: `1px solid ${C.hairlineChip}`,
+        background: C.surface,
         flex: "none",
         display: "flex",
-        flexDirection: "column",
+        alignItems: "center",
         justifyContent: "center",
-        gap: 3,
-        padding: "0 7px",
       }}
     >
-      <span style={{ height: 1.5, background: C.textSecondary, borderRadius: 1 }} />
-      <span style={{ height: 1.5, width: "60%", background: C.textSecondary, borderRadius: 1 }} />
-      <span style={{ height: 1.5, width: "80%", background: C.textSecondary, borderRadius: 1 }} />
+      <Ico
+        size={16}
+        color={C.textPrimary}
+        d={<><path d="M4 7h10M18 7h2M4 17h2M10 17h10" /><circle cx="16" cy="7" r="2" /><circle cx="8" cy="17" r="2" /></>}
+      />
     </span>
     {COPY.compare.filters.map((f, i) => (
-      <Pill
+      <span
         key={f}
-        bg={i === 0 ? C.headerInk : C.surface}
-        color={i === 0 ? "#FFF" : C.textSecondary}
-        style={{ padding: "7px 13px", fontSize: 11, border: i === 0 ? "none" : `1px solid ${C.hairline}`, whiteSpace: "nowrap" }}
+        style={{
+          height: i === 0 ? 32 : 36,
+          display: "inline-flex",
+          alignItems: "center",
+          padding: i === 0 ? "0 12px" : "0 12px",
+          borderRadius: 20,
+          background: i === 0 ? C.textPrimary : C.surface,
+          border: i === 0 ? "none" : `1px solid ${C.hairlineChip}`,
+          color: i === 0 ? "#FFFFFF" : "#000000",
+          fontFamily: FONT.app,
+          fontSize: 12,
+          fontWeight: 600,
+          whiteSpace: "nowrap",
+          flex: "none",
+        }}
       >
         {f}
-      </Pill>
+      </span>
     ))}
   </div>
 );
@@ -142,106 +250,145 @@ const FilterChips: React.FC = () => (
  * rate recedes behind a blur. The blur-pull is the reel's way of saying
  * "this one" without drawing an arrow.
  */
+/**
+ * Beat 1 — Compare, laid out at the Figma frame's own coordinates (375×812):
+ * status 0–24, header 24–80, filter band 80–152, section title at 168, column
+ * strip at 204, list at 231 (rows 72 + 8 gap), "View more" at 703, tab bar at
+ * the foot. Absolute positioning rather than flow, so nothing drifts.
+ *
+ * Rows populate one by one, then everything except the best rate recedes
+ * behind a blur — the reel's way of saying "this one" without an arrow.
+ */
 export const CompareScreen: React.FC<{ delay?: number; focusAt?: number }> = ({ delay = 0, focusAt }) => {
   const frame = useCurrentFrame();
   const c = COPY.compare;
   return (
-    <div style={{ height: "100%", background: C.surface, position: "relative" }}>
-      <Header title={c.screenTitle} />
-      <FilterChips />
-
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", padding: "20px 16px 0" }}>
-        <span style={T.h1}>{c.tableTitle}</span>
-        <span style={{ fontFamily: FONT.display, fontSize: 11, fontWeight: 600, color: C.accent }}>
-          ‹› {c.payoutLink}
-        </span>
-      </div>
-
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          padding: "14px 16px 10px",
-          marginTop: 10,
-          background: C.surfaceSunk,
-        }}
-      >
-        <span style={T.col}>{c.columns.issuer}</span>
-        <span style={{ display: "flex", gap: 34 }}>
-          <span style={T.col}>{c.columns.tenure}</span>
-          <span style={T.col}>{c.columns.rate}</span>
-        </span>
-      </div>
-
-      {ISSUERS.map((row, i) => {
-        const d = delay + i * 7;
-        const opacity = at(frame, [d, d + 15], [0, 1]);
-        const x = at(frame, [d, d + 15], [-16, 0], EASE.outQuint);
-        const check = at(frame, [d + 6, d + 16], [0, 1], EASE.outQuint);
-
-        const pull = focusAt === undefined ? 0 : at(frame, [focusAt, focusAt + 22], [0, 1], EASE.outQuart);
-        const isBest = "best" in row && row.best;
-        const blur = isBest ? 0 : pull * 3.2;
-        const dim = isBest ? 1 : 1 - pull * 0.6;
-        const scale = isBest ? 1 + pull * 0.03 : 1;
-
-        return (
-          <div
-            key={row.name}
+    <div style={{ height: "100%", background: C.surface, position: "relative", overflow: "hidden" }}>
+      {/* Header block: black to 80 */}
+      <div style={{ position: "absolute", left: 0, top: 0, width: "100%", height: 80, background: C.headerInk }}>
+        <StatusBar />
+        <div style={{ display: "flex", alignItems: "center", gap: 15, padding: "19px 16px 0" }}>
+          <Ico size={20} color="#FFF" d={<><path d="M19 12H5" /><path d="M12 5l-7 7 7 7" /></>} />
+          <span
             style={{
-              opacity: opacity * dim,
-              filter: `blur(${blur}px)`,
-              transform: `translateX(${x}px) scale(${scale})`,
-              display: "flex",
-              alignItems: "center",
-              gap: 11,
-              padding: "13px 16px",
-              borderBottom: `1px solid ${C.hairline}`,
+              fontFamily: FONT.app,
+              fontSize: 16,
+              fontWeight: 600,
+              lineHeight: "18px",
+              letterSpacing: "-0.24px",
+              color: "#FFF",
             }}
           >
-            <span
-              style={{
-                width: 17,
-                height: 17,
-                borderRadius: 999,
-                flex: "none",
-                background: check > 0.5 ? C.headerInk : C.surface,
-                border: `1.5px solid ${check > 0.5 ? C.headerInk : C.hairline}`,
-                color: "#FFF",
-                fontSize: 10,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              {check > 0.5 ? "✓" : ""}
-            </span>
-            <LogoTile color={row.logo} />
-            <span style={{ ...T.row, flex: 1 }}>{row.short}</span>
-            <span style={{ ...T.meta, width: 42, textAlign: "right" }}>{row.tenure}</span>
-            <span style={{ ...T.rate, width: 48, textAlign: "right" }}>{row.rate}</span>
-            <span style={{ color: C.textMuted, fontSize: 13 }}>›</span>
-          </div>
-        );
-      })}
-
-      {/* The app's own "View more" affordance — also closes the dead space
-          that six rows leave above the sticky bar. */}
-      <div
-        style={{
-          textAlign: "center",
-          padding: "14px 0",
-          fontFamily: FONT.display,
-          fontSize: 12,
-          fontWeight: 600,
-          color: C.textSecondary,
-          opacity: at(frame, [delay + 46, delay + 62], [0, 1], EASE.outQuint),
-        }}
-      >
-        View more FDs ⌄
+            {c.screenTitle}
+          </span>
+        </div>
       </div>
 
-      {/* Sticky action bar */}
+      {/* Filter band */}
+      <div style={{ position: "absolute", left: 0, top: 80, width: "100%", height: 72, background: C.surfaceBand }} />
+      <div style={{ position: "absolute", left: 16, top: 98, width: 359, height: 36 }}>
+        <FilterChips />
+      </div>
+
+      {/* Section title + payout link */}
+      <div
+        style={{
+          position: "absolute",
+          left: 16,
+          top: 168,
+          width: 343,
+          height: 20,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
+      >
+        <span style={T.h1}>{c.tableTitle}</span>
+        <span style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 2, width: 71 }}>
+          <span style={{ display: "flex", alignItems: "center", gap: 4 }}>
+            <Ico size={14} color={C.accent} d={<><path d="M8 9l-3 3 3 3" /><path d="M16 9l3 3-3 3" /></>} />
+            <span
+              style={{
+                fontFamily: FONT.app,
+                fontSize: 10,
+                fontWeight: 600,
+                letterSpacing: "-0.3px",
+                color: C.accent,
+                whiteSpace: "nowrap",
+              }}
+            >
+              {c.payoutLink}
+            </span>
+          </span>
+          <span style={{ height: 1, width: "100%", background: C.accent, opacity: 0.55 }} />
+        </span>
+      </div>
+
+      {/* Column strip */}
+      <div
+        style={{
+          position: "absolute",
+          left: 0,
+          top: 204,
+          width: "100%",
+          height: 27,
+          background: C.surfaceSunk,
+          display: "flex",
+          alignItems: "center",
+          padding: "0 16px",
+        }}
+      >
+        <span style={{ ...T.col, flex: 1 }}>{c.columns.issuer}</span>
+        <span style={{ ...T.col, width: 58, textAlign: "right", paddingRight: 8, letterSpacing: "-0.096px" }}>
+          {c.columns.tenure}
+        </span>
+        <span style={{ ...T.col, width: 63, textAlign: "right", paddingRight: 16, letterSpacing: "-0.096px" }}>
+          {c.columns.rate}
+        </span>
+      </div>
+
+      {/* Issuer list */}
+      <div style={{ position: "absolute", left: 16, top: 231, width: 343 }}>
+        {ISSUERS.map((row, i) => {
+          const d = delay + i * 7;
+          const opacity = at(frame, [d, d + 15], [0, 1]);
+          const x = at(frame, [d, d + 15], [-16, 0], EASE.outQuint);
+          const check = at(frame, [d + 6, d + 16], [0, 1], EASE.outQuint);
+
+          const pull = focusAt === undefined ? 0 : at(frame, [focusAt, focusAt + 22], [0, 1], EASE.outQuart);
+          const isBest = "best" in row && row.best;
+          const blur = isBest ? 0 : pull * 3.2;
+          const dim = isBest ? 1 : 1 - pull * 0.62;
+          const scale = isBest ? 1 + pull * 0.03 : 1;
+
+          return (
+            <div
+              key={row.name}
+              style={{
+                opacity: opacity * dim,
+                filter: `blur(${blur}px)`,
+                transform: `translateX(${x}px) scale(${scale})`,
+                height: 72,
+                marginBottom: 8,
+                display: "flex",
+                alignItems: "center",
+                gap: 12,
+                borderBottom: `0.5px solid ${C.hairline}`,
+              }}
+            >
+              <LogoTile color={row.logo} checked={check > 0.5} />
+              <span style={{ ...T.row, flex: 1, minWidth: 0, whiteSpace: "nowrap", overflow: "hidden" }}>
+                {row.short}
+              </span>
+              <span style={{ ...T.meta, width: 50, textAlign: "right", paddingRight: 8 }}>{row.tenure}</span>
+              <span style={{ ...T.rate, width: 47, textAlign: "right" }}>{row.rate}</span>
+              <Ico size={14} color={C.textMuted} d={<path d="M9 5l7 7-7 7" />} />
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Sticky action bar — an overlay in the app too */}
       <div
         style={{
           position: "absolute",
@@ -250,24 +397,24 @@ export const CompareScreen: React.FC<{ delay?: number; focusAt?: number }> = ({ 
           bottom: 74,
           background: C.surface,
           borderRadius: 16,
-          boxShadow: "0 10px 30px rgba(60,42,28,0.16)",
+          boxShadow: "0 10px 30px rgba(60,42,28,0.18)",
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
           padding: "12px 12px 12px 18px",
-          opacity: at(frame, [delay + 40, delay + 58], [0, 1], EASE.outQuint),
+          opacity: at(frame, [delay + 52, delay + 70], [0, 1], EASE.outQuint),
         }}
       >
-        <span style={{ fontFamily: FONT.display, fontSize: 12, fontWeight: 600, color: C.textPrimary }}>
+        <span style={{ fontFamily: FONT.app, fontSize: 12, fontWeight: 600, color: C.textPrimary }}>
           {c.footerCount}
         </span>
         <span
           style={{
-            background: C.headerInk,
+            background: C.textPrimary,
             color: "#FFF",
             borderRadius: 12,
             padding: "11px 18px",
-            fontFamily: FONT.display,
+            fontFamily: FONT.app,
             fontSize: 12,
             fontWeight: 600,
           }}
@@ -297,7 +444,7 @@ export const CalculatorScreen: React.FC<{ delay?: number }> = ({ delay = 0 }) =>
         <div style={{ border: `1px solid ${C.hairline}`, borderRadius: 12, padding: "12px 14px" }}>
           <div style={T.col}>{c.amountLabel}</div>
           <div style={{ display: "flex", alignItems: "center", marginTop: 6 }}>
-            <span style={{ fontFamily: FONT.data, fontSize: 21, fontWeight: 700, color: C.textPrimary, fontVariantNumeric: "tabular-nums" }}>
+            <span style={{ fontFamily: FONT.app, fontSize: 21, fontWeight: 700, color: C.textPrimary, fontVariantNumeric: "tabular-nums" }}>
               {c.amount.slice(0, typed)}
             </span>
             <span style={{ opacity: caret, width: 2, height: 20, background: C.accent, marginLeft: 3 }} />
@@ -316,7 +463,7 @@ export const CalculatorScreen: React.FC<{ delay?: number }> = ({ delay = 0 }) =>
 
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", padding: "18px 16px 12px" }}>
         <span style={T.h1}>{c.listTitle}</span>
-        <span style={{ fontFamily: FONT.display, fontSize: 11, fontWeight: 600, color: C.accent }}>
+        <span style={{ fontFamily: FONT.app, fontSize: 11, fontWeight: 600, color: C.accent }}>
           ⇅ {c.sortLink}
         </span>
       </div>
@@ -381,10 +528,10 @@ export const ShareCard: React.FC<{ delay?: number; width?: number }> = ({ delay 
         }}
       >
         <div style={{ fontFamily: FONT.brand, fontSize: 17, fontWeight: 600, color: "#FFF" }}>◍ Centricity</div>
-        <div style={{ fontFamily: FONT.display, fontSize: 10, fontWeight: 700, letterSpacing: "0.10em", color: "#FFF", marginTop: 14 }}>
+        <div style={{ fontFamily: FONT.app, fontSize: 10, fontWeight: 700, letterSpacing: "0.10em", color: "#FFF", marginTop: 14 }}>
           {s.cardTitle}
         </div>
-        <div style={{ fontFamily: FONT.display, fontSize: 9, color: "rgba(255,255,255,0.72)", marginTop: 5 }}>
+        <div style={{ fontFamily: FONT.app, fontSize: 9, color: "rgba(255,255,255,0.72)", marginTop: 5 }}>
           {s.cardSub}
         </div>
       </div>
@@ -411,7 +558,7 @@ export const ShareCard: React.FC<{ delay?: number; width?: number }> = ({ delay 
                 borderTop: i === 0 ? "none" : `1px solid ${C.hairline}`,
               }}
             >
-              <LogoTile color={row.logo} size={22} />
+              <LogoTile color={row.logo} size={22} plain />
               <span style={{ ...T.row, fontSize: 10, flex: 1 }}>{row.short}</span>
               <span style={{ ...T.meta, fontSize: 9, width: 30, textAlign: "right" }}>{row.tenure}</span>
               <span style={{ ...T.rate, fontSize: 10, width: 34, textAlign: "right" }}>{row.rate}</span>
@@ -421,11 +568,11 @@ export const ShareCard: React.FC<{ delay?: number; width?: number }> = ({ delay 
       </div>
 
       <div style={{ ...strip(3), background: C.surfaceSunk, padding: "10px 16px 12px" }}>
-        <span style={{ fontFamily: FONT.display, fontSize: 9, color: C.textMuted }}>{s.sentByLabel} </span>
-        <span style={{ fontFamily: FONT.display, fontSize: 10, fontWeight: 700, color: C.textPrimary }}>
+        <span style={{ fontFamily: FONT.app, fontSize: 9, color: C.textMuted }}>{s.sentByLabel} </span>
+        <span style={{ fontFamily: FONT.app, fontSize: 10, fontWeight: 700, color: C.textPrimary }}>
           {s.partnerName}
         </span>
-        <div style={{ fontFamily: FONT.display, fontSize: 8, color: C.textMuted, marginTop: 3 }}>
+        <div style={{ fontFamily: FONT.app, fontSize: 8, color: C.textMuted, marginTop: 3 }}>
           {s.partnerContact}
         </div>
       </div>
@@ -457,7 +604,7 @@ export const ChatScreen: React.FC<{ delay?: number; landAt: number }> = ({ delay
         <div style={{ display: "flex", alignItems: "center", gap: 12, padding: "12px 16px 0" }}>
           <span style={{ color: "#FFF", fontSize: 18 }}>←</span>
           <span style={{ width: 32, height: 32, borderRadius: 999, background: "rgba(255,255,255,0.28)" }} />
-          <span style={{ fontFamily: FONT.display, fontSize: 15, fontWeight: 600, color: "#FFF" }}>{s.chatName}</span>
+          <span style={{ fontFamily: FONT.app, fontSize: 15, fontWeight: 600, color: "#FFF" }}>{s.chatName}</span>
         </div>
       </div>
 
@@ -485,7 +632,7 @@ export const ChatScreen: React.FC<{ delay?: number; landAt: number }> = ({ delay
             background: "#DCF8C6",
             borderRadius: "12px 12px 3px 12px",
             padding: "8px 12px",
-            fontFamily: FONT.display,
+            fontFamily: FONT.app,
             fontSize: 13,
             color: "#111",
             maxWidth: "82%",
@@ -530,7 +677,7 @@ export const DownloadScreen: React.FC<{ delay?: number; cardLeavesAt: number }> 
                 border: `1px solid ${C.hairline}`,
                 borderRadius: 10,
                 padding: "10px 12px",
-                fontFamily: FONT.display,
+                fontFamily: FONT.app,
                 fontSize: 11,
                 color: C.textPrimary,
                 width: i === 2 ? "100%" : "calc(50% - 4px)",
@@ -560,7 +707,7 @@ export const DownloadScreen: React.FC<{ delay?: number; cardLeavesAt: number }> 
           borderRadius: 14,
           textAlign: "center",
           padding: "14px 0",
-          fontFamily: FONT.display,
+          fontFamily: FONT.app,
           fontSize: 15,
           fontWeight: 600,
         }}
@@ -641,7 +788,7 @@ export const BookScreen: React.FC<{ tapAt: number; doneAt: number }> = ({ tapAt,
             borderRadius: 14,
             textAlign: "center",
             padding: "14px 0",
-            fontFamily: FONT.display,
+            fontFamily: FONT.app,
             fontSize: 15,
             fontWeight: 600,
             transform: `scale(${press})`,
@@ -711,7 +858,7 @@ export const BookScreen: React.FC<{ tapAt: number; doneAt: number }> = ({ tapAt,
                 opacity: at(frame, [doneAt + 14 + i * 5, doneAt + 28 + i * 5], [0, 1], EASE.outQuint),
               }}
             >
-              <div style={{ fontFamily: FONT.data, fontSize: 16, fontWeight: 700, color: C.textPrimary }}>
+              <div style={{ fontFamily: FONT.app, fontSize: 16, fontWeight: 700, color: C.textPrimary }}>
                 {st.value}
               </div>
               <div style={{ ...T.meta, fontSize: 9, marginTop: 3 }}>{st.label}</div>
@@ -736,7 +883,7 @@ export const BookScreen: React.FC<{ tapAt: number; doneAt: number }> = ({ tapAt,
                 ACTIVE
               </Pill>
             </div>
-            <div style={{ ...T.meta, fontFamily: FONT.data, fontSize: 11, marginTop: 3 }}>
+            <div style={{ ...T.meta, fontFamily: FONT.app, fontSize: 11, marginTop: 3 }}>
               +91 {b.clientPhone}
             </div>
             <div
@@ -771,7 +918,7 @@ export const BookScreen: React.FC<{ tapAt: number; doneAt: number }> = ({ tapAt,
                 MATURING IN 7 DAYS
               </Pill>
             </div>
-            <div style={{ ...T.meta, fontFamily: FONT.data, fontSize: 11, marginTop: 3 }}>+91 9876543210</div>
+            <div style={{ ...T.meta, fontFamily: FONT.app, fontSize: 11, marginTop: 3 }}>+91 9876543210</div>
             <div
               style={{
                 display: "flex",

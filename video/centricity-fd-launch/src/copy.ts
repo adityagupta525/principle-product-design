@@ -25,14 +25,18 @@
 /** A caption is split so exactly one phrase can carry the accent colour. */
 export type Caption = { lead: string; accent: string; tail?: string };
 
-/** Issuer rows, as they appear in the app's Compare tab. */
+/**
+ * Issuer rows — name, tenure and rate exactly as the Figma Compare screen
+ * carries them. `logo` is the tile colour standing in for the real mark
+ * (see the asset note in the README).
+ */
 export const ISSUERS = [
-  { name: "ICICI Home Finance", short: "ICICI Home Fin.", tenure: "2Y",    rate: "7.50%", logo: "#E0532B", maturity: "₹1,15,114", interest: "+₹15,114" },
-  { name: "Suryoday Small Fin.", short: "Suryoday SFB",   tenure: "3Y 3M", rate: "7.50%", logo: "#1E3A8A", maturity: "₹1,22,440", interest: "+₹22,500" },
-  { name: "Unity Small Financ…", short: "Unity SFB",      tenure: "1Y",    rate: "7.30%", logo: "#F2C230", maturity: "₹1,35,500", interest: "+₹35,040" },
-  { name: "Utkarsh SF Bank",     short: "Utkarsh SFB",    tenure: "3Y",    rate: "8.25%", logo: "#5B2A86", maturity: "₹87,000",   interest: "+₹6,800",  best: true },
-  { name: "Mahindra Finance",    short: "Mahindra Fin.",  tenure: "2Y 3M", rate: "8.10%", logo: "#E0342C", maturity: "₹1,50,000", interest: "+₹50,220" },
-  { name: "Shriram Finance",     short: "Shriram Fin.",   tenure: "3Y 6M", rate: "7.10%", logo: "#F2C230", maturity: "₹2,10,000", interest: "+₹61,478" },
+  { name: "ICICI Home Finance",   short: "ICICI Home Finance",   tenure: "2Y",    rate: "7.50%", logo: "#E0532B", maturity: "₹1,15,114", interest: "+₹15,114" },
+  { name: "Suryoday Small Fin…",  short: "Suryoday Small Fin...", tenure: "3Y 3M", rate: "7.50%", logo: "#2B3A8F", maturity: "₹1,22,440", interest: "+₹22,500" },
+  { name: "Unity Small Financ…",  short: "Unity Small Financ...", tenure: "1Y",    rate: "7.50%", logo: "#FDC937", maturity: "₹1,35,500", interest: "+₹35,040" },
+  { name: "Utkarsh SF Bank",      short: "Utkarsh SF Bank",      tenure: "3Y",    rate: "8.25%", logo: "#5B2A86", maturity: "₹87,000",   interest: "+₹6,800", best: true },
+  { name: "Shriram Finance",      short: "Shriram Finance",      tenure: "3Y 6M", rate: "7.50%", logo: "#F2C230", maturity: "₹2,10,000", interest: "+₹61,478" },
+  { name: "Mahindra Finance",     short: "Mahindra Finance",     tenure: "2Y",    rate: "7.50%", logo: "#E81536", maturity: "₹1,50,000", interest: "+₹50,220" },
 ] as const;
 
 export const COPY = {
@@ -44,7 +48,8 @@ export const COPY = {
     tableTitle: "Compare FD rates",
     payoutLink: "Half-yearly",
     columns: { issuer: "ISSUER", tenure: "TENURE", rate: "RATE" },
-    filters: ["All", "Short (≤ 2 Y)", "Medium (2-3 Y)", "Long"],
+    filters: ["All", "Short (≤ 2 Y)", "Medium (2-3 Y)", "Long (3-5 Y)"],
+    viewMore: "View more FDs",
     footerCount: "4 of 4 added",
     footerAction: "Download Comparison",
   },
