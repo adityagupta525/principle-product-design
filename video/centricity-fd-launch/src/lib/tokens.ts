@@ -3,6 +3,20 @@ import brand from "../../brands/centricity.json";
 export const C = brand.colors;
 
 /**
+ * The film's room. The app screens stay exactly as the design system defines
+ * them — white, warm-accented — and the film puts them in the dark, where a
+ * white panel reads as a light source. Nothing here overrides a product token.
+ */
+export const CINE = {
+  void: "#0A0A0C",
+  deep: "#141417",
+  key: "#B69377",        // the DS accent, used as a key light
+  keyHot: "#D9A87E",     // its bloom
+  type: "#ECE7E1",       // never pure white
+  typeDim: "#8C857E",
+};
+
+/**
  * Urbanist is the primary face (the product owner's call).
  * Montserrat is the file's own `--cen-family-brand`, reserved for the brand
  * lockup and the shareable card's header — the places the app uses it.

@@ -1,0 +1,106 @@
+import React from "react";
+import { AbsoluteFill, useCurrentFrame } from "remotion";
+import { COPY } from "../copy";
+import { CINE, FONT } from "../lib/tokens";
+import { at, EASE } from "../lib/motion";
+import { Room, Composite, useCamera, Plane, LitPanel, TypeCard } from "../lib/cinema";
+import { BookScreen } from "../screens/AppScreens";
+import { shotLen, SHOT } from "../lib/beat";
+
+/**
+ * Shot 12 · 1431–1620 · 6.3s
+ * Pull back, and hand the film back to its own first frame. A loop that
+ * resolves into black reads as broken, so the panel dims, the lockup fades —
+ * never scales — and the next client's message is already arriving as the loop
+ * turns over. The seam is the idea, not a defect.
+ */
+export const Resolve: React.FC = () => {
+  const frame = useCurrentFrame();
+  const len = shotLen(SHOT.resolve);
+  const cam = useCamera(len, { z: [1.1, 0.94] });
+
+  const dim = at(frame, [0, 70], [1, 0.18], EASE.outQuart);
+  const lock = at(frame, [26, 56], [0, 1], EASE.outExpo);
+  const kick = at(frame, [70, 92], [0, 1], EASE.outQuart);
+  // The hand-back: everything goes, and the first bubble of the next pass fades up.
+  const out = at(frame, [len - 46, len - 12], [1, 0], EASE.outQuart);
+  const nextAsk = at(frame, [len - 30, len - 2], [0, 1], EASE.outQuart);
+
+  return (
+    <AbsoluteFill>
+      <Room keyX="50%" keyY="50%" lift={at(frame, [0, len], [1, 0.35], EASE.outQuart)} />
+      <Composite grain={0.07}>
+        <Plane depth={0.1} cam={cam}>
+          <div style={{ opacity: dim * out, filter: `blur(${at(frame, [0, 80], [0, 4], EASE.outQuart)}px)` }}>
+            <LitPanel scale={0.92} bloom={dim}>
+              <BookScreen tapAt={-400} doneAt={-300} />
+            </LitPanel>
+          </div>
+        </Plane>
+
+        <AbsoluteFill style={{ alignItems: "center", justifyContent: "center" }}>
+          <div style={{ opacity: out, textAlign: "center" }}>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: 26,
+                opacity: lock,
+                fontFamily: FONT.brand,
+                fontSize: 34,
+                fontWeight: 600,
+                letterSpacing: "0.16em",
+                color: CINE.type,
+              }}
+            >
+              <span>CENTRICITY</span>
+              <span style={{ width: 1, height: 30, background: "rgba(236,231,225,0.32)" }} />
+              <span>{COPY.end.coBrand}</span>
+            </div>
+
+            <TypeCard
+              caption={COPY.end.line}
+              delay={44}
+              size={56}
+              align="center"
+              style={{ marginTop: 40, marginLeft: "auto", marginRight: "auto" }}
+            />
+
+            <div
+              style={{
+                marginTop: 34,
+                fontFamily: FONT.display,
+                fontSize: 15,
+                letterSpacing: "0.26em",
+                color: CINE.key,
+                opacity: kick,
+              }}
+            >
+              {COPY.end.tagline}
+            </div>
+          </div>
+        </AbsoluteFill>
+
+        {/* the loop turning over */}
+        <AbsoluteFill style={{ alignItems: "center", justifyContent: "center" }}>
+          <div
+            style={{
+              opacity: nextAsk,
+              maxWidth: 620,
+              padding: "20px 26px",
+              borderRadius: "20px 20px 20px 5px",
+              background: "#20201F",
+              boxShadow: `0 0 60px -14px ${CINE.key}22, 0 24px 50px -20px #000`,
+              fontFamily: FONT.app,
+              fontSize: 25,
+              color: "#CFC8C1",
+            }}
+          >
+            {COPY.ask.q1}
+          </div>
+        </AbsoluteFill>
+      </Composite>
+    </AbsoluteFill>
+  );
+};

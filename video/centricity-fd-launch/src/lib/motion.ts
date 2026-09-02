@@ -5,6 +5,8 @@ export const EASE = {
   outExpo:  Easing.bezier(0.16, 1, 0.3, 1),
   outQuint: Easing.bezier(0.22, 1, 0.36, 1),
   outQuart: Easing.bezier(0.25, 1, 0.5, 1),
+  /** For travel across frame — a camera-style move that neither rushes nor parks. */
+  inOut: Easing.bezier(0.65, 0, 0.35, 1),
 };
 
 const clamp = { extrapolateLeft: "clamp", extrapolateRight: "clamp" } as const;

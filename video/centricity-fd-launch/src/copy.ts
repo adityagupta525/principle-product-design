@@ -40,7 +40,24 @@ export const ISSUERS = [
 ] as const;
 
 export const COPY = {
-  /** Beat 1 — Compare. The hook and the first caption are one thought. */
+  /**
+   * Shot 1 — the question, arriving three times and going unanswered. This is
+   * the film's whole setup: for years this question was where the partner's
+   * conversation ended.
+   */
+  ask: {
+    q1: "FD ka rate kya chal raha hai?",
+    q2: "Bank se acha kuch hai?",
+    q3: "Aap bhej sakte ho?",
+  },
+
+  /** Shot 2 — ignition. Two words; the second carries the accent. */
+  ignite: {
+    kicker: "CENTRICITY × BLOSTEM",
+    title: "Fixed Deposits",
+  },
+
+  /** Beat 1 — Compare. */
   compare: {
     hook: ["Six issuers.", "Six tabs.", "Every single time."],
     caption: { lead: "Six issuers,", accent: "one screen.", tail: "" } as Caption,
@@ -107,5 +124,6 @@ export const COPY = {
   end: {
     coBrand: "BLOSTEM",
     line: { lead: "Fixed Deposits,", accent: "reimagined.", tail: "" } as Caption,
+    tagline: "TOGETHER FORWARD",
   },
 } as const;

@@ -259,7 +259,11 @@ const FilterChips: React.FC = () => (
  * Rows populate one by one, then everything except the best rate recedes
  * behind a blur — the reel's way of saying "this one" without an arrow.
  */
-export const CompareScreen: React.FC<{ delay?: number; focusAt?: number }> = ({ delay = 0, focusAt }) => {
+export const CompareScreen: React.FC<{ delay?: number; focusAt?: number; step?: number }> = ({
+  delay = 0,
+  focusAt,
+  step = 7,
+}) => {
   const frame = useCurrentFrame();
   const c = COPY.compare;
   return (
@@ -350,7 +354,7 @@ export const CompareScreen: React.FC<{ delay?: number; focusAt?: number }> = ({ 
       {/* Issuer list */}
       <div style={{ position: "absolute", left: 16, top: 231, width: 343 }}>
         {ISSUERS.map((row, i) => {
-          const d = delay + i * 7;
+          const d = delay + i * step;
           const opacity = at(frame, [d, d + 15], [0, 1]);
           const x = at(frame, [d, d + 15], [-16, 0], EASE.outQuint);
           const check = at(frame, [d + 6, d + 16], [0, 1], EASE.outQuint);

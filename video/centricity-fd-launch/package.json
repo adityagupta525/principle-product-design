@@ -5,8 +5,8 @@
   "description": "Centricity \u2014 Fixed Deposits launch film. Obsidian Intelligence brand system.",
   "scripts": {
     "studio": "remotion studio",
-    "render": "remotion render src/index.ts Launch out/launch.mp4",
-    "still": "remotion still src/index.ts Launch"
+    "render": "remotion render src/index.ts Film out/film.mp4",
+    "still": "remotion still src/index.ts Film"
   },
   "dependencies": {
     "@remotion/cli": "4.0.416",
