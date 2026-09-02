@@ -34,14 +34,14 @@ export const Ignite: React.FC = () => {
         </Plane>
 
         <Plane depth={0.12} cam={cam} style={{ justifyContent: "center" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 150, transform: "translateX(-90px)" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 110, transform: "translateX(-40px)" }}>
             <div style={{ opacity: on, transform: `scale(${settle})` }}>
-              <LitPanel scale={1.02} bloom={bloom}>
+              <LitPanel scale={0.88} bloom={bloom}>
                 <CompareScreen delay={-200} />
               </LitPanel>
             </div>
 
-            <div style={{ width: 560 }}>
+            <div style={{ width: 620 }}>
               <Kicker text={COPY.ignite.kicker} delay={20} />
               <div
                 style={{

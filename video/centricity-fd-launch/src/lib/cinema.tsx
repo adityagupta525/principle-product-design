@@ -15,21 +15,117 @@ import type { Caption } from "../copy";
    Springing the camera is the loudest tell of amateur work in this genre.
    ══════════════════════════════════════════════════════════════════════════ */
 
-/** Void ground with the key's falloff. Never flat, never fully lit. */
+/**
+ * The room. This was a single CSS radial gradient, and that was the biggest
+ * visual weakness in the film — a flat wash reads as a dark slide, not as a
+ * photographed space. A real room needs four things a gradient cannot give:
+ * a floor the light dies into, haze for the light to travel through, dust to
+ * catch it, and a shaft that says where it comes from.
+ *
+ * Environment plates were generated for this and could not be brought into the
+ * project — the generator's CDN is denied by this session's network egress
+ * policy, same as figma.com. Drop them into public/env/ and Room will use
+ * them; until then this is the room, built.
+ */
 export const Room: React.FC<{ keyX?: string; keyY?: string; lift?: number }> = ({
   keyX = "38%",
   keyY = "46%",
   lift = 1,
-}) => (
-  <AbsoluteFill style={{ background: CINE.void }}>
-    <AbsoluteFill
-      style={{
-        background: `radial-gradient(120% 90% at ${keyX} ${keyY}, ${CINE.deep} 0%, ${CINE.void} 62%)`,
-        opacity: lift,
-      }}
-    />
-  </AbsoluteFill>
-);
+}) => {
+  const frame = useCurrentFrame();
+  const kx = parseFloat(keyX);
+  const ky = parseFloat(keyY);
+
+  return (
+    <AbsoluteFill style={{ background: CINE.void }}>
+      {/* the key, and its long fall into the dark */}
+      <AbsoluteFill
+        style={{
+          background: `radial-gradient(130% 100% at ${keyX} ${keyY},
+            #24211E 0%, ${CINE.deep} 34%, #0D0D0F 62%, ${CINE.void} 88%)`,
+          opacity: lift,
+        }}
+      />
+
+      {/* floor — the light has to end somewhere */}
+      <AbsoluteFill
+        style={{
+          top: "62%",
+          background: `linear-gradient(to bottom,
+            rgba(182,147,119,${0.05 * lift}) 0%, rgba(10,10,12,0.55) 46%, ${CINE.void} 100%)`,
+        }}
+      />
+      <div
+        style={{
+          position: "absolute",
+          left: 0,
+          right: 0,
+          top: "62%",
+          height: 1,
+          background: `linear-gradient(to right, transparent, rgba(182,147,119,${0.16 * lift}) ${kx}%, transparent)`,
+        }}
+      />
+
+      {/* the shaft, drifting */}
+      <div
+        style={{
+          position: "absolute",
+          left: `${kx}%`,
+          top: `${ky}%`,
+          width: 1500,
+          height: 1100,
+          transform: `translate(-50%, -50%) rotate(${-16 + Math.sin(frame / 260) * 2.5}deg)`,
+          background: `linear-gradient(100deg, transparent 40%, rgba(182,147,119,${0.05 * lift}) 50%, transparent 60%)`,
+          filter: "blur(38px)",
+        }}
+      />
+
+      {/* haze, two layers at different speeds so the air has depth */}
+      {[0, 1].map((i) => {
+        const drift = Math.sin(frame / (300 + i * 170) + i * 2) * (40 + i * 26);
+        return (
+          <div
+            key={i}
+            style={{
+              position: "absolute",
+              inset: -140,
+              transform: `translate(${drift}px, ${drift * 0.35}px)`,
+              background: `radial-gradient(${60 + i * 25}% ${45 + i * 20}% at ${kx + i * 14}% ${ky - i * 8}%,
+                rgba(182,147,119,${(0.055 - i * 0.02) * lift}) 0%, transparent 70%)`,
+              filter: `blur(${60 + i * 40}px)`,
+            }}
+          />
+        );
+      })}
+
+      {/* dust in the beam — seeded, so every render of a frame is identical */}
+      {Array.from({ length: 26 }).map((_, i) => {
+        const seed = (i * 2654435761) % 991;
+        const x = (seed * 7) % 100;
+        const y = (seed * 13) % 100;
+        const depth = 0.3 + ((seed % 70) / 100);
+        const rise = ((frame * (0.06 + depth * 0.1) + seed) % 120) - 20;
+        const near = Math.hypot(x - kx, y - ky) < 42;
+        return (
+          <div
+            key={i}
+            style={{
+              position: "absolute",
+              left: `${x}%`,
+              top: `${(y + rise) % 100}%`,
+              width: 1 + depth * 2.4,
+              height: 1 + depth * 2.4,
+              borderRadius: "50%",
+              background: CINE.keyHot,
+              opacity: (near ? 0.3 : 0.1) * depth * lift,
+              filter: `blur(${(1 - depth) * 1.6}px)`,
+            }}
+          />
+        );
+      })}
+    </AbsoluteFill>
+  );
+};
 
 /** Film grain. Cheap and essential — a clean render reads as a render. */
 export const Grain: React.FC<{ amount?: number }> = ({ amount = 0.055 }) => {
@@ -132,6 +228,20 @@ export const LitPanel: React.FC<{
     </div>
   ) : (
   <div style={{ position: "relative", transform: `scale(${scale}) rotateY(${yaw}deg)`, transformStyle: "preserve-3d" }}>
+    {/* contact shadow — without it the panel floats with no relation to the room */}
+    <div
+      style={{
+        position: "absolute",
+        left: "50%",
+        bottom: -46,
+        width: "116%",
+        height: 96,
+        transform: "translateX(-50%)",
+        background: "radial-gradient(closest-side, rgba(0,0,0,0.85), transparent 72%)",
+        filter: "blur(26px)",
+        opacity: bloom,
+      }}
+    />
     <div
       style={{
         position: "absolute",

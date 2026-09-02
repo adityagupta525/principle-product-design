@@ -2,7 +2,7 @@ import React from "react";
 import { AbsoluteFill, useCurrentFrame } from "remotion";
 import { COPY } from "../copy";
 import { at, EASE } from "../lib/motion";
-import { Room, Composite, useCamera, Plane, LitPanel, Macro, TypeCard, EdgeFalloff } from "../lib/cinema";
+import { Room, Composite, useCamera, Plane, LitPanel, Macro, TypeCard } from "../lib/cinema";
 import { CalculatorScreen } from "../screens/AppScreens";
 import { shotLen, SHOT } from "../lib/beat";
 
@@ -18,14 +18,14 @@ export const Calculate: React.FC = () => {
   const cam = useCamera(len, { z: [1.0, 1.14], y: [0.5, -0.5] });
   // Frame travels from the amount field down to the resolved list.
   const fy = at(frame, [30, len - 20], [215, 560], EASE.inOut);
-  const zoom = at(frame, [0, len], [4.6, 3.4], EASE.outQuart);
+  const zoom = at(frame, [0, len], [5.6, 5.2], EASE.outQuart);
 
   return (
     <AbsoluteFill>
       <Room keyX="36%" keyY="46%" />
       <Composite>
-        <Plane depth={0.12} cam={cam} style={{ justifyContent: "flex-start" }}>
-          <div style={{ marginLeft: -400 }}>
+        <Plane depth={0.12} cam={cam}>
+          <div>
             <Macro zoom={zoom} fx={187} fy={fy}>
               <LitPanel height={764} bare>
                 <CalculatorScreen delay={6} />
@@ -34,10 +34,16 @@ export const Calculate: React.FC = () => {
           </div>
         </Plane>
 
-        <EdgeFalloff side="right" at={53} />
-
-        <AbsoluteFill style={{ alignItems: "flex-end", justifyContent: "center", paddingRight: 120 }}>
-          <TypeCard caption={COPY.calculate.caption} delay={96} exitAt={len - 26} size={58} style={{ width: 460 }} />
+        {/* Caption sits over the vignette at the foot, so nothing crops the row. */}
+        <AbsoluteFill
+          style={{
+            justifyContent: "flex-end",
+            background: "linear-gradient(to top, rgba(10,10,12,0.92) 0%, rgba(10,10,12,0.55) 18%, transparent 34%)",
+          }}
+        >
+          <div style={{ padding: "0 0 74px 120px" }}>
+            <TypeCard caption={COPY.calculate.caption} delay={96} exitAt={len - 26} size={58} style={{ width: 620 }} />
+          </div>
         </AbsoluteFill>
       </Composite>
     </AbsoluteFill>
