@@ -1,29 +1,50 @@
 # Audio
 
-**`bed.mp3` is the locked track.** 59.06s · 111.1 BPM · beat 16.202 frames ·
-first downbeat at frame 9.9 · 27 bars of 64.81 frames.
+**`bed.wav` is the locked track.** 54.005s · exactly **25 bars** · 1620 frames @30fps
+111.1 BPM · beat 16.202 frames · first downbeat at frame 7.6 · bar 64.81 frames
 
-Chosen for the venue, not for headphones. The film loops on a GFF booth, where
-the room has a 75–85 dB crowd floor, the speakers reproduce nothing below about
-100 Hz, and long reverb smears fast transients. Measured against that:
+Chosen by ear, then engineered for the room. The film loops on a GFF booth, where the
+crowd floor is 75–85 dB, booth speakers reproduce almost nothing below 100 Hz, and long
+reverb turns massed low-mids to soup.
 
-| track | DR | masked | longest gap | to full | presence 500Hz–4k |
+## What was done to it
+
+`source-hall-b.mp3` is the original. `tools/prep-track.py` fixed the two things the audit
+measured against it — both engineering problems, not taste ones:
+
+| | presence 500Hz–4k | masked | longest gap | to full | DR |
 |---|---|---|---|---|---|
-| **bed.mp3** (locked) | 4.2 dB | 3% | 1.8s | 0.2s | **40.6%** |
-| alt-hall-b.mp3 | 7.7 dB | 7% | 4.0s | 0.8s | 10.2% |
-| alt-cinematic-online.mp3 | 36.2 dB | **52%** | **9.0s** | **16.0s** | 8.3% |
+| source-hall-b.mp3 | 10.2% ✗ | 4.0s | 4.0s | 0.8s | 7.7 dB |
+| **bed.wav** | **20.1%** ✓ | **0.0s** | **0.0s** | **0.0s** | 6.3 dB |
 
-`alt-cinematic-online.mp3` is the better piece of music and the wrong one for
-this room: 69% of its energy sits below 100 Hz where booth speakers produce
-nothing, and its 9-second quiet passage reads as broken audio over a crowd.
-Keep it for a seated screening or an online cut — it would need its own edit,
-because the picture is cut to the arc of whichever track it runs on.
+- **Spectrum.** −4 dB bell at 300 Hz to clear the mud reverb multiplies, +5 dB at 2.6 kHz
+  into the band that survives a crowd, +2.5 dB shelf above 7 kHz for definition, and a
+  70 Hz high-pass since a booth speaker cannot use anything under it. Zero-phase, done in
+  the frequency domain, so nothing smears.
+- **The loop seam.** The 4-second "gap" the audit flagged was not a hole in the middle —
+  it was the outro fade at 55.2s, which on a booth screen is four seconds of dead air every
+  minute. Trimmed to a whole 25 bars, then the track's own continuation is crossfaded over
+  its head across 450 ms, equal-power. The end runs back into the start with no join.
 
-The cost of the locked track is honest: at 4.2 dB dynamic range it has no arc.
-The picture carries the dynamics — cut rate, brightness, scale — instead of
-borrowing them from the music.
+## Why this one, over the track that measured best
 
-Re-measure any replacement with:
+`alt-hall-a.mp3` scores higher on presence (40.6%) and was the measurement winner. The
+product owner preferred hall-b, and the ear caught something the metrics did not rank: it
+has a **gentle rising arc** — bars 1–4 are the quietest, energy climbs steadily, and it
+peaks at bar 20, frame 1231. On a loop that is worth more than raw presence, because every
+cycle gets a natural swell and the peak lands exactly on the booking montage. `alt-hall-a`
+is flat by comparison, with a dip.
 
-    python3 tools/audit-music.py public/audio/bed.mp3
-    python3 tools/audit-music.py public/audio/*.mp3   # comparison table
+## Alternates
+
+- `alt-hall-a.mp3` — the measurement winner. Flat, very safe in a hall, no arc.
+- `alt-cinematic-online.mp3` — the best piece of music of the three and the wrong one for
+  this room: 69% of its energy sits below 100 Hz and 52% of it is masked. Keep it for a
+  seated screening or an online cut, which would need its own edit.
+- `source-hall-b.mp3` — the raw source of `bed.wav`. Kept so the prep can be re-run.
+
+## Re-measure anything
+
+    python3 tools/audit-music.py public/audio/bed.wav
+    python3 tools/audit-music.py public/audio/*.mp3 public/audio/*.wav   # comparison
+    python3 tools/prep-track.py <in> <out.wav>                            # re-prep
