@@ -273,7 +273,7 @@ export const TypeCard: React.FC<{
   style?: React.CSSProperties;
 }> = ({ caption, delay = 0, exitAt, size = 54, align = "left", style }) => {
   const frame = useCurrentFrame();
-  const out = exitAt === undefined ? 1 : at(frame, [exitAt, exitAt + 9], [1, 0], EASE.outQuart);
+  const out = exitAt === undefined ? 1 : at(frame, [exitAt, exitAt + 5], [1, 0], EASE.out);
   const parts = [
     ...caption.lead.split(" ").filter(Boolean).map((w) => ({ w, a: false })),
     ...caption.accent.split(" ").filter(Boolean).map((w) => ({ w, a: true })),
@@ -293,9 +293,10 @@ export const TypeCard: React.FC<{
       }}
     >
       {parts.map((p, i) => {
-        const d = delay + i * 3;
-        const rise = at(frame, [d, d + 13], [100, 0], EASE.outExpo);
-        const wt = p.a ? at(frame, [d + 6, d + 18], [500, 800], EASE.outQuart) : 500;
+        // 2-frame stagger (~65ms). Long delays read as slow, however grand the type.
+        const d = delay + i * 2;
+        const rise = at(frame, [d, d + 12], [100, 0], EASE.out);
+        const wt = p.a ? at(frame, [d + 5, d + 16], [500, 800], EASE.out) : 500;
         return (
           <span key={i} style={{ display: "inline-block", overflow: "hidden", verticalAlign: "bottom", marginRight: "0.26em" }}>
             <span
@@ -325,7 +326,7 @@ export const Kicker: React.FC<{ text: string; delay?: number; exitAt?: number; s
 }) => {
   const frame = useCurrentFrame();
   const o = at(frame, [delay, delay + 12], [0, 1]) *
-    (exitAt === undefined ? 1 : at(frame, [exitAt, exitAt + 9], [1, 0]));
+    (exitAt === undefined ? 1 : at(frame, [exitAt, exitAt + 5], [1, 0], EASE.out));
   return (
     <div
       style={{

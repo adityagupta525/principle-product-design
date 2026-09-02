@@ -55,10 +55,10 @@ export const Ignite: React.FC = () => {
                 }}
               >
                 {COPY.ignite.title.split(" ").map((w, i) => {
-                  const d = 26 + i * 5;
+                  const d = 26 + i * 2;
                   return (
                     <span key={i} style={{ display: "inline-block", overflow: "hidden", verticalAlign: "bottom", marginRight: "0.22em" }}>
-                      <span style={{ display: "inline-block", transform: `translateY(${at(frame, [d, d + 15], [105, 0], EASE.outExpo)}%)`,
+                      <span style={{ display: "inline-block", transform: `translateY(${at(frame, [d, d + 12], [105, 0], EASE.out)}%)`,
                         color: i === 1 ? CINE.keyHot : undefined }}>
                         {w}
                       </span>

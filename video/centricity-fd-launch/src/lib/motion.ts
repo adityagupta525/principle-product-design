@@ -1,12 +1,40 @@
 import { Easing, interpolate, useCurrentFrame } from "remotion";
 
-/** Motion law — "expensive things don't bounce". No springs on the brand layer. */
+/**
+ * Motion law — "expensive things don't bounce". No springs on the brand layer.
+ *
+ * The built-in easings are too weak; these are the strong custom curves. Never
+ * ease-in on anything entering: it delays the first movement, which is exactly
+ * the moment the eye is watching, and reads as sluggish at any duration.
+ */
 export const EASE = {
+  /** Strong ease-out. Everything that enters. */
+  out:      Easing.bezier(0.23, 1, 0.32, 1),
+  /** Strong ease-in-out. Things already on screen, moving. */
+  inOut:    Easing.bezier(0.77, 0, 0.175, 1),
+  /** The iOS drawer curve — sheets and panels. */
+  drawer:   Easing.bezier(0.32, 0.72, 0, 1),
+
   outExpo:  Easing.bezier(0.16, 1, 0.3, 1),
   outQuint: Easing.bezier(0.22, 1, 0.36, 1),
   outQuart: Easing.bezier(0.25, 1, 0.5, 1),
-  /** For travel across frame — a camera-style move that neither rushes nor parks. */
-  inOut: Easing.bezier(0.65, 0, 0.35, 1),
+};
+
+/**
+ * Timings, in frames at 30fps.
+ *
+ * Two clocks, deliberately far apart. Anything that is a piece of INTERFACE
+ * moves at interface speed — a real row does not take half a second to arrive,
+ * and when it does the whole thing reads as a mockup rather than a product.
+ * Anything that is CAMERA or WORLD moves slowly, because that is how a rig
+ * behaves. The gap between the two clocks is what sells the film.
+ */
+export const TIME = {
+  press: 5,     // ~160ms — button feedback
+  tick: 7,      // ~230ms — a check, a chip, a small state change
+  row: 8,       // ~270ms — a list row arriving
+  sheet: 11,    // ~370ms — a bottom sheet, a panel
+  exit: 5,      // exits are always faster than entrances
 };
 
 const clamp = { extrapolateLeft: "clamp", extrapolateRight: "clamp" } as const;

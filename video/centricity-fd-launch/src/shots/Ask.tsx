@@ -51,7 +51,7 @@ export const Ask: React.FC = () => {
         <AbsoluteFill style={{ alignItems: "flex-end", justifyContent: "center", paddingRight: 128 }}>
           <div style={{ width: 520, opacity: (1 - pull) }}>
             {["Every day.", "Same question.", "No answer."].map((line, i) => {
-              const d = 34 + i * 13;
+              const d = 34 + i * 7;
               return (
                 <div key={line} style={{ overflow: "hidden" }}>
                   <div
@@ -62,7 +62,7 @@ export const Ask: React.FC = () => {
                       letterSpacing: "-0.03em",
                       lineHeight: 1.24,
                       color: i === 2 ? CINE.keyHot : CINE.typeDim,
-                      transform: `translateY(${at(frame, [d, d + 15], [110, 0], EASE.outExpo)}%)`,
+                      transform: `translateY(${at(frame, [d, d + 12], [110, 0], EASE.out)}%)`,
                     }}
                   >
                     {line}

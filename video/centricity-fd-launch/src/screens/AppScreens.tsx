@@ -15,7 +15,7 @@ import React from "react";
 import { useCurrentFrame } from "remotion";
 import { COPY, ISSUERS } from "../copy";
 import { C, FONT } from "../lib/tokens";
-import { at, EASE } from "../lib/motion";
+import { at, EASE, TIME } from "../lib/motion";
 import { Pill } from "../lib/atoms";
 
 /**
@@ -355,9 +355,11 @@ export const CompareScreen: React.FC<{ delay?: number; focusAt?: number; step?: 
       <div style={{ position: "absolute", left: 16, top: 231, width: 343 }}>
         {ISSUERS.map((row, i) => {
           const d = delay + i * step;
-          const opacity = at(frame, [d, d + 15], [0, 1]);
-          const x = at(frame, [d, d + 15], [-16, 0], EASE.outQuint);
-          const check = at(frame, [d + 6, d + 16], [0, 1], EASE.outQuint);
+          const opacity = at(frame, [d, d + TIME.row], [0, 1], EASE.out);
+          // Overshoot 4px past target and settle — a real row lands, it does not glide.
+          const x = at(frame, [d, d + TIME.row], [-18, 3], EASE.out) +
+            at(frame, [d + TIME.row, d + TIME.row + 4], [0, -3], EASE.out);
+          const check = at(frame, [d + 4, d + 4 + TIME.tick], [0, 1], EASE.out);
 
           const pull = focusAt === undefined ? 0 : at(frame, [focusAt, focusAt + 22], [0, 1], EASE.outQuart);
           const isBest = "best" in row && row.best;
@@ -474,8 +476,8 @@ export const CalculatorScreen: React.FC<{ delay?: number }> = ({ delay = 0 }) =>
 
       {ISSUERS.map((row, i) => {
         const d = listAt + i * 6;
-        const opacity = at(frame, [d, d + 14], [0, 1]);
-        const y = at(frame, [d, d + 14], [12, 0], EASE.outQuint);
+        const opacity = at(frame, [d, d + TIME.row], [0, 1], EASE.out);
+        const y = at(frame, [d, d + TIME.row], [14, 0], EASE.out);
         return (
           <div
             key={row.name}
@@ -515,10 +517,10 @@ export const ShareCard: React.FC<{ delay?: number; width?: number }> = ({ delay 
   const frame = useCurrentFrame();
   const s = COPY.share;
   const strip = (i: number) => {
-    const d = delay + i * 6;
+    const d = delay + i * 3; // 3-frame stagger ~ 100ms
     return {
-      opacity: at(frame, [d, d + 13], [0, 1]),
-      transform: `translateY(${at(frame, [d, d + 13], [12, 0], EASE.outQuint)}px)`,
+      opacity: at(frame, [d, d + TIME.row], [0, 1], EASE.out),
+      transform: `translateY(${at(frame, [d, d + TIME.row], [14, 0], EASE.out)}px)`,
     };
   };
   return (
@@ -554,7 +556,7 @@ export const ShareCard: React.FC<{ delay?: number; width?: number }> = ({ delay 
             <div
               key={row.name}
               style={{
-                opacity: at(frame, [d, d + 12], [0, 1]),
+                opacity: at(frame, [d, d + TIME.tick], [0, 1], EASE.out),
                 display: "flex",
                 alignItems: "center",
                 gap: 8,
@@ -630,10 +632,11 @@ export const AskChatScreen: React.FC<{ beats: number[] }> = ({ beats }) => {
           const typingAt = beats[i];
           const sendAt = beats[i] + 22;
           // The typing indicator lives only between "started" and "sent".
-          const typing = at(frame, [typingAt, typingAt + 7], [0, 1], EASE.outQuint) *
-            (1 - at(frame, [sendAt - 3, sendAt], [0, 1]));
-          const sent = at(frame, [sendAt, sendAt + 9], [0, 1], EASE.outQuint);
-          const pop = at(frame, [sendAt, sendAt + 12], [0.9, 1], EASE.outQuint);
+          const typing = at(frame, [typingAt, typingAt + TIME.tick], [0, 1], EASE.out) *
+            (1 - at(frame, [sendAt - 2, sendAt], [0, 1]));
+          const sent = at(frame, [sendAt, sendAt + TIME.tick], [0, 1], EASE.out);
+          // Never from scale(0) — nothing in the world appears out of nothing.
+          const pop = at(frame, [sendAt, sendAt + TIME.row], [0.94, 1], EASE.out);
 
           return (
             <React.Fragment key={m}>
@@ -879,9 +882,9 @@ export const DownloadScreen: React.FC<{ delay?: number; cardLeavesAt: number }> 
 export const BookScreen: React.FC<{ tapAt: number; doneAt: number }> = ({ tapAt, doneAt }) => {
   const frame = useCurrentFrame();
   const b = COPY.book;
-  const press = at(frame, [tapAt, tapAt + 5], [1, 0.97], EASE.outQuart);
-  const sheetOut = at(frame, [doneAt - 12, doneAt], [1, 0], EASE.outQuart);
-  const okIn = at(frame, [doneAt, doneAt + 18], [0, 1], EASE.outQuint);
+  const press = at(frame, [tapAt, tapAt + TIME.press], [1, 0.97], EASE.out);
+  const sheetOut = at(frame, [doneAt - TIME.exit, doneAt], [1, 0], EASE.out);
+  const okIn = at(frame, [doneAt, doneAt + TIME.sheet], [0, 1], EASE.out);
 
   return (
     <div style={{ height: "100%", background: C.surface, position: "relative", overflow: "hidden" }}>
@@ -957,7 +960,7 @@ export const BookScreen: React.FC<{ tapAt: number; doneAt: number }> = ({ tapAt,
         <div style={{ marginTop: 14 }}>
           {b.progress.map((step, i) => {
             const d = tapAt + 8 + i * 12;
-            const on = at(frame, [d, d + 9], [0, 1]);
+            const on = at(frame, [d, d + TIME.tick], [0, 1], EASE.out);
             return (
               <div key={step} style={{ display: "flex", alignItems: "center", gap: 10, padding: "5px 0", opacity: 0.3 + on * 0.7 }}>
                 <span
@@ -993,7 +996,7 @@ export const BookScreen: React.FC<{ tapAt: number; doneAt: number }> = ({ tapAt,
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              transform: `scale(${at(frame, [doneAt, doneAt + 20], [0.7, 1], EASE.outQuint)})`,
+              transform: `scale(${at(frame, [doneAt, doneAt + TIME.sheet], [0.9, 1], EASE.out)})`,
             }}
           >
             ✓
@@ -1012,7 +1015,8 @@ export const BookScreen: React.FC<{ tapAt: number; doneAt: number }> = ({ tapAt,
                 borderRadius: 12,
                 padding: "12px 10px",
                 textAlign: "center",
-                opacity: at(frame, [doneAt + 14 + i * 5, doneAt + 28 + i * 5], [0, 1], EASE.outQuint),
+                // Stagger 2 frames (~65ms) — long delays make an interface feel slow.
+              opacity: at(frame, [doneAt + 12 + i * 2, doneAt + 12 + i * 2 + TIME.row], [0, 1], EASE.out),
               }}
             >
               <div style={{ fontFamily: FONT.app, fontSize: 16, fontWeight: 700, color: C.textPrimary }}>
@@ -1030,8 +1034,8 @@ export const BookScreen: React.FC<{ tapAt: number; doneAt: number }> = ({ tapAt,
               border: `1px solid ${C.hairline}`,
               borderRadius: 14,
               padding: "14px 15px",
-              opacity: at(frame, [doneAt + 32, doneAt + 48], [0, 1], EASE.outQuint),
-              transform: `translateY(${at(frame, [doneAt + 32, doneAt + 48], [12, 0], EASE.outQuint)}px)`,
+              opacity: at(frame, [doneAt + 22, doneAt + 22 + TIME.row], [0, 1], EASE.out),
+              transform: `translateY(${at(frame, [doneAt + 22, doneAt + 22 + TIME.row], [14, 0], EASE.out)}px)`,
             }}
           >
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
