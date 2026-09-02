@@ -4,7 +4,7 @@ import { COPY } from "../copy";
 import { CINE, FONT } from "../lib/tokens";
 import { at, EASE } from "../lib/motion";
 import { Room, Composite, useCamera, Plane, LitPanel, TypeCard } from "../lib/cinema";
-import { BookScreen } from "../screens/AppScreens";
+import { BookScreen, AskChatScreen } from "../screens/AppScreens";
 import { shotLen, SHOT } from "../lib/beat";
 
 /**
@@ -82,22 +82,12 @@ export const Resolve: React.FC = () => {
           </div>
         </AbsoluteFill>
 
-        {/* the loop turning over */}
+        {/* the loop turning over — the next client, same thread */}
         <AbsoluteFill style={{ alignItems: "center", justifyContent: "center" }}>
-          <div
-            style={{
-              opacity: nextAsk,
-              maxWidth: 620,
-              padding: "20px 26px",
-              borderRadius: "20px 20px 20px 5px",
-              background: "#2C2A27",
-              boxShadow: `0 0 90px -10px ${CINE.key}3A, 0 24px 50px -20px #000`,
-              fontFamily: FONT.app,
-              fontSize: 25,
-              color: "#EAE4DC",
-            }}
-          >
-            {COPY.ask.q1}
+          <div style={{ opacity: nextAsk, transform: `scale(0.84)` }}>
+            <LitPanel scale={0.84} bloom={0.5}>
+              <AskChatScreen beats={[-999, 9999, 9999]} />
+            </LitPanel>
           </div>
         </AbsoluteFill>
       </Composite>

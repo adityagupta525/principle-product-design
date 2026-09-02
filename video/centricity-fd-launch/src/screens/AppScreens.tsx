@@ -585,6 +585,159 @@ export const ShareCard: React.FC<{ delay?: number; width?: number }> = ({ delay 
 };
 
 /**
+ * The opening thread — the same conversation the shared card lands in later.
+ * The client types, sends, types again. The partner never answers, and that
+ * silence is the film's setup: for years this question was where the
+ * conversation ended.
+ */
+export const AskChatScreen: React.FC<{ beats: number[] }> = ({ beats }) => {
+  const frame = useCurrentFrame();
+  const s = COPY.ask;
+  const msgs = [s.q1, s.q2, s.q3];
+
+  return (
+    <div style={{ height: "100%", background: "#ECE5DD", position: "relative", overflow: "hidden" }}>
+      <div style={{ background: "#075E54", paddingBottom: 12 }}>
+        <StatusBar />
+        <div style={{ display: "flex", alignItems: "center", gap: 12, padding: "12px 16px 0" }}>
+          <span style={{ color: "#FFF", fontSize: 18 }}>←</span>
+          <span style={{ width: 34, height: 34, borderRadius: 999, background: "rgba(255,255,255,0.3)" }} />
+          <span>
+            <div style={{ fontFamily: FONT.app, fontSize: 15, fontWeight: 600, color: "#FFF" }}>
+              {COPY.share.chatName}
+            </div>
+            <div style={{ fontFamily: FONT.app, fontSize: 10.5, color: "rgba(255,255,255,0.7)", marginTop: 1 }}>
+              online
+            </div>
+          </span>
+        </div>
+      </div>
+
+      <div
+        style={{
+          position: "absolute",
+          left: 0,
+          right: 0,
+          bottom: 62,
+          padding: "0 12px",
+          display: "flex",
+          flexDirection: "column",
+          gap: 7,
+          alignItems: "flex-start",
+        }}
+      >
+        {msgs.map((m, i) => {
+          const typingAt = beats[i];
+          const sendAt = beats[i] + 22;
+          // The typing indicator lives only between "started" and "sent".
+          const typing = at(frame, [typingAt, typingAt + 7], [0, 1], EASE.outQuint) *
+            (1 - at(frame, [sendAt - 3, sendAt], [0, 1]));
+          const sent = at(frame, [sendAt, sendAt + 9], [0, 1], EASE.outQuint);
+          const pop = at(frame, [sendAt, sendAt + 12], [0.9, 1], EASE.outQuint);
+
+          return (
+            <React.Fragment key={m}>
+              {/* typing dots, in a bubble of their own */}
+              <div
+                style={{
+                  opacity: typing,
+                  transform: `scale(${0.9 + typing * 0.1})`,
+                  transformOrigin: "left bottom",
+                  height: typing > 0.02 ? undefined : 0,
+                  overflow: "hidden",
+                  background: "#FFFFFF",
+                  borderRadius: "12px 12px 12px 3px",
+                  padding: typing > 0.02 ? "11px 14px" : 0,
+                  display: "flex",
+                  gap: 4,
+                  alignItems: "center",
+                  boxShadow: "0 1px 1px rgba(0,0,0,0.12)",
+                }}
+              >
+                {[0, 1, 2].map((d) => {
+                  const t = ((frame - typingAt) / 7 + d * 0.33) % 1;
+                  return (
+                    <span
+                      key={d}
+                      style={{
+                        width: 6,
+                        height: 6,
+                        borderRadius: 999,
+                        background: "#8C9A93",
+                        opacity: 0.4 + 0.6 * Math.max(0, Math.sin(t * Math.PI)),
+                        transform: `translateY(${-2.5 * Math.max(0, Math.sin(t * Math.PI))}px)`,
+                      }}
+                    />
+                  );
+                })}
+              </div>
+
+              <div
+                style={{
+                  opacity: sent,
+                  transform: `scale(${pop})`,
+                  transformOrigin: "left bottom",
+                  background: "#FFFFFF",
+                  borderRadius: "12px 12px 12px 3px",
+                  padding: "9px 13px 7px",
+                  maxWidth: "84%",
+                  fontFamily: FONT.app,
+                  fontSize: 13.5,
+                  lineHeight: "18px",
+                  color: "#111B21",
+                  boxShadow: "0 1px 1px rgba(0,0,0,0.12)",
+                }}
+              >
+                {m}
+                <span style={{ fontSize: 9.5, color: "#8C9A93", marginLeft: 9 }}>9:4{i}</span>
+              </div>
+            </React.Fragment>
+          );
+        })}
+      </div>
+
+      {/* input bar — the partner's cursor, and nothing typed in it */}
+      <div
+        style={{
+          position: "absolute",
+          left: 0,
+          right: 0,
+          bottom: 0,
+          padding: "8px 10px 14px",
+          display: "flex",
+          gap: 8,
+          alignItems: "center",
+        }}
+      >
+        <div
+          style={{
+            flex: 1,
+            background: "#FFFFFF",
+            borderRadius: 999,
+            padding: "10px 14px",
+            display: "flex",
+            alignItems: "center",
+            gap: 6,
+            boxShadow: "0 1px 1px rgba(0,0,0,0.10)",
+          }}
+        >
+          <span
+            style={{
+              width: 1.5,
+              height: 15,
+              background: "#25D366",
+              opacity: frame % 34 < 17 ? 1 : 0,
+            }}
+          />
+          <span style={{ fontFamily: FONT.app, fontSize: 13, color: "#B6BEBA" }}>Message</span>
+        </div>
+        <span style={{ width: 36, height: 36, borderRadius: 999, background: "#00A884", flex: "none" }} />
+      </div>
+    </div>
+  );
+};
+
+/**
  * Beat 3's destination — the client's WhatsApp thread. The shared card lands
  * here as an image attachment, which is what actually happens when a partner
  * sends a comparison.

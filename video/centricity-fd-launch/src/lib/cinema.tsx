@@ -1,5 +1,5 @@
 import React from "react";
-import { AbsoluteFill, useCurrentFrame, random } from "remotion";
+import { AbsoluteFill, Img, staticFile, useCurrentFrame } from "remotion";
 import { CINE, FONT, TYPE } from "./tokens";
 import { at, EASE } from "./motion";
 import type { Caption } from "../copy";
@@ -16,113 +16,70 @@ import type { Caption } from "../copy";
    ══════════════════════════════════════════════════════════════════════════ */
 
 /**
- * The room. This was a single CSS radial gradient, and that was the biggest
- * visual weakness in the film — a flat wash reads as a dark slide, not as a
- * photographed space. A real room needs four things a gradient cannot give:
- * a floor the light dies into, haze for the light to travel through, dust to
- * catch it, and a shaft that says where it comes from.
+ * The room — now a photographed environment, not a CSS gradient.
  *
- * Environment plates were generated for this and could not be brought into the
- * project — the generator's CDN is denied by this session's network egress
- * policy, same as figma.com. Drop them into public/env/ and Room will use
- * them; until then this is the room, built.
+ * The plates are Higgsfield renders (nano_banana_pro): a raking light shaft
+ * with falling dust, a copper pool on a seamless cyclorama with a reflective
+ * floor, and a haze/bokeh layer. A gradient can suggest darkness; only a plate
+ * gives real falloff, a floor with a reflection, and grain that belongs to the
+ * light rather than being laid over it.
+ *
+ * `variant` picks the plate; the haze drifts over both so the air moves.
  */
-export const Room: React.FC<{ keyX?: string; keyY?: string; lift?: number }> = ({
-  keyX = "38%",
-  keyY = "46%",
-  lift = 1,
-}) => {
+export const Room: React.FC<{
+  keyX?: string;
+  keyY?: string;
+  lift?: number;
+  variant?: "shaft" | "pool";
+  flip?: boolean;
+  drift?: number;
+}> = ({ keyX = "38%", keyY = "46%", lift = 1, variant = "pool", flip = false, drift = 1 }) => {
   const frame = useCurrentFrame();
   const kx = parseFloat(keyX);
-  const ky = parseFloat(keyY);
+
+  // Very slow push and sway, so the room breathes without ever reading as a move.
+  const push = 1.06 + Math.sin(frame / 420) * 0.012 * drift;
+  const sway = Math.sin(frame / 350) * 9 * drift;
+  const hazeX = Math.sin(frame / 300) * 26 * drift;
+  const hazeY = Math.cos(frame / 380) * 16 * drift;
 
   return (
-    <AbsoluteFill style={{ background: CINE.void }}>
-      {/* the key, and its long fall into the dark */}
+    <AbsoluteFill style={{ background: CINE.void, overflow: "hidden" }}>
+      <AbsoluteFill style={{ opacity: lift }}>
+        <Img
+          src={staticFile(variant === "shaft" ? "env/room-shaft.png" : "env/room-pool.png")}
+          style={{
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
+            transform: `scale(${push}) translateX(${sway}px) ${flip ? "scaleX(-1)" : ""}`,
+          }}
+        />
+      </AbsoluteFill>
+
+      {/* haze, drifting across the plate */}
+      <AbsoluteFill style={{ opacity: 0.34 * lift, mixBlendMode: "screen" }}>
+        <Img
+          src={staticFile("env/haze.png")}
+          style={{
+            width: "112%",
+            height: "112%",
+            objectFit: "cover",
+            transform: `translate(${hazeX - 60}px, ${hazeY - 40}px) scale(1.04)`,
+          }}
+        />
+      </AbsoluteFill>
+
+      {/* the key, tinted to wherever this shot wants its light */}
       <AbsoluteFill
         style={{
-          background: `radial-gradient(130% 100% at ${keyX} ${keyY},
-            #24211E 0%, ${CINE.deep} 34%, #0D0D0F 62%, ${CINE.void} 88%)`,
+          background: `radial-gradient(90% 80% at ${keyX} ${keyY}, ${CINE.keyHot}14 0%, transparent 62%)`,
           opacity: lift,
         }}
       />
-
-      {/* floor — the light has to end somewhere */}
-      <AbsoluteFill
-        style={{
-          top: "62%",
-          background: `linear-gradient(to bottom,
-            rgba(182,147,119,${0.05 * lift}) 0%, rgba(10,10,12,0.55) 46%, ${CINE.void} 100%)`,
-        }}
-      />
-      <div
-        style={{
-          position: "absolute",
-          left: 0,
-          right: 0,
-          top: "62%",
-          height: 1,
-          background: `linear-gradient(to right, transparent, rgba(182,147,119,${0.16 * lift}) ${kx}%, transparent)`,
-        }}
-      />
-
-      {/* the shaft, drifting */}
-      <div
-        style={{
-          position: "absolute",
-          left: `${kx}%`,
-          top: `${ky}%`,
-          width: 1500,
-          height: 1100,
-          transform: `translate(-50%, -50%) rotate(${-16 + Math.sin(frame / 260) * 2.5}deg)`,
-          background: `linear-gradient(100deg, transparent 40%, rgba(182,147,119,${0.05 * lift}) 50%, transparent 60%)`,
-          filter: "blur(38px)",
-        }}
-      />
-
-      {/* haze, two layers at different speeds so the air has depth */}
-      {[0, 1].map((i) => {
-        const drift = Math.sin(frame / (300 + i * 170) + i * 2) * (40 + i * 26);
-        return (
-          <div
-            key={i}
-            style={{
-              position: "absolute",
-              inset: -140,
-              transform: `translate(${drift}px, ${drift * 0.35}px)`,
-              background: `radial-gradient(${60 + i * 25}% ${45 + i * 20}% at ${kx + i * 14}% ${ky - i * 8}%,
-                rgba(182,147,119,${(0.055 - i * 0.02) * lift}) 0%, transparent 70%)`,
-              filter: `blur(${60 + i * 40}px)`,
-            }}
-          />
-        );
-      })}
-
-      {/* dust in the beam — seeded, so every render of a frame is identical */}
-      {Array.from({ length: 26 }).map((_, i) => {
-        const seed = (i * 2654435761) % 991;
-        const x = (seed * 7) % 100;
-        const y = (seed * 13) % 100;
-        const depth = 0.3 + ((seed % 70) / 100);
-        const rise = ((frame * (0.06 + depth * 0.1) + seed) % 120) - 20;
-        const near = Math.hypot(x - kx, y - ky) < 42;
-        return (
-          <div
-            key={i}
-            style={{
-              position: "absolute",
-              left: `${x}%`,
-              top: `${(y + rise) % 100}%`,
-              width: 1 + depth * 2.4,
-              height: 1 + depth * 2.4,
-              borderRadius: "50%",
-              background: CINE.keyHot,
-              opacity: (near ? 0.3 : 0.1) * depth * lift,
-              filter: `blur(${(1 - depth) * 1.6}px)`,
-            }}
-          />
-        );
-      })}
+      <AbsoluteFill style={{ background: CINE.void, opacity: (1 - lift) * 0.9 }} />
+      {/* keep the reference to kx meaningful for callers tuning the key */}
+      <div style={{ display: "none" }}>{kx}</div>
     </AbsoluteFill>
   );
 };
