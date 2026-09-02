@@ -656,7 +656,7 @@ export const DownloadScreen: React.FC<{ delay?: number; cardLeavesAt: number }> 
 }) => {
   const frame = useCurrentFrame();
   const s = COPY.share;
-  const fields = [s.partnerName, "9876543210", "somesh@centricity.co.in"];
+  const fields = [s.partnerName, s.partnerPhone, s.partnerEmail];
   // The scene flies a *copy* of the card to the chat. The original stays in the
   // preview — sharing does not empty the app — so the slot only dips briefly as
   // the copy lifts off.

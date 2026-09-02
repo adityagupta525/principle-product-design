@@ -145,7 +145,15 @@
   /* ── Beat map ─────────────────────────────────────── */
   .beatwrap{overflow-x:auto;margin-top:26px;padding-bottom:6px}
   .beatmap{min-width:700px}
-  .bars{display:grid;grid-template-columns:repeat(15,1fr);gap:3px;align-items:end;height:112px}
+  .bars{display:grid;gap:3px;align-items:end;height:104px}
+  .bars.n27{grid-template-columns:repeat(27,1fr);gap:2px}
+  .bars.n15{grid-template-columns:repeat(15,1fr)}
+  .chartlab{
+    display:flex;justify-content:space-between;align-items:baseline;margin:26px 0 8px;
+    font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--muted);
+  }
+  .chartlab b{font-family:Montserrat,sans-serif;font-size:13px;font-weight:700;color:var(--ink);letter-spacing:-.01em}
+  .chartlab .verdictmini{color:var(--copper);font-weight:600}
   .bar{background:var(--ground-2);border-radius:2px 2px 0 0;position:relative}
   .bar.m1{background:var(--warm);opacity:.45}
   .bar.m2{background:var(--warm);opacity:.7}
@@ -273,15 +281,15 @@
     <div class="kicker">Treatment v2 · Centricity × Blostem · Fixed Deposits · GFF launch film</div>
     <h1>Har sawaal ka <em>jawab</em></h1>
     <p class="standfirst">
-      A director's treatment for the FD launch film. The idea holds; the visual direction has moved
-      to the premium product-film class. The music is written and measured, and the structure is now
-      taken from the track rather than imposed on it.
+      A director's treatment for the FD launch film. The idea holds; the visual direction is the premium
+      product-film class. Three tracks were written and measured against the room it actually plays in —
+      a looping screen on a GFF booth — and the structure is taken from the one that won.
     </p>
     <div class="meta">
-      <span><b>Master</b> 61.5s · 1920×1080 · 30fps</span>
-      <span><b>Tempo</b> 60.4 BPM measured · 29.801f beat</span>
-      <span><b>Audience</b> MFD partners</span>
-      <span><b>Status</b> track locked · awaiting sign-off</span>
+      <span><b>Master</b> 59.1s loop · 1920×1080 · 30fps</span>
+      <span><b>Tempo</b> 111.1 BPM · 16.202f beat · 27 bars</span>
+      <span><b>Venue</b> GFF booth · looping</span>
+      <span><b>Status</b> track locked · ready to build</span>
     </div>
   </header>
 
@@ -357,94 +365,135 @@
 
   <section>
     <div class="sec-head"><span class="sec-num">03</span><h2>Structure, locked to the track</h2></div>
-    <p class="sec-sub">The music is written and measured. The chart below is its <em>real</em> energy — RMS per bar, read off the file, not a sketch. The film's structure is derived from it rather than imposed on it.</p>
+    <p class="sec-sub">Venue is settled: <strong>a looping film on a GFF booth</strong>. That decided the track, and the track decided everything below.</p>
 
-    <div class="beatwrap">
-      <div class="beatmap">
-        <div class="bars">
-          <div class="bar m1" style="height:16%"></div>
-          <div class="bar m1" style="height:16%"></div>
-          <div class="bar m1" style="height:18%"></div>
-          <div class="bar m1" style="height:21%"></div>
-          <div class="bar m3" style="height:90%"><span class="hit"></span></div>
-          <div class="bar m3" style="height:89%"></div>
-          <div class="bar m3" style="height:92%"></div>
-          <div class="bar m3" style="height:91%"></div>
-          <div class="bar m4" style="height:24%"></div>
-          <div class="bar m4" style="height:15%"></div>
-          <div class="bar m0" style="height:6%"><span class="hit"></span></div>
-          <div class="bar m4" style="height:25%"></div>
-          <div class="bar m6" style="height:100%"><span class="hit"></span></div>
-          <div class="bar m6" style="height:99%"></div>
-          <div class="bar m7" style="height:57%"></div>
-        </div>
-        <div class="ruler">
-          <span>0s</span><span>4</span><span>8</span><span>12</span><span>16</span>
-          <span>20</span><span>24</span><span>28</span><span>32</span><span>36</span>
-          <span>40</span><span>44</span><span>48</span><span>52</span><span>56</span>
-        </div>
-        <div class="seg">
-          <span>·</span><span>THE QUESTION</span><span>·</span><span>·</span>
-          <span>·</span><span>IGNITION</span><span>·</span><span>·</span>
-          <span>·</span><span>FALL</span><span>SILENCE</span><span>·</span>
-          <span>PEAK</span><span>·</span><span>DECAY</span>
-        </div>
+    <div class="chartlab"><span><b>bed.mp3</b> — LOCKED · 59.06s · 111.1 BPM · 27 bars</span><span class="verdictmini">3% masked · 40.6% presence · cuts through a crowd</span></div>
+    <div class="beatwrap"><div class="beatmap">
+      <div class="bars n27">
+          <div class="bar m1" style="height:64%"></div>
+          <div class="bar m1" style="height:65%"></div>
+          <div class="bar m2" style="height:69%"></div>
+          <div class="bar m2" style="height:71%"></div>
+          <div class="bar m3" style="height:68%"></div>
+          <div class="bar m3" style="height:70%"></div>
+          <div class="bar m3" style="height:100%"><span class="hit"></span></div>
+          <div class="bar m3" style="height:85%"></div>
+          <div class="bar m3" style="height:83%"></div>
+          <div class="bar m4" style="height:82%"></div>
+          <div class="bar m4" style="height:76%"></div>
+          <div class="bar m4" style="height:66%"></div>
+          <div class="bar m4" style="height:70%"></div>
+          <div class="bar m5" style="height:65%"></div>
+          <div class="bar m5" style="height:70%"></div>
+          <div class="bar m5" style="height:75%"></div>
+          <div class="bar m5" style="height:66%"></div>
+          <div class="bar m5" style="height:71%"></div>
+          <div class="bar m5" style="height:98%"><span class="hit"></span></div>
+          <div class="bar m6" style="height:87%"></div>
+          <div class="bar m6" style="height:89%"></div>
+          <div class="bar m6" style="height:81%"></div>
+          <div class="bar m6" style="height:83%"></div>
+          <div class="bar m6" style="height:76%"></div>
+          <div class="bar m7" style="height:71%"></div>
+          <div class="bar m7" style="height:69%"></div>
+          <div class="bar m7" style="height:35%"></div>
       </div>
+    </div></div>
+
+    <div class="chartlab"><span><b>alt-cinematic-online.mp3</b> — REJECTED for this room</span><span class="verdictmini">52% masked · 9.0s hole · 69% of it below 100 Hz</span></div>
+    <div class="beatwrap"><div class="beatmap">
+      <div class="bars n15">
+          <div class="bar m1" style="height:16%"></div><div class="bar m1" style="height:16%"></div>
+          <div class="bar m1" style="height:18%"></div><div class="bar m1" style="height:21%"></div>
+          <div class="bar m3" style="height:90%"></div><div class="bar m3" style="height:89%"></div>
+          <div class="bar m3" style="height:92%"></div><div class="bar m3" style="height:91%"></div>
+          <div class="bar m4" style="height:24%"></div><div class="bar m4" style="height:15%"></div>
+          <div class="bar m0" style="height:6%"></div><div class="bar m4" style="height:25%"></div>
+          <div class="bar m6" style="height:100%"></div><div class="bar m6" style="height:99%"></div>
+          <div class="bar m7" style="height:57%"></div>
+      </div>
+    </div></div>
+
+    <div class="call">
+      <p><strong>Read the two charts together.</strong> The rejected track is the better piece of music —
+      that dramatic shape is exactly what you want in headphones. In a hall it is the problem: the tall
+      bars are where the audience hears something and the short bars are where they hear the crowd.
+      The locked track is deliberately flat, and <b>flat is the correct answer for a room you cannot
+      control</b>.</p>
+      <p><strong>The cost, stated plainly:</strong> at 4.2 dB dynamic range there is no arc to lean on.
+      The picture now has to carry every bit of the dynamics — cut rate, brightness, scale, density.
+      The music keeps time; it does not tell the story.</p>
     </div>
 
     <div class="tablewrap">
       <table>
-        <thead><tr><th>Time</th><th>Frames</th><th>What the music does</th><th>What the film does</th></tr></thead>
+        <thead><tr><th>Bars</th><th>Frames</th><th>Movement</th><th>Note</th></tr></thead>
         <tbody>
-          <tr><td class="tc">0:00–0:15.9</td><td class="tc">0–477</td><td class="how">Near-silent. Atmosphere only, RMS 0.05.</td><td class="how">The question, and no answer. Held long enough to become uncomfortable.</td></tr>
-          <tr><td class="tc">0:15.9</td><td class="tc">477</td><td class="how"><b>The largest event in the track</b> — energy jumps 5×.</td><td class="how">Ignition. The product arrives on this frame. Nothing else in the film competes with it.</td></tr>
-          <tr><td class="tc">0:15.9–0:31.8</td><td class="tc">477–954</td><td class="how">Full, steady, sustained.</td><td class="how">Compare and Calculate. Steady cutting, one shot per pulse.</td></tr>
-          <tr><td class="tc">0:31.8–0:39.7</td><td class="tc">954–1192</td><td class="how">Falls away.</td><td class="how">Share sets up. The card assembles.</td></tr>
-          <tr><td class="tc">0:39.7–0:43.7</td><td class="tc">1192–1311</td><td class="how"><b>Near-silence.</b> RMS 0.010 — 3% of peak.</td><td class="how">The card flies, alone, in the dark. The film's held breath.</td></tr>
-          <tr><td class="tc">0:43.7–0:47.7</td><td class="tc">1311–1430</td><td class="how">Rebuilds.</td><td class="how">The card lands. The partner's name holds on screen.</td></tr>
-          <tr><td class="tc">0:47.7–0:55.6</td><td class="tc">1430–1669</td><td class="how"><b>Peak.</b> Loudest bars in the track.</td><td class="how">Booking. Fastest cutting in the film.</td></tr>
-          <tr><td class="tc">0:55.6–1:01.5</td><td class="tc">1669–1844</td><td class="how">Decay to nothing.</td><td class="how">Resolve. Lockup. Out.</td></tr>
+          <tr><td class="tc">1–2</td><td class="tc">0–130</td><td class="what">The question</td><td class="how">4.3 seconds, not sixteen. A loop cannot afford a slow open — people arrive mid-film.</td></tr>
+          <tr><td class="tc">3–4</td><td class="tc">130–259</td><td class="what">Ignition</td><td class="how">The product arrives and the title sets.</td></tr>
+          <tr><td class="tc">5–9</td><td class="tc">259–583</td><td class="what">Compare</td><td class="how">The track's loudest bar is bar 7, frame 389 — the blur-pull to 8.25% lands there.</td></tr>
+          <tr><td class="tc">10–13</td><td class="tc">583–842</td><td class="what">Calculate</td><td class="how">Numbers resolve.</td></tr>
+          <tr><td class="tc">14–19</td><td class="tc">842–1231</td><td class="what">Share</td><td class="how">The card flies and lands. The track's second lift is bar 19, frame 1167 — the landing sits on it.</td></tr>
+          <tr><td class="tc">20–24</td><td class="tc">1231–1555</td><td class="what">Book</td><td class="how">Fastest cutting.</td></tr>
+          <tr><td class="tc">25–27</td><td class="tc">1555–1772</td><td class="what">Resolve → loop</td><td class="how">Bar 27 is the only quiet bar in the track. The film hands back to the question.</td></tr>
         </tbody>
       </table>
     </div>
 
     <div class="call">
-      <p><strong>Cut grid:</strong> pulse is <b>0.9934s = 29.801 frames</b>, first downbeat at frame <b>22.2</b>.
-      Cuts land on that grid minus two frames — the eye takes the new frame just before the ear takes the beat.</p>
-      <p><strong>Run time is 61.5s, not 60.</strong> The track decides, not the round number.</p>
+      <p><strong>Cut grid:</strong> beat is <b>0.5401s = 16.202 frames</b>, first downbeat at frame <b>9.9</b>,
+      bar = 64.81 frames. Cuts land on that grid minus two frames.</p>
     </div>
   </section>
 
   <section>
-    <div class="sec-head"><span class="sec-num">04</span><h2>Shot list</h2></div>
-    <p class="sec-sub">No voice-over, and <strong>no walkthrough</strong>. An explainer shows a complete journey; a product film shows moments and trusts you to close the gap. We never once follow a task from start to finish.</p>
+    <div class="sec-head"><span class="sec-num">04</span><h2>What a loop changes</h2></div>
+    <p class="sec-sub">A booth loop is not a film someone sits down to watch. Four constraints follow, and they are not negotiable.</p>
+
+    <div class="verdicts">
+      <div class="verdict"><span class="tag good">1</span><p><b>It has to work muted.</b> Most booth screens are effectively silent — the crowd wins. Every argument the film makes must survive with the sound off, which means the type carries it and the music only keeps time. This is the strongest reason the treatment has no voice-over.</p></div>
+      <div class="verdict"><span class="tag good">2</span><p><b>No slow open.</b> Nobody sees frame one. The question now runs 4.3 seconds instead of sixteen, and the product is on screen by frame 130. Any ten-second window a passer-by catches has to contain a whole idea.</p></div>
+      <div class="verdict"><span class="tag good">3</span><p><b>No hard ending.</b> A film that resolves into black reads as broken on a loop. The last bar resolves and immediately re-poses the question.</p></div>
+      <div class="verdict"><span class="tag good">4</span><p><b>The loop is the idea.</b> The film ends on the wordmark and cuts back to another client asking the same question — and this time there is an answer waiting. The seam stops being a technical problem and becomes the point.</p></div>
+    </div>
+
+    <h3>Shot list</h3>
+    <p class="body">No voice-over, and no walkthrough. An explainer shows a complete journey; a product film shows moments. We never once follow a task from start to finish.</p>
 
     <div class="tablewrap">
       <table>
         <thead><tr><th>Frames</th><th>Shot</th><th>Craft</th></tr></thead>
         <tbody>
-          <tr><td class="tc">0–150</td><td class="what">Black. A message arrives.
+          <tr><td class="tc">0–130</td><td class="what">A message arrives
             <span class="say">"FD ka rate kya chal raha hai?"</span></td>
-            <td class="how">One grey bubble, lit from nowhere, floating in near-black. Heavy grain. Slow drift, no cut. Room tone only.</td></tr>
-          <tr><td class="tc">150–330</td><td class="what">Two more arrive. Still no answer.</td><td class="how">Bubbles stack and drift out of focus behind the first. Depth builds. The frame gets more crowded and less answerable.</td></tr>
-          <tr><td class="tc">330–477</td><td class="what">The bubbles fall away.</td><td class="how">Rack focus to empty space. Everything defocuses to bokeh. Four seconds of nothing — the film's setup for the hit.</td></tr>
-          <tr><td class="tc">477</td><td class="what">IGNITION — the product</td><td class="how">On the frame the track jumps. A white panel ignites in the dark like a lightbox, rim-lit copper. It is the first bright thing in the film and it arrives fully formed.</td></tr>
-          <tr><td class="tc">477–620</td><td class="what">Wide: the app in space
-            <span class="say">Fixed Deposits</span></td><td class="how">Panel floating at a slight yaw, 2.5D layers separated in Z. Camera trucks left; parallax does the rest. Type sets in the void beside it, never on it.</td></tr>
-          <tr><td class="tc">620–760</td><td class="what">Macro: rows deal in</td><td class="how">3× crop, shallow DOF, only two rows sharp. Each row lands on a pulse with elastic overshoot. We never see the whole list.</td></tr>
-          <tr><td class="tc">760–850</td><td class="what">Macro: the winning rate</td><td class="how">Extreme close on <b>8.25%</b>. Everything else falls to blur. The green glows — it is a light source, not a colour.</td></tr>
-          <tr><td class="tc">850–954</td><td class="what">Macro: numbers resolve
-            <span class="say">Exact returns</span></td><td class="how">Digit roll in macro, six figures landing together. Camera pushes in a few percent through the whole shot and never stops.</td></tr>
-          <tr><td class="tc">954–1120</td><td class="what">The card assembles</td><td class="how">Energy drops. Panel recedes, the comparison card builds in the foreground plane, strip by strip, over three pulses.</td></tr>
-          <tr><td class="tc">1120–1192</td><td class="what">It detaches</td><td class="how">The card lifts off the panel. Rim light rakes across its face as it turns. Music thinning to nothing.</td></tr>
-          <tr><td class="tc">1192–1311</td><td class="what">FLIGHT — in silence</td><td class="how"><b>The film's centre.</b> The card crosses dark space on an arc, tilting into travel, three ghosted trail frames behind it. Almost no sound. Longest single shot in the film.</td></tr>
-          <tr><td class="tc">1311–1430</td><td class="what">It lands
-            <span class="say">Sent by: Somesh Nayak</span></td><td class="how">Music returns. The thread lights up. Macro push onto the partner's name in copper — held for four full seconds. This is the whole argument.</td></tr>
-          <tr><td class="tc">1430–1669</td><td class="what">Booking — montage</td><td class="how">Peak energy, fastest cutting: client selected / Invest now pressed / tick / tick / tick / <b>FD Booked</b>. One shot per pulse, all macro, all elastic.</td></tr>
-          <tr><td class="tc">1669–1844</td><td class="what">Resolve
-            <span class="say">Fixed Deposits, reimagined. / Centricity × Blostem</span></td><td class="how">Pull back. The panel returns to the dark and dims. Lockup fades — never scales. Grain rises as the light goes. <b>Together Forward</b> last, small.</td></tr>
+            <td class="how">One grey bubble in near-black, lit from nowhere, drifting. Heavy grain. It sits unanswered for two beats — long enough to register, short enough for a loop.</td></tr>
+          <tr><td class="tc">130</td><td class="what">IGNITION</td><td class="how">A white panel ignites in the dark like a lightbox, rim-lit copper. First bright thing in the film, arriving fully formed.</td></tr>
+          <tr><td class="tc">130–259</td><td class="what">Wide: the app in space
+            <span class="say">Fixed Deposits</span></td><td class="how">Panel at a slight yaw, layers separated in Z, camera trucks left. Type sets in the void beside it, never on it.</td></tr>
+          <tr><td class="tc">259–389</td><td class="what">Macro: rows deal in</td><td class="how">3× crop, shallow focus, two rows sharp. One row per beat with elastic overshoot. We never see the whole list.</td></tr>
+          <tr><td class="tc">389–470</td><td class="what">Macro: the winning rate
+            <span class="say">Six issuers. One screen.</span></td><td class="how">On the track's loudest bar. Extreme close on <b>8.25%</b>; everything else falls to blur. The green is a light source, not a colour.</td></tr>
+          <tr><td class="tc">470–583</td><td class="what">Pull to the full table</td><td class="how">Rack focus outward. The one shot in the film that shows the whole screen at once.</td></tr>
+          <tr><td class="tc">583–842</td><td class="what">Macro: numbers resolve
+            <span class="say">Exact returns. Instantly.</span></td><td class="how">₹5,00,000 types in; six maturity figures land together on a digit roll. Camera pushes a few percent throughout and never stops.</td></tr>
+          <tr><td class="tc">842–1000</td><td class="what">The card assembles</td><td class="how">Panel recedes; the comparison card builds strip by strip in the foreground plane.</td></tr>
+          <tr><td class="tc">1000–1080</td><td class="what">It detaches</td><td class="how">The card lifts. Rim light rakes across its face as it turns.</td></tr>
+          <tr><td class="tc">1080–1167</td><td class="what">FLIGHT</td><td class="how">The card crosses dark space on an arc, tilting into travel, three ghosted trail frames behind it. Longest single shot in the film — the picture has to hold this, because the track will not drop away for us.</td></tr>
+          <tr><td class="tc">1167–1231</td><td class="what">It lands
+            <span class="say">Your brand, in your client's chat.</span></td><td class="how">On the track's second lift. Macro push onto <b>Sent by: Ashish Gupta</b> in copper, held. This is the whole argument.</td></tr>
+          <tr><td class="tc">1231–1555</td><td class="what">Booking — montage</td><td class="how">Fastest cutting: client selected / Invest now / tick / tick / tick / <b>FD Booked</b>. One shot per beat, all macro, all elastic.
+            <span class="say">Booked in under 3 minutes.</span></td></tr>
+          <tr><td class="tc">1555–1772</td><td class="what">Resolve, and hand back
+            <span class="say">Fixed Deposits, reimagined. / Centricity × Blostem</span></td><td class="how">Pull back, panel dims, lockup fades — never scales. Then the dark deepens and the next message is already arriving as the loop turns over.</td></tr>
         </tbody>
       </table>
+    </div>
+
+    <div class="call">
+      <p><strong>Names.</strong> <b>Ashish Gupta</b> is the partner — the person using the app, whose name
+      goes on the card. <b>Sneha Patel</b> is the client receiving it, taken from the file's own My FDs
+      screen rather than invented. <b>Utkarsh SF Bank</b> is an issuer, and is why the client is no longer
+      called Utkarsh: two Utkarshes in one film reads as an error, not a coincidence.</p>
     </div>
   </section>
 
@@ -544,33 +593,42 @@
 
   <section>
     <div class="sec-head"><span class="sec-num">07</span><h2>The track, and what the audit found</h2></div>
-    <p class="sec-sub">Written first, then measured before a single frame gets animated to it. Two findings, one of which would have broken the film silently.</p>
+    <p class="sec-sub">Three tracks written, all three measured before a single frame was animated to any of them.</p>
+
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Track</th><th>Dyn. range</th><th>Masked</th><th>Longest gap</th><th>To full</th><th>Presence 500Hz–4k</th></tr></thead>
+        <tbody>
+          <tr><td class="what">bed.mp3 — LOCKED</td><td class="tc">4.2 dB</td><td class="tc">3%</td><td class="tc">1.8s</td><td class="tc">0.2s</td><td class="tc">40.6%</td></tr>
+          <tr><td class="how">alt-hall-b.mp3</td><td class="how">7.7 dB</td><td class="how">7%</td><td class="how">4.0s</td><td class="how">0.8s</td><td class="how">10.2%</td></tr>
+          <tr><td class="how">alt-cinematic-online.mp3</td><td class="how">36.2 dB</td><td class="how">52%</td><td class="how">9.0s</td><td class="how">16.0s</td><td class="how">8.3%</td></tr>
+        </tbody>
+      </table>
+    </div>
 
     <div class="verdicts">
-      <div class="verdict"><span class="tag bad">CAUGHT</span><p><b>It is not 120 BPM.</b> The measured pulse is <b>60.4 BPM — a beat of 29.801 frames</b>, not the round 30 the plan assumed. That is a fifth of a frame of drift per beat: invisible at the start, about twelve frames adrift by the end, which is exactly the kind of error you only notice after everything is built. <b>The grid is now taken from the file.</b></p></div>
-      <div class="verdict"><span class="tag good">CONFIRMED</span><p><b>The arc is real.</b> The brief asked for quiet → build → mid-drop → full return → decay, and the measurement shows precisely that, including a bar at <b>3% of peak energy</b> between 39.7s and 43.7s. That near-silence is a gift: it is four seconds of held breath sitting exactly where the film's most important shot goes.</p></div>
-      <div class="verdict"><span class="tag good">ALSO</span><p>Real length is <b>61.47s = 1844 frames</b>. The film is 61.5 seconds, not 60. Rounding the run time would mean either cutting the decay short or holding on black — both worse than simply letting the track decide.</p></div>
+      <div class="verdict"><span class="tag bad">REJECTED</span><p><b>The cinematic track loses 52% of itself to the room.</b> Worse than the dynamics: <b>69% of its energy sits below 100 Hz</b>, and booth speakers reproduce nothing down there. Roughly 8% of it would actually reach a passer-by. Its nine-second quiet passage — the best thing about it in headphones — reads as broken audio over a crowd.</p></div>
+      <div class="verdict"><span class="tag bad">REJECTED</span><p><b>alt-hall-b is muddy.</b> 88.7% of its energy piles into the low-mids and only 10.2% reaches the presence band. In a reverberant hall that turns to soup.</p></div>
+      <div class="verdict"><span class="tag good">LOCKED</span><p><b>bed.mp3.</b> 4.2 dB range, 3% masked, full strength in 0.2 seconds, and <b>40.6% of its energy in the band that cuts through a crowd</b>. 111.1 BPM, beat 16.202 frames, first downbeat at frame 9.9.</p></div>
     </div>
 
     <div class="grid2">
       <div class="cell">
-        <h4>The track</h4>
-        <p>Sparse felt piano over a warm sub-bass pulse, granular texture, muted hand percussion.
-        Restrained and widescreen — closer to a private-bank film than a fintech ad. Instrumental,
-        royalty-free, 61.47s.</p>
+        <h4>What the hall does</h4>
+        <ul>
+          <li>75–85 dB crowd noise floor</li>
+          <li>Booth speakers roll off below ~100 Hz</li>
+          <li>Long reverb smears fast transients</li>
+          <li>Most screens end up effectively muted</li>
+        </ul>
       </div>
       <div class="cell">
-        <h4>How it was audited</h4>
-        <p>Spectral-flux onset envelope, autocorrelation for tempo, pulse-train correlation for phase,
-        RMS per bar for the energy arc. The script ships in the repo at
-        <b>tools/audit-music.py</b>, so any replacement track can be measured the same way in one command.</p>
+        <h4>How it was measured</h4>
+        <p>Spectral-flux onsets, autocorrelation tempo, pulse-train phase, RMS arc, and a hall model —
+        dynamic range, masked time against a −12 dB threshold, longest inaudible gap, time-to-hook, and
+        energy per band. Ships at <b>tools/audit-music.py</b>; any replacement is measured the same way in
+        one command.</p>
       </div>
-    </div>
-
-    <div class="call">
-      <p><strong>Listen before I build.</strong> The track is in the repo at <b>public/audio/bed.mp3</b>.
-      Everything downstream is pinned to it, so if it is wrong this is the cheapest moment to say so —
-      I will regenerate and re-audit, and only the numbers in this document change.</p>
     </div>
   </section>
 
@@ -601,8 +659,8 @@
     <ol class="ask">
       <li><span class="n">1</span><p><b>The idea.</b> Does "the one question you couldn't answer" hold as the spine? If it doesn't land with you, the other two territories are on the table and I'll re-treat rather than patch.</p></li>
       <li><span class="n">2</span><p><b>The redirect.</b> Props out, product-as-object in — dark room, warm key, macro, camera-led. Confirm and I build to it.</p></li>
-      <li><span class="n">3</span><p><b>The track.</b> Listen to <b>public/audio/bed.mp3</b>. Everything is pinned to it, so this is the cheapest moment to reject it.</p></li>
-      <li><span class="n">4</span><p><b>Formats.</b> 16:9 master is assumed. Confirm whether you also need the 9:16 vertical — the Share beat has to be re-staged for it, which is real work, not a rescale.</p></li>
+      <li><span class="n">3</span><p><b>The track.</b> Locked to <b>public/audio/bed.mp3</b> on the audit above. Listen once — everything is pinned to it.</p></li>
+      <li><span class="n">4</span><p><b>Formats.</b> 16:9 booth loop is the master. Confirm whether you also need a 9:16 vertical for social — the Share beat has to be re-staged for it, which is real work, not a rescale.</p></li>
     </ol>
 
     <div class="call">
