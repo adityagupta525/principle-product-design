@@ -2,16 +2,15 @@
   "name": "centricity-fd-launch",
   "version": "1.0.0",
   "private": true,
-  "description": "Centricity — Fixed Deposits launch film. Obsidian Intelligence brand system.",
+  "description": "Centricity \u2014 Fixed Deposits launch film. Obsidian Intelligence brand system.",
   "scripts": {
     "studio": "remotion studio",
     "render": "remotion render src/index.ts Launch out/launch.mp4",
-    "render:story": "remotion render src/index.ts LaunchStory out/story.mp4",
-    "render:square": "remotion render src/index.ts LaunchSquare out/square.mp4",
     "still": "remotion still src/index.ts Launch"
   },
   "dependencies": {
     "@remotion/cli": "4.0.416",
+    "@remotion/media-parser": "^4.0.416",
     "@remotion/transitions": "4.0.416",
     "react": "19.2.0",
     "react-dom": "19.2.0",

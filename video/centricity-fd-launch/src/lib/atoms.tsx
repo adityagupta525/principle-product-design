@@ -1,91 +1,69 @@
 import React from "react";
 import { AbsoluteFill, useCurrentFrame } from "remotion";
-import { C, TYPE } from "./tokens";
-import { at, EASE, useEnter } from "./motion";
+import { C, FONT, TYPE } from "./tokens";
+import { at, EASE } from "./motion";
+import type { Caption } from "../copy";
 
-/** Layer 2 — radial vignette, 8% black at the edges. */
-export const Vignette: React.FC = () => (
-  <AbsoluteFill
-    style={{
-      background: "radial-gradient(ellipse at center, transparent 45%, rgba(0,0,0,0.55) 100%)",
-      pointerEvents: "none",
-    }}
-  />
-);
+/* ══════════════════════════════════════════════════════════════════════════
+   REFERENCE GRAMMAR
+   Motion patterns taken from the supplied reel (@vanshika.motion), re-coloured
+   to the Centricity FD partner design system: mid-size kinetic captions with
+   exactly one accent word, floating rounded-square tiles, product panels that
+   rise under soft shadows, and rows that blur so one row can hold focus.
+   ══════════════════════════════════════════════════════════════════════════ */
 
-/** Layer 3 — ambient glow. One per scene. Amber for data, ice for feature/CTA. */
-export const Glow: React.FC<{
-  tone?: "amber" | "ice";
-  size?: number;
-  x?: string;
-  y?: string;
-  delay?: number;
-}> = ({ tone = "amber", size = 760, x = "50%", y = "50%", delay = 0 }) => {
-  const frame = useCurrentFrame();
-  const hex = tone === "amber" ? C.dataAmber : C.accentIce;
-  const pulse = 0.5 + 0.5 * Math.sin((frame / 120) * Math.PI);
-  const fadeIn = at(frame, [delay, delay + 30], [0, 1], EASE.outQuart);
-  return (
-    <div
+/** Warm paper ground with a soft radial lift — the reel's light scenes. */
+export const Ground: React.FC<{ children?: React.ReactNode }> = ({ children }) => (
+  <AbsoluteFill style={{ background: C.canvas }}>
+    <AbsoluteFill
       style={{
-        position: "absolute",
-        left: x,
-        top: y,
-        width: size,
-        height: size,
-        borderRadius: "50%",
-        background: `radial-gradient(circle, ${hex}33 0%, transparent 70%)`,
-        filter: "blur(90px)",
-        opacity: (0.18 + pulse * 0.22) * fadeIn,
-        transform: `translate(-50%, -50%) scale(${1 + pulse * 0.12})`,
+        background: `radial-gradient(ellipse at 50% 42%, #FFFFFF 0%, ${C.canvas} 58%, #EFE8E1 100%)`,
       }}
     />
-  );
-};
+    {children}
+  </AbsoluteFill>
+);
 
-/** Layer 10 — persistent corner wordmark. Fade only; brand marks never scale. */
-export const LogoCorner: React.FC<{ text: string }> = ({ text }) => {
-  const opacity = at(useCurrentFrame(), [0, 30], [0, 0.3]);
-  return (
-    <div
-      style={{
-        position: "absolute",
-        top: 48,
-        left: 64,
-        opacity,
-        color: C.platinumText,
-        fontFamily: TYPE.label.fontFamily,
-        fontSize: 16,
-        fontWeight: 600,
-        letterSpacing: "0.22em",
-      }}
-    >
-      {text}
-    </div>
-  );
-};
+/** The dark counterpart — used once, for the end card, so it lands as a change. */
+export const InkGround: React.FC<{ children?: React.ReactNode }> = ({ children }) => (
+  <AbsoluteFill style={{ background: C.headerInk }}>
+    <AbsoluteFill
+      style={{ background: `radial-gradient(ellipse at 50% 45%, #1E1A17 0%, ${C.headerInk} 70%)` }}
+    />
+    {children}
+  </AbsoluteFill>
+);
 
 /**
- * Two-tone headline with word-stagger entrance.
- * Leading words in platinum, the final word in silver — the reference's law.
+ * The reel's signature caption: a short phrase, word-staggered, with exactly
+ * one coloured word. The reel colours its accent word coral; here it takes the
+ * brand warm, or green when the accent word *is* the money.
  */
-export const Headline: React.FC<{
-  text: string;
+export const AccentCaption: React.FC<{
+  caption: Caption;
   delay?: number;
   exitAt?: number;
+  tone?: "accent" | "gain";
+  onInk?: boolean;
   style?: React.CSSProperties;
-  twoTone?: boolean;
-}> = ({ text, delay = 0, exitAt, style, twoTone = true }) => {
+}> = ({ caption, delay = 0, exitAt, tone = "accent", onInk = false, style }) => {
   const frame = useCurrentFrame();
-  const words = text.split(" ");
-  const exitOpacity = exitAt === undefined ? 1 : at(frame, [exitAt, exitAt + 12], [1, 0], EASE.outQuart);
+  const accentHex = tone === "gain" ? C.gain : C.accent;
+  const baseInk = onInk ? "#FFFFFF" : C.textPrimary;
+  const out = exitAt === undefined ? 1 : at(frame, [exitAt, exitAt + 10], [1, 0], EASE.outQuart);
+
+  const parts = [
+    ...caption.lead.split(" ").filter(Boolean).map((word) => ({ word, accent: false })),
+    ...caption.accent.split(" ").filter(Boolean).map((word) => ({ word, accent: true })),
+    ...(caption.tail ?? "").split(" ").filter(Boolean).map((word) => ({ word, accent: false })),
+  ];
+
   return (
-    <div style={{ ...TYPE.hero, color: C.platinumText, lineHeight: 1.1, ...style }}>
-      {words.map((word, i) => {
-        const d = delay + i * 6;
-        const opacity = at(frame, [d, d + 18], [0, 1]) * exitOpacity;
-        const y = at(frame, [d, d + 18], [32, 0]);
-        const isLast = i === words.length - 1;
+    <div style={{ ...TYPE.caption, color: baseInk, textAlign: "center", lineHeight: 1.18, ...style }}>
+      {parts.map((p, i) => {
+        const d = delay + i * 4; // the reel cuts quick — 4f per word, not 6
+        const opacity = at(frame, [d, d + 14], [0, 1]) * out;
+        const y = at(frame, [d, d + 14], [22, 0]);
         return (
           <span
             key={i}
@@ -93,11 +71,12 @@ export const Headline: React.FC<{
               opacity,
               display: "inline-block",
               transform: `translateY(${y}px)`,
-              marginRight: "0.28em",
-              color: twoTone && isLast ? C.silverMuted : undefined,
+              marginRight: "0.26em",
+              color: p.accent ? accentHex : undefined,
+              fontWeight: p.accent ? 700 : undefined,
             }}
           >
-            {word}
+            {p.word}
           </span>
         );
       })}
@@ -105,112 +84,183 @@ export const Headline: React.FC<{
   );
 };
 
-/** Line-wipe reveal — sub-text and data labels. */
-export const WipeLine: React.FC<{
-  text: string;
-  delay?: number;
-  exitAt?: number;
-  style?: React.CSSProperties;
-}> = ({ text, delay = 0, exitAt, style }) => {
-  const frame = useCurrentFrame();
-  const wipe = at(frame, [delay, delay + 24], [0, 100], EASE.outQuart);
-  const exitOpacity = exitAt === undefined ? 1 : at(frame, [exitAt, exitAt + 12], [1, 0], EASE.outQuart);
-  return (
-    <div
-      style={{
-        ...TYPE.sub,
-        color: C.silverMuted,
-        clipPath: `inset(0 ${100 - wipe}% 0 0)`,
-        opacity: exitOpacity,
-        ...style,
-      }}
-    >
-      {text}
-    </div>
-  );
-};
-
-/** Eyebrow label above a feature headline. */
-export const Eyebrow: React.FC<{ text: string; delay?: number; exitAt?: number }> = ({
-  text,
-  delay = 0,
-  exitAt,
+/**
+ * Floating rounded-square tiles at mixed depths — the reel's opening motif.
+ * Seeded rather than random, so any frame renders identically every time.
+ */
+export const TileField: React.FC<{ count?: number; opacity?: number; onInk?: boolean }> = ({
+  count = 10,
+  opacity = 1,
+  onInk = false,
 }) => {
-  const enter = useEnter(delay, exitAt);
+  const frame = useCurrentFrame();
+  const rgb = onInk ? [182, 147, 119] : [182, 147, 119];
   return (
-    <div style={{ ...TYPE.label, color: C.silverMuted, ...enter, opacity: enter.opacity * 0.75 }}>
-      {text}
-    </div>
-  );
-};
-
-/** Bordered badge chip — lifted surface, hairline border. */
-export const Badge: React.FC<{ text: string; delay?: number }> = ({ text, delay = 0 }) => {
-  const enter = useEnter(delay);
-  return (
-    <div
-      style={{
-        ...TYPE.badge,
-        display: "inline-block",
-        color: C.platinumText,
-        background: C.liftedSurface,
-        border: `1px solid ${C.borderLine}`,
-        borderRadius: 999,
-        padding: "10px 20px",
-        ...enter,
-      }}
-    >
-      {text}
-    </div>
+    <AbsoluteFill style={{ opacity }}>
+      {Array.from({ length: count }).map((_, i) => {
+        const seed = (i * 2654435761) % 997;
+        const x = 5 + ((seed * 7) % 90);
+        const y = 8 + ((seed * 13) % 80);
+        const size = 96 + ((seed * 3) % 150);
+        const depth = 0.35 + ((seed % 60) / 100);
+        const drift = Math.sin((frame / (160 + (seed % 90))) * Math.PI * 2) * 28 * depth;
+        const enter = at(frame, [i * 3, i * 3 + 28], [0, 1], EASE.outQuint);
+        const scale = at(frame, [i * 3, i * 3 + 28], [0.72, 1], EASE.outQuint);
+        const a = onInk ? 0.16 : 0.22;
+        return (
+          <div
+            key={i}
+            style={{
+              position: "absolute",
+              left: `${x}%`,
+              top: `${y}%`,
+              width: size,
+              height: size,
+              borderRadius: size * 0.3,
+              background: `linear-gradient(155deg, rgba(${rgb[0]},${rgb[1]},${rgb[2]},${a * depth}) 0%, rgba(${rgb[0]},${rgb[1]},${rgb[2]},0.02) 100%)`,
+              transform: `translate(-50%, -50%) translateY(${drift}px) scale(${scale})`,
+              opacity: enter * (0.4 + depth * 0.5),
+              filter: `blur(${(1 - depth) * 4}px)`,
+            }}
+          />
+        );
+      })}
+    </AbsoluteFill>
   );
 };
 
 /**
- * Device frame — hand-rolled divs, no dependency.
- * Titanium rail, hairline inner bezel, Dynamic Island.
+ * A product screen presented as a floating panel — the reel shows UI this way
+ * rather than inside a device frame. Screens are authored at 375pt and scaled.
  */
-export const PhoneFrame: React.FC<{ width?: number; children: React.ReactNode }> = ({
-  width = 380,
-  children,
-}) => {
-  const height = Math.round((width / 380) * 800);
-  const radius = Math.round(width * 0.135);
+export const Panel: React.FC<{
+  scale?: number;
+  delay?: number;
+  exitAt?: number;
+  height?: number;
+  children: React.ReactNode;
+  style?: React.CSSProperties;
+}> = ({ scale = 1.6, delay = 0, exitAt, height = 812, children, style }) => {
+  const frame = useCurrentFrame();
+  const opacity = at(frame, [delay, delay + 26], [0, 1], EASE.outQuint);
+  const rise = at(frame, [delay, delay + 26], [46, 0], EASE.outQuint);
+  const s = at(frame, [delay, delay + 26], [0.94, 1], EASE.outQuint);
+  const out = exitAt === undefined ? 1 : at(frame, [exitAt, exitAt + 12], [1, 0], EASE.outQuart);
+  const float = frame > delay + 26 ? Math.sin(((frame - delay - 26) / 130) * Math.PI * 2) * 7 : 0;
+
   return (
     <div
       style={{
-        width,
+        width: 375,
         height,
-        borderRadius: radius,
-        padding: width * 0.028,
-        background: "linear-gradient(150deg, #3A4150 0%, #171B26 38%, #0E121B 62%, #2C3340 100%)",
-        boxShadow: `0 60px 120px -20px rgba(0,0,0,0.85), 0 0 0 1px ${C.borderLine}`,
-        position: "relative",
+        borderRadius: 30,
+        background: C.surface,
+        boxShadow: "0 40px 90px -24px rgba(60,42,28,0.30), 0 4px 14px rgba(60,42,28,0.06)",
+        overflow: "hidden",
+        opacity: opacity * out,
+        transform: `translateY(${rise + float}px) scale(${s * scale})`,
+        flex: "none",
+        ...style,
       }}
     >
-      <div
-        style={{
-          width: "100%",
-          height: "100%",
-          borderRadius: radius - width * 0.028,
-          overflow: "hidden",
-          background: C.voidBase,
-          position: "relative",
-        }}
-      >
-        {children}
-        <div
-          style={{
-            position: "absolute",
-            top: width * 0.032,
-            left: "50%",
-            transform: "translateX(-50%)",
-            width: width * 0.26,
-            height: width * 0.075,
-            borderRadius: 999,
-            background: "#000",
-          }}
-        />
-      </div>
+      {children}
     </div>
   );
 };
+
+/** Small pill — status chips and filter chips, straight from the app. */
+export const Pill: React.FC<{
+  children: React.ReactNode;
+  bg?: string;
+  color?: string;
+  style?: React.CSSProperties;
+}> = ({ children, bg = C.surfaceSunk, color = C.textSecondary, style }) => (
+  <span
+    style={{
+      display: "inline-block",
+      padding: "5px 11px",
+      borderRadius: 999,
+      background: bg,
+      color,
+      fontFamily: FONT.display,
+      fontSize: 11,
+      fontWeight: 600,
+      ...style,
+    }}
+  >
+    {children}
+  </span>
+);
+
+/** The Centricity brand lockup, in the file's own brand face. */
+export const BrandMark: React.FC<{ onInk?: boolean; size?: number; style?: React.CSSProperties }> = ({
+  onInk = false,
+  size = 40,
+  style,
+}) => (
+  <span
+    style={{
+      display: "inline-flex",
+      alignItems: "center",
+      gap: size * 0.28,
+      fontFamily: FONT.brand,
+      fontSize: size,
+      fontWeight: 600,
+      letterSpacing: "0.01em",
+      color: onInk ? "#FFFFFF" : C.textPrimary,
+      ...style,
+    }}
+  >
+    <span
+      style={{
+        width: size * 0.92,
+        height: size * 0.92,
+        borderRadius: 999,
+        border: `${Math.max(2, size * 0.055)}px solid ${onInk ? "#FFFFFF" : C.textPrimary}`,
+        display: "inline-block",
+        position: "relative",
+      }}
+    >
+      <span
+        style={{
+          position: "absolute",
+          left: "50%",
+          top: "18%",
+          width: Math.max(2, size * 0.055),
+          height: "44%",
+          background: onInk ? "#FFFFFF" : C.textPrimary,
+          transform: "translateX(-50%)",
+        }}
+      />
+    </span>
+    Centricity
+  </span>
+);
+
+/**
+ * Stage — the layout contract every product beat uses: the panel lives in the
+ * upper band, the caption gets a reserved strip underneath. Without this the
+ * caption collides with the phone's own tab bar.
+ */
+export const CAPTION_BAND = 168;
+
+export const Stage: React.FC<{ children: React.ReactNode; caption: React.ReactNode }> = ({
+  children,
+  caption,
+}) => (
+  <>
+    <AbsoluteFill
+      style={{
+        alignItems: "center",
+        justifyContent: "center",
+        flexDirection: "row",
+        paddingBottom: CAPTION_BAND,
+      }}
+    >
+      {children}
+    </AbsoluteFill>
+    <AbsoluteFill style={{ alignItems: "center", justifyContent: "flex-end", paddingBottom: 56 }}>
+      {caption}
+    </AbsoluteFill>
+  </>
+);

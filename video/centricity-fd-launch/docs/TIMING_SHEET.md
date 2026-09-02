@@ -1,52 +1,48 @@
-# Centricity — Fixed Deposits Launch Film · Timing Sheet
+# Centricity FD — GFF Launch Film · Timing Sheet
 
-**Master:** 1920×1080 · 30fps · **2592 frames · 86.4s**
-Scene durations live in `src/Launch.tsx` (`SCENE_FRAMES`). Crossfades are 18f (600ms)
-and overlap the adjoining scenes, so the total is the sum minus 6 × 18.
+**Master:** 1920×1080 · 30fps · **1362 frames · 45.4s**
+Scene durations live in `src/Launch.tsx` (`SCENE_FRAMES`). Crossfades are 12f (400ms)
+and overlap the adjoining scenes, so the total is the sum minus 4 × 12.
 
-| # | Scene | Dur | In → Out (master frames) | Beat |
-|---|-------|-----|--------------------------|------|
-| 1 | Cold open | 8.0s / 240f | 0 → 240 | Statement only. No logo. 0.5s of black first. |
-| 2 | Reveal | 10.0s / 300f | 222 → 522 | Wordmark fades in and sits still. Feature named. |
-| 3 | Feature I — Book | 17.0s / 510f | 504 → 1014 | Device left, copy right. Tenure ladder. |
-| 4 | Feature II — Compare | 17.0s / 510f | 996 → 1506 | Mirrored. Cross-bank rate table. |
-| 5 | Feature III — Earn | 16.0s / 480f | 1488 → 1968 | Amber count-up. The proof beat. |
-| 6 | Trust | 12.0s / 360f | 1950 → 2310 | AUM · SEBI · reach. No glow. |
-| 7 | CTA | 10.0s / 300f | 2292 → 2592 | Wordmark, one line, one accent, blackout. |
+| # | Beat | Dur | In → Out | Caption | On screen |
+|---|------|-----|----------|---------|-----------|
+| 1 | Compare | 11.0s / 330f | 0 → 330 | Six issuers, **one screen.** | Tile field + hook, then Compare: rows populate, best rate holds focus while the rest blur back |
+| 2 | Calculate | 9.0s / 270f | 318 → 588 | Exact returns, **instantly.** | ₹5,00,000 types in; six maturity figures resolve |
+| 3 | Share | 10.0s / 300f | 576 → 876 | Your brand, in your **client's chat.** | Card lifts from Image preview, arcs across, lands as a WhatsApp attachment |
+| 4 | Book | 10.0s / 300f | 864 → 1164 | Booked in **under 3 minutes.** | Select client → Invest now → three ticks → FD Booked → My FDs |
+| 5 | End card | 7.0s / 210f | 1152 → 1362 | Fixed Deposits, **reimagined.** | The film's one dark frame. Centricity × Blostem |
 
-## Within-scene choreography (scene-local frames)
+## Within-beat choreography (scene-local frames)
 
-**Cold open** — 0–15 black · 15 headline word-stagger begins (6f/word) · 96–132 hairline
-rule draws to 220px · 200 exit.
+**Compare** — 8/22/36 hook lines stagger in · 60–76 they leave · 96 panel rises ·
+124 rows populate (7f apart) · 244 blur-pull to the best rate · 252 caption · 318 exit.
 
-**Reveal** — 20–50 wordmark fade (1000ms, fade only; brand marks never scale) · 90–120
-"Fixed Deposits" in Playfair · 140 kicker line-wipe · 258 exit.
+**Calculate** — 6 panel · 34 amount types (2f per character) · ~56 list resolves (6f apart) ·
+132 caption · 244 exit.
 
-**Feature I / II** — 24 device entrance begins (33f, scale 0.92→1, rise 48px) · 57 float
-loop starts (±10px, 4s sine) · 40 screen content staggers in · 66 eyebrow · 78 headline ·
-126 sub-line wipe · 468 copy exits, device holds ~1.4s alone (the breathe rule).
+**Share** — 4 left panel (Download comparison) · 14 right panel (chat) · 26 card assembles in
+three strips · **108 card lifts** · 108–156 arcs across, scaling 1 → 0.66 · **156 lands**, handing
+off to the chat's own attachment · 168 message follows · 176 caption · 272 exit.
 
-**Feature III** — 36 eyebrow · 48 label wipe · 54 amber glow · 72–114 rate count-up
-(1400ms ease-out-quart) then **holds 10.6s** · 186/210 the two stats · 258 footnote ·
-432 exit.
+**Book** — 6 panel · 72 Invest now pressed · 80/92/104 progress ticks · 150 FD Booked ·
+164 stats · 182 the new FD row · 192 the existing book beneath it · 186 caption.
 
-**Trust** — 24 headline · 96 stat row · 312 exit.
+**End card** — 10–40 lockup fades in (brand marks never scale) · 46 rule draws · 58 co-brand ·
+92 line · 120 festival line · 176–204 blackout.
 
-**CTA** — 12–42 wordmark · 72 line · 114 button · 258–288 blackout to void.
+## The content rules this sheet follows
 
-## Social cut
-
-`LaunchStory` (1080×1920) and `LaunchSquare` (1080×1080) run the four centre-stacked
-scenes — cold open 6s, reveal 8s, Feature III 14s, CTA 8s = **1026 frames / 34.2s**.
-Features I and II are side-by-side compositions and are dropped rather than crushed
-into a vertical crop.
+One caption per beat, five words or fewer, exactly one accent word — the only coloured
+word on screen. The UI does the explaining; the caption names the benefit the screen just
+proved. Captions sit in a reserved 168px band (`Stage` in `src/lib/atoms.tsx`) so they never
+collide with the phone's own tab bar.
 
 ## Render
 
 ```bash
 npm run studio          # live preview
-npm run render          # master   → out/launch.mp4
-npm run render:story    # 9:16     → out/story.mp4
-npm run render:square   # 1:1      → out/square.mp4
-npx remotion still src/index.ts Launch out/qc/f1900.png --frame=1900   # QC still
+npm run render          # master → out/launch.mp4
+npm run render:story    # 9:16   → out/story.mp4    (see caveat in README)
+npm run render:square   # 1:1    → out/square.mp4
+npx remotion still src/index.ts Launch out/qc/f780.png --frame=780
 ```

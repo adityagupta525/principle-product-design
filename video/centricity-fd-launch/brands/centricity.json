@@ -1,22 +1,29 @@
 {
-  "name": "Centricity",
-  "system": "Obsidian Intelligence",
+  "name": "Centricity FD — Partner App",
+  "source": "Figma · Centricity FD — Partner App (Design System + Screens), node 196-7021",
+  "note": "Read from the Figma file itself. --accent-primary and --cen-family-brand are the file's own variables; the remaining values are sampled from the FINAL DESIGN screens.",
   "colors": {
-    "voidBase": "#050507",
-    "obsidianSurface": "#0B0D14",
-    "liftedSurface": "#111520",
-    "borderLine": "#1C2030",
-    "platinumText": "#C8D0DC",
-    "silverMuted": "#6B7A8D",
-    "dataAmber": "#C49A3C",
-    "emeraldSignal": "#00C48C",
-    "crimsonSignal": "#E5484D",
-    "accentIce": "#3B6FD4"
+    "canvas": "#F7F2ED",
+    "surface": "#FFFFFF",
+    "surfaceSunk": "#F4F2F0",
+    "headerInk": "#0E0E0E",
+    "textPrimary": "#141414",
+    "textSecondary": "#5C5C5C",
+    "textMuted": "#8C8C8C",
+    "hairline": "#E6E1DC",
+    "accent": "#B69377",
+    "gain": "#17A05A",
+    "gold": "#C9A227",
+    "alert": "#E0342C"
   },
-  "fonts": { "display": "Inter", "editorial": "Playfair Display", "data": "JetBrains Mono" },
+  "fonts": {
+    "primary": "Urbanist",
+    "brand": "Montserrat",
+    "numerals": "Urbanist"
+  },
   "law": {
-    "amber": "numbers only — returns, rates, AUM. Never chrome.",
-    "white": "#FFFFFF is banned. Platinum #C8D0DC always.",
-    "accentsPerScene": 1
+    "accent": "#B69377 is the brand warm — links, active tab, card chrome. Never on a rate.",
+    "gain": "Rates and returns are always #17A05A. Green means money, nothing else.",
+    "ink": "Headers and primary buttons are near-black #0E0E0E on white. One dark mass per screen."
   }
 }
