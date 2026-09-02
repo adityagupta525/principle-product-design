@@ -19,7 +19,7 @@ export const Resolve: React.FC = () => {
   const len = shotLen(SHOT.resolve);
   const cam = useCamera(len, { z: [1.1, 0.94] });
 
-  const dim = at(frame, [0, 70], [1, 0.18], EASE.outQuart);
+  const dim = at(frame, [0, 62], [1, 0.05], EASE.outQuart);
   const lock = at(frame, [26, 56], [0, 1], EASE.outExpo);
   const kick = at(frame, [70, 92], [0, 1], EASE.outQuart);
   // The hand-back: everything goes, and the first bubble of the next pass fades up.
@@ -31,7 +31,7 @@ export const Resolve: React.FC = () => {
       <Room keyX="50%" keyY="50%" lift={at(frame, [0, len], [1, 0.35], EASE.outQuart)} />
       <Composite grain={0.07}>
         <Plane depth={0.1} cam={cam}>
-          <div style={{ opacity: dim * out, filter: `blur(${at(frame, [0, 80], [0, 4], EASE.outQuart)}px)` }}>
+          <div style={{ opacity: dim * out, filter: `blur(${at(frame, [0, 70], [0, 16], EASE.outQuart)}px)` }}>
             <LitPanel scale={0.92} bloom={dim}>
               <BookScreen tapAt={-400} doneAt={-300} />
             </LitPanel>
@@ -90,11 +90,11 @@ export const Resolve: React.FC = () => {
               maxWidth: 620,
               padding: "20px 26px",
               borderRadius: "20px 20px 20px 5px",
-              background: "#20201F",
-              boxShadow: `0 0 60px -14px ${CINE.key}22, 0 24px 50px -20px #000`,
+              background: "#2C2A27",
+              boxShadow: `0 0 90px -10px ${CINE.key}3A, 0 24px 50px -20px #000`,
               fontFamily: FONT.app,
               fontSize: 25,
-              color: "#CFC8C1",
+              color: "#EAE4DC",
             }}
           >
             {COPY.ask.q1}

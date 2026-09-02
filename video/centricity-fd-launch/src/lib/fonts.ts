@@ -253,10 +253,23 @@ export const loadFonts = () => {
   if (injected || typeof document === "undefined") return;
   injected = true;
 
-  const handle = delayRender("Loading self-hosted fonts");
+  const handle = delayRender("Loading self-hosted fonts", { timeoutInMilliseconds: 120000 });
   const style = document.createElement("style");
   style.textContent = FACES.replace(/FONT_BASE/g, staticFile("fonts").replace(/\/$/, ""));
   document.head.appendChild(style);
 
-  document.fonts.ready.then(() => continueRender(handle)).catch(() => continueRender(handle));
+  /**
+   * Ask for the exact faces the film sets, rather than waiting on
+   * document.fonts.ready — under render load that promise can sit unresolved
+   * long enough to fail the frame, and a font gate must never be the thing
+   * that breaks a render. The race guarantees the handle always clears.
+   */
+  const faces = [
+    "400 16px Urbanist", "500 16px Urbanist", "600 16px Urbanist", "700 16px Urbanist",
+    "500 16px Montserrat", "600 16px Montserrat", "700 16px Montserrat",
+  ];
+  const loaded = Promise.all(faces.map((f) => document.fonts.load(f).catch(() => null)));
+  const capped = new Promise((r) => setTimeout(r, 8000));
+
+  Promise.race([loaded, capped]).then(() => continueRender(handle));
 };

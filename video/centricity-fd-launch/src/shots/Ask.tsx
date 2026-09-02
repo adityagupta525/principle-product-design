@@ -27,11 +27,11 @@ const Bubble: React.FC<{ text: string; delay: number; blur: number; dim: number;
         maxWidth: 620,
         padding: "20px 26px",
         borderRadius: "20px 20px 20px 5px",
-        background: "#20201F",
-        boxShadow: `0 0 60px -14px ${CINE.key}22, 0 24px 50px -20px #000`,
+        background: "#2C2A27",
+        boxShadow: `0 0 90px -10px ${CINE.key}3A, 0 24px 50px -20px #000`,
         fontFamily: FONT.app,
         fontSize: 25,
-        color: "#CFC8C1",
+        color: "#EAE4DC",
       }}
     >
       {text}
@@ -48,7 +48,7 @@ export const Ask: React.FC = () => {
 
   return (
     <AbsoluteFill>
-      <Room keyX="50%" keyY="52%" lift={0.5} />
+      <Room keyX="50%" keyY="52%" lift={0.85} />
       <Composite grain={0.075}>
         <AbsoluteFill
           style={{
