@@ -1,5 +1,5 @@
 import React from "react";
-import { AbsoluteFill, Img, staticFile, useCurrentFrame } from "remotion";
+import { AbsoluteFill, Img, OffthreadVideo, staticFile, useCurrentFrame, useVideoConfig } from "remotion";
 import { CINE, FONT, TYPE } from "./tokens";
 import { at, EASE } from "./motion";
 import type { Caption } from "../copy";
@@ -24,7 +24,12 @@ import type { Caption } from "../copy";
  * gives real falloff, a floor with a reflection, and grain that belongs to the
  * light rather than being laid over it.
  *
- * `variant` picks the plate; the haze drifts over both so the air moves.
+ * The plates are now moving footage (Kling 3.0, image-to-video off the stills):
+ * the haze actually drifts and the dust actually falls, which no amount of CSS
+ * transform can fake. They are 10s and the film is 54s, so each shot windows
+ * into the clip at its own offset and the room never visibly repeats.
+ *
+ * `variant` picks the plate.
  */
 export const Room: React.FC<{
   keyX?: string;
@@ -33,7 +38,9 @@ export const Room: React.FC<{
   variant?: "shaft" | "pool";
   flip?: boolean;
   drift?: number;
-}> = ({ keyX = "38%", keyY = "46%", lift = 1, variant = "pool", flip = false, drift = 1 }) => {
+  /** Frame to enter the 10s plate at, so shots never sit on the same air. */
+  offset?: number;
+}> = ({ keyX = "38%", keyY = "46%", lift = 1, variant = "pool", flip = false, drift = 1, offset = 0 }) => {
   const frame = useCurrentFrame();
   const kx = parseFloat(keyX);
 
@@ -46,8 +53,10 @@ export const Room: React.FC<{
   return (
     <AbsoluteFill style={{ background: CINE.void, overflow: "hidden" }}>
       <AbsoluteFill style={{ opacity: lift }}>
-        <Img
-          src={staticFile(variant === "shaft" ? "env/room-shaft.png" : "env/room-pool.png")}
+        <OffthreadVideo
+          src={staticFile(variant === "shaft" ? "env/room-shaft.mp4" : "env/room-pool.mp4")}
+          startFrom={offset}
+          muted
           style={{
             width: "100%",
             height: "100%",

@@ -25,7 +25,7 @@ export const Ignite: React.FC = () => {
 
   return (
     <AbsoluteFill>
-      <Room keyX="34%" keyY="50%" lift={at(frame, [0, 10], [0.3, 1], EASE.outQuart)} />
+      <Room offset={40} keyX="34%" keyY="50%" lift={at(frame, [0, 10], [0.3, 1], EASE.outQuart)} />
       <Composite>
         <Plane depth={0.05} cam={cam}>
           <div style={{ width: 1400, height: 700, borderRadius: 400,

@@ -19,7 +19,7 @@ const Beat: React.FC<{ i: number; zoom: number; fx: number; fy: number; tap: num
   const cam = useCamera(len, { z: [1.0, 1.08] });
   return (
     <AbsoluteFill>
-      <Room keyX={`${40 + (i % 3) * 6}%`} keyY="48%" />
+      <Room offset={100} keyX={`${40 + (i % 3) * 6}%`} keyY="48%" />
       <Composite>
         <Plane depth={0.12} cam={cam}>
           <Macro zoom={zoom} fx={fx} fy={fy}>

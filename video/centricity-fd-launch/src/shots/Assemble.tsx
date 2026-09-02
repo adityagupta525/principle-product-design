@@ -20,7 +20,7 @@ export const Assemble: React.FC = () => {
 
   return (
     <AbsoluteFill>
-      <Room keyX="46%" keyY="46%" />
+      <Room offset={90} keyX="46%" keyY="46%" />
       <Composite>
         <Plane depth={0.07} cam={cam} blur={rack * 6}>
           <div style={{ transform: "translateX(140px) scale(0.92)", opacity: 1 - rack * 0.35 }}>

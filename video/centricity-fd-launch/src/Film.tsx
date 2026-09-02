@@ -2,6 +2,7 @@ import React from "react";
 import { AbsoluteFill, Audio, Sequence, staticFile } from "remotion";
 import { CINE } from "./lib/tokens";
 import { SHOT, shotLen, DURATION } from "./lib/beat";
+import { Sfx } from "./lib/sfx";
 import { Ask } from "./shots/Ask";
 import { Ignite } from "./shots/Ignite";
 import { Rows } from "./shots/Rows";
@@ -37,7 +38,8 @@ const SHOTS = [
 
 export const Film: React.FC = () => (
   <AbsoluteFill style={{ background: CINE.void }}>
-    <Audio src={staticFile("audio/bed.wav")} />
+    <Audio src={staticFile("audio/bed.wav")} volume={0.82} />
+    <Sfx />
     {SHOTS.map(([range, Shot], i) => (
       <Sequence key={i} from={range[0]} durationInFrames={shotLen(range)}>
         <Shot />

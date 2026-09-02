@@ -28,7 +28,7 @@ export const Resolve: React.FC = () => {
 
   return (
     <AbsoluteFill>
-      <Room keyX="50%" keyY="50%" lift={at(frame, [0, len], [1, 0.35], EASE.outQuart)} />
+      <Room offset={20} keyX="50%" keyY="50%" lift={at(frame, [0, len], [1, 0.35], EASE.outQuart)} />
       <Composite grain={0.07}>
         <Plane depth={0.1} cam={cam}>
           <div style={{ opacity: dim * out, filter: `blur(${at(frame, [0, 70], [0, 16], EASE.outQuart)}px)` }}>

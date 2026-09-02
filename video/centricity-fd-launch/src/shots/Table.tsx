@@ -22,7 +22,7 @@ export const Table: React.FC = () => {
 
   return (
     <AbsoluteFill>
-      <Room keyX="40%" keyY="48%" />
+      <Room offset={150} keyX="40%" keyY="48%" />
       <Composite>
         <Plane depth={0.1} cam={cam}>
           {/* The pull crosses the boundary between being inside the screen and

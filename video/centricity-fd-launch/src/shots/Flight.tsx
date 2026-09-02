@@ -33,7 +33,7 @@ export const Flight: React.FC = () => {
 
   return (
     <AbsoluteFill>
-      <Room keyX="50%" keyY="46%" lift={1} />
+      <Room offset={10} keyX="50%" keyY="46%" lift={1} />
       <Composite>
         {/* The card carries its own light across the dark. */}
         <Plane depth={0.26} cam={cam}>

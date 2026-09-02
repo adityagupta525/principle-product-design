@@ -15,7 +15,7 @@ export const Rows: React.FC = () => {
   const cam = useCamera(len, { z: [1.0, 1.07], y: [0.45, -0.45] });
   return (
     <AbsoluteFill>
-      <Room keyX="42%" keyY="48%" />
+      <Room offset={80} keyX="42%" keyY="48%" />
       <Composite>
         <Plane depth={0.12} cam={cam}>
           <Macro zoom={5.3} fx={187} fy={352}>

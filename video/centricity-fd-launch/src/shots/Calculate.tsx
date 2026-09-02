@@ -22,7 +22,7 @@ export const Calculate: React.FC = () => {
 
   return (
     <AbsoluteFill>
-      <Room keyX="36%" keyY="46%" />
+      <Room offset={30} keyX="36%" keyY="46%" />
       <Composite>
         <Plane depth={0.12} cam={cam}>
           <div>

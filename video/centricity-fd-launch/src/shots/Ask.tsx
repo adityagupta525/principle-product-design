@@ -19,7 +19,7 @@ import { shotLen, SHOT, BEAT } from "../lib/beat";
 export const Ask: React.FC = () => {
   const frame = useCurrentFrame();
   const len = shotLen(SHOT.ask);
-  const cam = useCamera(len, { z: [1.02, 1.1] });
+  const cam = useCamera(len, { z: [1.0, 1.26], y: [-0.5, 0.45] });
 
   // One question per beat, so the typing lands with the track.
   const beats = [Math.round(BEAT * 0.4), Math.round(BEAT * 2.2), Math.round(BEAT * 4.0)];
@@ -31,7 +31,7 @@ export const Ask: React.FC = () => {
 
   return (
     <AbsoluteFill>
-      <Room variant="shaft" keyX="52%" keyY="44%" lift={0.72} drift={0.7} />
+      <Room offset={0} variant="shaft" keyX="52%" keyY="44%" lift={0.72} drift={0.7} />
       <Composite grain={0.07}>
         <Plane depth={0.12} cam={cam}>
           <div
@@ -41,7 +41,7 @@ export const Ask: React.FC = () => {
               filter: `blur(${pull * 10}px)`,
             }}
           >
-            <LitPanel scale={0.84} bloom={0.75}>
+            <LitPanel scale={0.88} bloom={0.75}>
               <AskChatScreen beats={beats} />
             </LitPanel>
           </div>

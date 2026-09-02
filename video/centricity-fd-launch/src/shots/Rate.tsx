@@ -20,7 +20,7 @@ export const Rate: React.FC = () => {
 
   return (
     <AbsoluteFill>
-      <Room keyX="34%" keyY="50%" />
+      <Room offset={120} keyX="34%" keyY="50%" />
       <Composite>
         <Plane depth={0.12} cam={cam} style={{ justifyContent: "flex-start" }}>
           <div style={{ marginLeft: -420 }}>

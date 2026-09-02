@@ -20,7 +20,7 @@ export const Detach: React.FC = () => {
 
   return (
     <AbsoluteFill>
-      <Room keyX="50%" keyY="48%" />
+      <Room offset={130} keyX="50%" keyY="48%" />
       <Composite>
         <Plane depth={0.06} cam={cam} blur={5}>
           <div style={{ transform: "translateX(120px) scale(0.9)", opacity: 0.5 }}>

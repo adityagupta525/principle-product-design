@@ -20,7 +20,7 @@ export const Land: React.FC = () => {
 
   return (
     <AbsoluteFill>
-      <Room keyX="44%" keyY="50%" />
+      <Room offset={60} keyX="44%" keyY="50%" />
       <Composite>
         <Plane depth={0.12} cam={cam} style={{ justifyContent: "flex-start" }}>
           <div style={{ marginLeft: -420 }}>
