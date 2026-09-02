@@ -1,0 +1,22 @@
+{
+  "name": "Centricity",
+  "system": "Obsidian Intelligence",
+  "colors": {
+    "voidBase": "#050507",
+    "obsidianSurface": "#0B0D14",
+    "liftedSurface": "#111520",
+    "borderLine": "#1C2030",
+    "platinumText": "#C8D0DC",
+    "silverMuted": "#6B7A8D",
+    "dataAmber": "#C49A3C",
+    "emeraldSignal": "#00C48C",
+    "crimsonSignal": "#E5484D",
+    "accentIce": "#3B6FD4"
+  },
+  "fonts": { "display": "Inter", "editorial": "Playfair Display", "data": "JetBrains Mono" },
+  "law": {
+    "amber": "numbers only — returns, rates, AUM. Never chrome.",
+    "white": "#FFFFFF is banned. Platinum #C8D0DC always.",
+    "accentsPerScene": 1
+  }
+}
