@@ -47,19 +47,33 @@ export const at = (
 ) => interpolate(frame, range, out, { ...clamp, easing });
 
 /**
- * Perceptual-scale interpolation. The eye reads scale geometrically, not
- * linearly (Weber–Fechner): 1→2 and 2→4 look like equal steps. A linear
- * interpolate on `scale()` decelerates too early on a large grow, so the object
- * looks like it "arrives" a beat before it settles. This walks the ratio —
- *   s(p) = from · (to / from) ^ p
- * — so equal progress is equal *perceived* size change. Timing and easing are
- * unchanged: `p` still comes from `at`, only the mapping of p→scale differs.
+ * Compatibility implementation of Remotion's `output:'perceptual-scale'` for the
+ * installed Remotion version (4.0.416), which does not expose it — its
+ * InterpolateOptions carries only easing / extrapolate*. This reproduces the
+ * native behaviour exactly rather than approximating it.
  *
- * Remotion 4.0.416 has no native `output:'perceptual-scale'` (InterpolateOptions
- * exposes only easing / extrapolate*), so the geometry is done here by hand; on
- * a version that ships it this is a one-line swap. Falls back to linear when an
- * endpoint is ≤0 (a ratio through zero is undefined) — nothing here scales from 0.
+ * Remotion interpolates scale in SIGNED-AREA space, not linear space and not by
+ * ratio: a `scale()` covers area ∝ s², so the perceptually even path between two
+ * scales is linear in signed area. Convert each endpoint to signed area, walk it
+ * linearly by the eased progress, convert back with a signed root:
+ *   area(s)   = s === 0 ? 0 : sign(s) · s²
+ *   scale(a)  = a === 0 ? 0 : sign(a) · √|a|
+ *   s(p)      = scale( area(from) + p · (area(to) − area(from)) )
+ *
+ * Timing, easing and clamping are unchanged: `p` is the exact eased/clamped
+ * progress `at` already produces, and only the p→scale mapping differs. On a
+ * Remotion that ships perceptual-scale this collapses to a native interpolate.
  */
+const toSignedArea = (s: number) => (s === 0 ? 0 : Math.sign(s) * s * s);
+const fromSignedArea = (a: number) => (a === 0 ? 0 : Math.sign(a) * Math.sqrt(Math.abs(a)));
+
+/** The pure p→scale mapping, exposed for the deterministic check in tools/. */
+export const perceptualScale = (p: number, from: number, to: number) => {
+  const aFrom = toSignedArea(from);
+  const aTo = toSignedArea(to);
+  return fromSignedArea(aFrom + p * (aTo - aFrom));
+};
+
 export const atScale = (
   frame: number,
   range: [number, number],
@@ -68,8 +82,7 @@ export const atScale = (
 ) => {
   const [from, to] = out;
   const p = at(frame, range, [0, 1], easing);
-  if (from <= 0 || to <= 0) return interpolate(p, [0, 1], out, clamp);
-  return from * Math.pow(to / from, p);
+  return perceptualScale(p, from, to);
 };
 
 /**
