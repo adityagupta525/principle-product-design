@@ -98,6 +98,27 @@ const Header: React.FC<{ title: string }> = ({ title }) => (
  * inside a 50px box at 10,10 and the 20px checkbox overlaps its top-left
  * corner at 2,2 — a badge on the logo, not a control in the row flow.
  */
+/**
+ * WhatsApp delivery tick. state 0 pending clock · 1 sent (one check) ·
+ * 2 delivered (two checks) · 3 read (two checks, blue via `color`).
+ */
+const Tick: React.FC<{ state: number; color: string }> = ({ state, color }) => {
+  if (state <= 0) {
+    return (
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#8A9A8A" strokeWidth="2">
+        <circle cx="12" cy="12" r="9" />
+        <path d="M12 7v5l3 2" strokeLinecap="round" />
+      </svg>
+    );
+  }
+  return (
+    <svg width="16" height="11" viewBox="0 0 22 14" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M1 7.5l3.5 3.5L11 4" />
+      {state >= 2 && <path d="M8 11l1.2 1.2M11.5 11L18 4" />}
+    </svg>
+  );
+};
+
 const LogoTile: React.FC<{
   color: string;
   /** Issuer slug — when public/logos/<slug>.png exists it replaces the tile. */
@@ -811,14 +832,27 @@ export const AskChatScreen: React.FC<{ beats: number[] }> = ({ beats }) => {
 export const ChatScreen: React.FC<{ delay?: number; landAt: number }> = ({ delay = 0, landAt }) => {
   const frame = useCurrentFrame();
   const s = COPY.share;
-  const bubble = at(frame, [landAt, landAt + 14], [0, 1], EASE.outQuint);
-  const text = at(frame, [landAt + 12, landAt + 26], [0, 1], EASE.outQuint);
+
+  // The send, read frame by frame off landAt:
+  //   launch    the card lifts out of the compose bar
+  //   +18       it has settled into the thread
+  //   +30 → +54 the tick evolves: sent ✓ → delivered ✓✓ → read ✓✓ blue
+  const flyY = at(frame, [landAt, landAt + 18], [230, 0], EASE.outQuint);
+  const flyS = at(frame, [landAt, landAt + 18], [0.62, 1], EASE.outQuint);
+  const bubble = at(frame, [landAt, landAt + 8], [0, 1], EASE.out);
+  const text = at(frame, [landAt + 20, landAt + 34], [0, 1], EASE.outQuint);
+
+  // Tick: 0 pending clock · 1 sent (one grey) · 2 delivered (two grey) · 3 read (two blue)
+  const tick = frame < landAt + 30 ? 0 : frame < landAt + 40 ? 1 : frame < landAt + 50 ? 2 : 3;
+  const tickColor = tick >= 3 ? "#34B7F1" : "#8A9A8A";
+
   return (
     <div
       style={{
         height: "100%",
         background: "#ECE5DD",
         position: "relative",
+        overflow: "hidden",
         opacity: at(frame, [delay, delay + 18], [0, 1]),
       }}
     >
@@ -827,31 +861,38 @@ export const ChatScreen: React.FC<{ delay?: number; landAt: number }> = ({ delay
         <div style={{ display: "flex", alignItems: "center", gap: 12, padding: "12px 16px 0" }}>
           <span style={{ color: "#FFF", fontSize: 18 }}>←</span>
           <span style={{ width: 32, height: 32, borderRadius: 999, background: "rgba(255,255,255,0.28)" }} />
-          <span style={{ fontFamily: FONT.app, fontSize: 15, fontWeight: 600, color: "#FFF" }}>{s.chatName}</span>
+          <span style={{ display: "flex", flexDirection: "column" }}>
+            <span style={{ fontFamily: FONT.app, fontSize: 15, fontWeight: 600, color: "#FFF" }}>{s.chatName}</span>
+            <span style={{ fontFamily: FONT.app, fontSize: 10, color: "rgba(255,255,255,0.7)" }}>online</span>
+          </span>
         </div>
       </div>
 
       <div style={{ padding: 14, display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 7 }}>
-        {/* The card, arrived — sized as a chat attachment */}
+        {/* The card, sent — it rises out of the compose bar into the thread. */}
         <div
           style={{
             opacity: bubble,
-            transform: `translateY(${at(frame, [landAt, landAt + 14], [12, 0], EASE.outQuint)}px)`,
+            transform: `translateY(${flyY}px) scale(${flyS})`,
+            transformOrigin: "bottom right",
             background: "#DCF8C6",
             borderRadius: "12px 12px 3px 12px",
             padding: 5,
             maxWidth: "86%",
+            boxShadow: "0 2px 8px rgba(0,0,0,0.10)",
           }}
         >
           <ShareCard delay={-60} width={228} />
-          <div style={{ textAlign: "right", fontSize: 9, color: "#6B7A6B", padding: "4px 5px 1px" }}>
-            {s.chatTime} ✓✓
+          <div style={{ display: "flex", justifyContent: "flex-end", alignItems: "center", gap: 4, fontSize: 9, color: "#6B7A6B", padding: "4px 5px 1px" }}>
+            <span>{s.chatTime}</span>
+            <Tick state={tick} color={tickColor} />
           </div>
         </div>
 
         <div
           style={{
             opacity: text,
+            transform: `translateY(${at(frame, [landAt + 20, landAt + 34], [10, 0], EASE.outQuint)}px)`,
             background: "#DCF8C6",
             borderRadius: "12px 12px 3px 12px",
             padding: "8px 12px",
@@ -859,10 +900,59 @@ export const ChatScreen: React.FC<{ delay?: number; landAt: number }> = ({ delay
             fontSize: 13,
             color: "#111",
             maxWidth: "82%",
+            boxShadow: "0 2px 8px rgba(0,0,0,0.10)",
           }}
         >
           {s.chatMessage}
-          <span style={{ fontSize: 9, color: "#6B7A6B", marginLeft: 8 }}>{s.chatTime}</span>
+          <span style={{ display: "inline-flex", alignItems: "center", gap: 4, fontSize: 9, color: "#6B7A6B", marginLeft: 8 }}>
+            {s.chatTime} <Tick state={text > 0.6 ? Math.max(1, tick) : 0} color={tickColor} />
+          </span>
+        </div>
+      </div>
+
+      {/* Compose bar — the card lifts out of here, so the send has a source. */}
+      <div
+        style={{
+          position: "absolute",
+          left: 8,
+          right: 8,
+          bottom: 10,
+          display: "flex",
+          alignItems: "center",
+          gap: 8,
+        }}
+      >
+        <div
+          style={{
+            flex: 1,
+            height: 38,
+            borderRadius: 999,
+            background: "#FFFFFF",
+            display: "flex",
+            alignItems: "center",
+            padding: "0 16px",
+            fontFamily: FONT.app,
+            fontSize: 12,
+            color: "#9AA0A6",
+            boxShadow: "0 1px 2px rgba(0,0,0,0.10)",
+          }}
+        >
+          Message
+        </div>
+        <div
+          style={{
+            width: 40,
+            height: 40,
+            borderRadius: 999,
+            background: "#075E54",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            // the send button pulses on the launch frame
+            transform: `scale(${1 - at(frame, [landAt - 3, landAt + 3], [0, 0.16], EASE.out) + at(frame, [landAt + 3, landAt + 12], [0, 0.16], EASE.out)})`,
+          }}
+        >
+          <Ico size={18} color="#FFF" d={<path d="M3 11l18-8-8 18-2-7-8-3z" />} />
         </div>
       </div>
     </div>

@@ -3,43 +3,45 @@ import { AbsoluteFill, useCurrentFrame } from "remotion";
 import { COPY } from "../copy";
 import { CINE, FONT } from "../lib/tokens";
 import { at, EASE } from "../lib/motion";
-import { Room, Composite, useCamera, Plane, LitPanel, Macro, EdgeFalloff } from "../lib/cinema";
+import { Room, Composite, useCamera, Plane, DevicePlate } from "../lib/cinema";
 import { ChatScreen } from "../screens/AppScreens";
 import { shotLen, SHOT } from "../lib/beat";
 
 /**
- * Shot 10 · 1107–1172 · 2.2s
- * It lands. Macro push onto the partner's own name on the card — this is the
- * film's whole argument, so it is the only thing in focus and it is held.
+ * Shot 10 · it sends.
+ *
+ * The card the film just built arrives where it was always going: the client's
+ * WhatsApp. Shown in the real device so the send is unmistakable — the bubble
+ * lifts out of the compose bar into the thread, and the tick evolves sent →
+ * delivered → read while the camera pushes gently in. The whole argument of
+ * the film is that last line on the card — "Sent by: Ashish Gupta" — so the
+ * caption names it, but the WhatsApp send is the thing you watch happen.
  */
 export const Land: React.FC = () => {
   const frame = useCurrentFrame();
   const len = shotLen(SHOT.land);
-  const cam = useCamera(len, { z: [1.0, 1.13] });
-  const nameGlow = at(frame, [22, 44], [0, 1], EASE.outQuart);
+  const cam = useCamera(len, { z: [1.04, 1.14], x: [0.3, -0.3] });
 
   return (
     <AbsoluteFill>
-      <Room offset={60} keyX="44%" keyY="50%" />
+      <Room offset={60} keyX="42%" keyY="50%" />
       <Composite>
-        <Plane depth={0.12} cam={cam} style={{ justifyContent: "flex-start" }}>
-          <div style={{ marginLeft: -420 }}>
-            <Macro zoom={4.0} fx={230} fy={300}>
-              <LitPanel bare>
-                <ChatScreen delay={-30} landAt={0} />
-              </LitPanel>
-            </Macro>
+        <Plane depth={0.12} cam={cam}>
+          <div style={{ transform: "translateX(-300px)" }}>
+            <DevicePlate scale={3.0} spillRadius={620}>
+              {/* send launches at frame 6, ticks evolve through the shot */}
+              <ChatScreen delay={0} landAt={6} />
+            </DevicePlate>
           </div>
         </Plane>
 
-        <EdgeFalloff side="right" at={52} />
-
         <AbsoluteFill style={{ alignItems: "flex-end", justifyContent: "center", paddingRight: 120 }}>
-          <div style={{ width: 500 }}>
+          <div style={{ width: 460 }}>
             <div
               style={{
                 fontFamily: FONT.display,
-                fontSize: 22,
+                fontSize: 19,
+                fontWeight: 600,
                 letterSpacing: "0.2em",
                 color: CINE.typeDim,
                 opacity: at(frame, [10, 24], [0, 1]),
@@ -50,14 +52,15 @@ export const Land: React.FC = () => {
             <div
               style={{
                 fontFamily: FONT.display,
-                fontSize: 76,
+                fontSize: 68,
                 fontWeight: 700,
                 letterSpacing: "-0.04em",
                 color: CINE.keyHot,
+                lineHeight: 1.0,
                 marginTop: 12,
-                textShadow: `0 0 ${nameGlow * 46}px ${CINE.key}88`,
-                opacity: at(frame, [18, 34], [0, 1], EASE.outExpo),
-                transform: `translateY(${at(frame, [18, 34], [26, 0], EASE.outExpo)}px)`,
+                textShadow: `0 0 ${at(frame, [40, 60], [0, 1], EASE.outQuart) * 46}px ${CINE.key}88`,
+                opacity: at(frame, [40, 54], [0, 1], EASE.outExpo),
+                transform: `translateY(${at(frame, [40, 54], [24, 0], EASE.outExpo)}px)`,
               }}
             >
               {COPY.share.partnerName}
