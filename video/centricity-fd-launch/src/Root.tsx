@@ -6,6 +6,7 @@ import { Sheet } from "./Sheet";
 import { IgniteProof } from "./shots/ignite/Proof";
 import { BookProof } from "./shots/book/Proof";
 import { CompareProof } from "./shots/compare/Proof";
+import { CalculateProof } from "./shots/calculate/Proof";
 import { DURATION, SHOT, shotLen } from "./lib/beat";
 import { FPS } from "./lib/tokens";
 
@@ -40,6 +41,15 @@ export const RemotionRoot: React.FC = () => (
       height={1080}
       fps={FPS}
       durationInFrames={shotLen(SHOT.compare)}
+    />
+    {/* Calculate hero, rendered in isolation for review — never part of the film. */}
+    <Composition
+      id="CalculateProof"
+      component={CalculateProof}
+      width={1920}
+      height={1080}
+      fps={FPS}
+      durationInFrames={shotLen(SHOT.calculate)}
     />
     {/* Teardown contact sheets — analysis only, never part of the film. */}
     <Composition
