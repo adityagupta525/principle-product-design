@@ -42,7 +42,15 @@ export const Ignite: React.FC = () => {
 
   const on = at(frame, [8, 11], [0, 1], EASE.outQuart);
   const surge = at(frame, [8, 26], [1.9, 1], EASE.outQuart);
-  // The device never comes to rest: it lifts through the whole shot.
+  // NO CROP INSIDE THE GLASS. Magnifying the screen to make it readable cut
+  // the left column off — the issuer logos fell outside the glass entirely.
+  // The screen must sit whole inside the frame; readability comes from making
+  // the DEVICE bigger, not from cropping its content. At 4.6x the glass is
+  // 469px for 375pt (1.25px per point, so 10pt UI text renders at ~13px) and
+  // the body is 1150px tall, which no longer fits 1080 — so the phone runs off
+  // the bottom, which this beat was already doing on purpose.
+  // The whole phone, the whole screen, and readable text do not fit together
+  // in a 1080 frame; the crop is the thing that gives.
   const lift = at(frame, [0, len], [30, -10], EASE.outQuart);
   // No fake tilt. device-flat.jpg is lit dead-on: its rim highlight is
   // symmetric and its floor pool sits square under it. Rotate that in CSS and
@@ -81,14 +89,12 @@ export const Ignite: React.FC = () => {
         </Plane>
 
         <Plane depth={0.13} cam={cam}>
-          <div style={{ transform: `translate(${-372 + drift}px, ${lift + 176}px)` }}>
+          <div style={{ transform: `translate(${-445 + drift}px, ${lift + 168}px)` }}>
             <DevicePlate
-              scale={3.62}
+              scale={4.6}
               on={on}
               spill={surge}
               spillRadius={620}
-              zoom={1.22}
-              focus={[207, 352]}
             >
               <CompareScreen delay={-200} />
             </DevicePlate>
