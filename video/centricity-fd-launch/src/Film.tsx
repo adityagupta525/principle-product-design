@@ -5,9 +5,7 @@ import { SHOT, shotLen, DURATION } from "./lib/beat";
 import { Sfx } from "./lib/sfx";
 import { Ask } from "./shots/Ask";
 import { Ignite } from "./shots/Ignite";
-import { Rows } from "./shots/Rows";
-import { Rate } from "./shots/Rate";
-import { Table } from "./shots/Table";
+import { Compare } from "./shots/Compare";
 import { Calculate } from "./shots/Calculate";
 import { Curve } from "./shots/Curve";
 import { Assemble } from "./shots/Assemble";
@@ -25,9 +23,7 @@ import { Resolve } from "./shots/Resolve";
 const SHOTS = [
   [SHOT.ask, Ask],
   [SHOT.ignite, Ignite],
-  [SHOT.rows, Rows],
-  [SHOT.rate, Rate],
-  [SHOT.table, Table],
+  [SHOT.compare, Compare],
   [SHOT.calculate, Calculate],
   [SHOT.curve, Curve],
   [SHOT.assemble, Assemble],

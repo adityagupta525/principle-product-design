@@ -31,9 +31,14 @@ export const cutAtBeat = (n: number) => Math.round(beat(n) - CUT_LEAD);
 export const SHOT = {
   ask:        [0, cutAtBar(3)],
   ignite:     [cutAtBar(3), cutAtBar(5)],
-  rows:       [cutAtBar(5), cutAtBar(7)],
-  rate:       [cutAtBar(7), cutAtBar(8)],
-  table:      [cutAtBar(8), cutAtBar(9)],
+  /**
+   * ONE take, bars 5-9. Was three cuts — Rows, Rate, Table — each of which
+   * front-loaded its animation and then sat: Rate measured 95% still frames.
+   * A keynote film says few things slowly; ours was saying thirteen things in
+   * 54 seconds at a 1.7s cut rate, which is a social motion reel's cadence,
+   * not a keynote's. Merging them buys the beat room to move continuously.
+   */
+  compare:    [cutAtBar(5), cutAtBar(9)],
   calculate:  [cutAtBar(9), cutAtBar(11)],
   /* ── the light act: bars 11–16 ───────────────────────────────────── */
   curve:      [cutAtBar(11), cutAtBar(14)],
