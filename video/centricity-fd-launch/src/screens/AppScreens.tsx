@@ -16,7 +16,7 @@ import { Img, useCurrentFrame } from "remotion";
 import { hasLogo, logoSrc } from "../lib/logos";
 import { COPY, ISSUERS } from "../copy";
 import { C, FONT } from "../lib/tokens";
-import { at, EASE, TIME } from "../lib/motion";
+import { at, atScale, EASE, TIME } from "../lib/motion";
 import { Pill } from "../lib/atoms";
 import { useSmear } from "../lib/cinema";
 
@@ -838,7 +838,12 @@ export const ChatScreen: React.FC<{ delay?: number; landAt: number }> = ({ delay
   //   +18       it has settled into the thread
   //   +30 → +54 the tick evolves: sent ✓ → delivered ✓✓ → read ✓✓ blue
   const flyY = at(frame, [landAt, landAt + 18], [230, 0], EASE.outQuint);
-  const flyS = at(frame, [landAt, landAt + 18], [0.62, 1], EASE.outQuint);
+  const flyS = atScale(frame, [landAt, landAt + 18], [0.62, 1], EASE.outQuint);
+  // The launch is fast (≈57px in the first frame, then decelerating), so the
+  // rising card carries a vertical smear proportional to its own velocity and
+  // goes crisp the instant it settles into the thread. FAST OBJECT → blur.
+  const flyVy = flyY - at(frame - 1, [landAt, landAt + 18], [230, 0], EASE.outQuint);
+  const flySmear = useSmear(0, flyVy, 0.5, 20);
   const bubble = at(frame, [landAt, landAt + 8], [0, 1], EASE.out);
   const text = at(frame, [landAt + 20, landAt + 34], [0, 1], EASE.outQuint);
 
@@ -870,11 +875,13 @@ export const ChatScreen: React.FC<{ delay?: number; landAt: number }> = ({ delay
 
       <div style={{ padding: 14, display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 7 }}>
         {/* The card, sent — it rises out of the compose bar into the thread. */}
+        {flySmear.defs}
         <div
           style={{
             opacity: bubble,
             transform: `translateY(${flyY}px) scale(${flyS})`,
             transformOrigin: "bottom right",
+            filter: flySmear.filter,
             background: "#DCF8C6",
             borderRadius: "12px 12px 3px 12px",
             padding: 5,

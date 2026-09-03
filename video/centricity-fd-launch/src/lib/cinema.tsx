@@ -309,10 +309,9 @@ export const TypeCard: React.FC<{
   return (
     <div
       style={{
-        fontFamily: FONT.display,
+        ...TYPE.caption,
         fontSize: size,
         lineHeight: 1.14,
-        letterSpacing: "-0.03em",
         color: CINE.type,
         textAlign: align,
         maxWidth: 15 * size,
@@ -362,8 +361,7 @@ export const Kicker: React.FC<{ text: string; delay?: number; exitAt?: number; s
   return (
     <div
       style={{
-        ...TYPE.label,
-        fontSize: 15,
+        ...TYPE.micro,
         letterSpacing: "0.22em",
         color: CINE.key,
         opacity: o,
@@ -781,8 +779,6 @@ export const Annotate: React.FC<{
       <div
         style={{
           ...TYPE.label,
-          fontSize: 19,
-          fontWeight: 700,
           color: ink,
           textShadow: light ? "none" : "0 2px 18px rgba(0,0,0,0.9)",
           whiteSpace: "nowrap",

@@ -1,7 +1,7 @@
 import React from "react";
 import { AbsoluteFill, useCurrentFrame } from "remotion";
 import { COPY } from "../copy";
-import { CINE, FONT } from "../lib/tokens";
+import { CINE, TYPE } from "../lib/tokens";
 import { at, EASE } from "../lib/motion";
 import { Room, Composite, useCamera, Plane, DevicePlate, Kicker, Smear } from "../lib/cinema";
 import { CompareScreen } from "../screens/AppScreens";
@@ -73,10 +73,7 @@ export const Ignite: React.FC = () => {
         <Plane depth={0.04} cam={cam}>
           <div
             style={{
-              fontFamily: FONT.display,
-              fontSize: 300,
-              fontWeight: 800,
-              letterSpacing: "-0.06em",
+              ...TYPE.ghost,
               lineHeight: 0.8,
               whiteSpace: "nowrap",
               color: "rgba(236,231,225,0.07)",
@@ -117,10 +114,7 @@ export const Ignite: React.FC = () => {
             <Kicker text={COPY.ignite.kicker} delay={20} />
             <div
               style={{
-                fontFamily: FONT.display,
-                fontSize: 122,
-                fontWeight: 700,
-                letterSpacing: "-0.05em",
+                ...TYPE.hero,
                 lineHeight: 0.88,
                 color: CINE.type,
                 marginTop: 28,

@@ -1,8 +1,8 @@
 import React from "react";
 import { AbsoluteFill, useCurrentFrame } from "remotion";
 import { COPY, ISSUERS } from "../copy";
-import { C, CINE, FONT } from "../lib/tokens";
-import { at, EASE } from "../lib/motion";
+import { C, CINE, FONT, TYPE } from "../lib/tokens";
+import { at, atScale, EASE } from "../lib/motion";
 import { Room, Composite, useCamera, Plane, LitPanel, Macro, TypeCard, Smear } from "../lib/cinema";
 import { CompareScreen } from "../screens/AppScreens";
 import { shotLen, SHOT, BEAT } from "../lib/beat";
@@ -81,16 +81,13 @@ export const Compare: React.FC = () => {
           <Smear vy={vy} gain={0.5} max={26}>
             <div
               style={{
-                transform: `translate(-470px, ${liftDrift}px) scale(${0.82 + lift * 0.18 + settle})`,
+                transform: `translate(-470px, ${liftDrift}px) scale(${atScale(frame, [LIFT, LIFT + 26], [0.82, 1]) + settle})`,
                 textAlign: "left",
               }}
             >
               <div
                 style={{
-                  fontFamily: FONT.data,
-                  fontSize: 210,
-                  fontWeight: 800,
-                  letterSpacing: "-0.05em",
+                  ...TYPE.dataMax,
                   lineHeight: 0.9,
                   color: C.gain,
                   fontVariantNumeric: "tabular-nums",

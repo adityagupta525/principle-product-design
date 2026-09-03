@@ -1,7 +1,7 @@
 import React from "react";
 import { AbsoluteFill, useCurrentFrame } from "remotion";
 import { COPY } from "../copy";
-import { CINE, FONT } from "../lib/tokens";
+import { CINE, FONT, TYPE } from "../lib/tokens";
 import { at, EASE } from "../lib/motion";
 import { Room, Composite, useCamera, Plane, Smear } from "../lib/cinema";
 import { shotLen, SHOT, BEAT } from "../lib/beat";
@@ -153,10 +153,8 @@ export const Ask: React.FC = () => {
                 <div key={line} style={{ overflow: "hidden" }}>
                   <div
                     style={{
-                      fontFamily: FONT.display,
-                      fontSize: 46,
+                      ...TYPE.caption,
                       fontWeight: i === 2 ? 700 : 500,
-                      letterSpacing: "-0.03em",
                       lineHeight: 1.24,
                       color: i === 2 ? CINE.keyHot : CINE.typeDim,
                       transform: `translateY(${at(frame, [d, d + 12], [110, 0], EASE.out)}%)`,

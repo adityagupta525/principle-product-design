@@ -1,7 +1,7 @@
 import React from "react";
 import { AbsoluteFill, useCurrentFrame } from "remotion";
 import { COPY } from "../copy";
-import { CINE, FONT } from "../lib/tokens";
+import { CINE, TYPE } from "../lib/tokens";
 import { at, EASE } from "../lib/motion";
 import { Room, Composite, useCamera, Plane, LitPanel, DevicePlate, TypeCard, DeviceProp } from "../lib/cinema";
 import { BookScreen, AskChatScreen } from "../screens/AppScreens";
@@ -56,10 +56,7 @@ export const Resolve: React.FC = () => {
                 justifyContent: "center",
                 gap: 26,
                 opacity: lock,
-                fontFamily: FONT.brand,
-                fontSize: 26,
-                fontWeight: 700,
-                letterSpacing: "0.22em",
+                ...TYPE.lockup,
                 color: CINE.type,
               }}
             >
@@ -79,8 +76,7 @@ export const Resolve: React.FC = () => {
             <div
               style={{
                 marginTop: 34,
-                fontFamily: FONT.display,
-                fontSize: 15,
+                ...TYPE.micro,
                 letterSpacing: "0.26em",
                 color: CINE.key,
                 opacity: kick,

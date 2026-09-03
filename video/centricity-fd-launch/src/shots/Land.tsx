@@ -1,7 +1,7 @@
 import React from "react";
 import { AbsoluteFill, useCurrentFrame } from "remotion";
 import { COPY } from "../copy";
-import { CINE, FONT } from "../lib/tokens";
+import { CINE, TYPE } from "../lib/tokens";
 import { at, EASE } from "../lib/motion";
 import { Room, Composite, useCamera, Plane, DevicePlate } from "../lib/cinema";
 import { ChatScreen } from "../screens/AppScreens";
@@ -39,8 +39,7 @@ export const Land: React.FC = () => {
           <div style={{ width: 460 }}>
             <div
               style={{
-                fontFamily: FONT.display,
-                fontSize: 19,
+                ...TYPE.label,
                 fontWeight: 600,
                 letterSpacing: "0.2em",
                 color: CINE.typeDim,
@@ -51,10 +50,7 @@ export const Land: React.FC = () => {
             </div>
             <div
               style={{
-                fontFamily: FONT.display,
-                fontSize: 68,
-                fontWeight: 700,
-                letterSpacing: "-0.04em",
+                ...TYPE.payoff,
                 color: CINE.keyHot,
                 lineHeight: 1.0,
                 marginTop: 12,

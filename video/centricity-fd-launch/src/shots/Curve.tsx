@@ -1,6 +1,6 @@
 import React from "react";
 import { AbsoluteFill, useCurrentFrame } from "remotion";
-import { C, FONT, LIT } from "../lib/tokens";
+import { C, FONT, LIT, TYPE } from "../lib/tokens";
 import { at, EASE } from "../lib/motion";
 import { DayRoom, Composite, useCamera, Plane, LetterZoom } from "../lib/cinema";
 import { shotLen, SHOT, BEAT } from "../lib/beat";
@@ -208,10 +208,7 @@ export const Curve: React.FC = () => {
               </div>
               <div
                 style={{
-                  fontFamily: FONT.display,
-                  fontSize: 19,
-                  fontWeight: 700,
-                  letterSpacing: "0.14em",
+                  ...TYPE.label,
                   color: C.textSecondary,
                   marginTop: 8,
                 }}
@@ -242,9 +239,7 @@ export const Curve: React.FC = () => {
               </div>
               <div
                 style={{
-                  fontFamily: FONT.display,
-                  fontSize: 16,
-                  fontWeight: 600,
+                  ...TYPE.micro,
                   letterSpacing: "0.14em",
                   color: C.textSecondary,
                   marginTop: 5,
@@ -264,10 +259,7 @@ export const Curve: React.FC = () => {
                 display: "flex",
                 justifyContent: "space-between",
                 opacity: grid,
-                fontFamily: FONT.display,
-                fontSize: 16,
-                fontWeight: 600,
-                letterSpacing: "0.16em",
+                ...TYPE.micro,
                 color: C.textSecondary,
               }}
             >

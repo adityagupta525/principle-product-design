@@ -55,18 +55,56 @@ export const FONT = {
 const TABULAR = { fontVariantNumeric: "tabular-nums" as const };
 
 /**
- * Video type scale for 1920×1080. The reference reel sets captions mid-size and
- * lets motion carry the weight rather than filling the frame with type.
+ * THE TYPE RAMP — authoritative. Every film-voice size comes from here; a shot
+ * overrides a single property (a colour, a wider eyebrow track) only with intent.
+ * The vocabulary is ROLES, not sizes. Mirrors the ramp in VIDEO_DNA §3.
+ *
+ * Scope: this ramp owns the FILM VOICE (Urbanist / `display`) and the DATA MARK.
+ * The PRODUCT VOICE (`app` / Montserrat — app-UI mimicry inside a device, the
+ * in-product ₹ callouts) keeps its native DS scale and is not routed here, per
+ * VIDEO_DNA's "UI (inside device): native product scale, per DS".
+ *
+ * Sizes are set to the film's existing intentional values, so routing a site to
+ * its role is visually neutral — this makes the scale authoritative without
+ * redesigning it.
  */
 export const TYPE = {
-  hook:     { fontSize: 58, fontWeight: 600, letterSpacing: "-0.025em", fontFamily: FONT.display },
-  caption:  { fontSize: 46, fontWeight: 500, letterSpacing: "-0.02em",  fontFamily: FONT.display },
-  brand:    { fontSize: 40, fontWeight: 600, letterSpacing: "0.02em",   fontFamily: FONT.brand },
-  sub:      { fontSize: 26, fontWeight: 400, letterSpacing: "0",        fontFamily: FONT.display },
-  dataHero: { fontSize: 84, fontWeight: 700, letterSpacing: "-0.03em",  fontFamily: FONT.data, ...TABULAR },
-  dataMid:  { fontSize: 40, fontWeight: 700, letterSpacing: "-0.02em",  fontFamily: FONT.data, ...TABULAR },
-  label:    { fontSize: 18, fontWeight: 600, letterSpacing: "0.10em",   fontFamily: FONT.display,
-              textTransform: "uppercase" as const },
+  // FILM VOICE — Urbanist, set in the void beside the product, never on it.
+  /** Shot headline / the central claim. Two-tone, one copper word. */
+  hero:      { fontSize: 122, fontWeight: 700, letterSpacing: "-0.05em",  fontFamily: FONT.display },
+  /** One-line payoff / end statement. */
+  statement: { fontSize: 82,  fontWeight: 700, letterSpacing: "-0.035em", fontFamily: FONT.display },
+  /** The personal payoff — a recipient / partner name reveal. */
+  payoff:    { fontSize: 68,  fontWeight: 700, letterSpacing: "-0.04em",  fontFamily: FONT.display },
+  /** Cinematic caption (the accent word pulls to 700 inside TypeCard). */
+  caption:   { fontSize: 46,  fontWeight: 500, letterSpacing: "-0.03em",  fontFamily: FONT.display },
+  /** Secondary line under a caption or lockup. */
+  sub:       { fontSize: 26,  fontWeight: 400, letterSpacing: "-0.005em", fontFamily: FONT.display },
+  /** Eyebrow / kicker over a headline. */
+  label:     { fontSize: 18,  fontWeight: 700, letterSpacing: "0.14em",   fontFamily: FONT.display,
+               textTransform: "uppercase" as const },
+  /** Axis ticks, taglines, the smallest labels. */
+  micro:     { fontSize: 15,  fontWeight: 600, letterSpacing: "0.16em",   fontFamily: FONT.display,
+               textTransform: "uppercase" as const },
+
+  // DATA MARK — Urbanist tabular, Indian grouping, one accent. Size sits with
+  // its chart or device, so the tiers are named rather than forced to one value.
+  /** The winning rate, lifted out and held ~10× (Compare). */
+  dataMax:  { fontSize: 210, fontWeight: 800, letterSpacing: "-0.05em", fontFamily: FONT.data, ...TABULAR },
+  /** Hero number on a device / panel. */
+  dataHero: { fontSize: 84,  fontWeight: 700, letterSpacing: "-0.03em", fontFamily: FONT.data, ...TABULAR },
+  /** A mid data mark. */
+  dataMid:  { fontSize: 40,  fontWeight: 700, letterSpacing: "-0.02em", fontFamily: FONT.data, ...TABULAR },
+
+  // BRAND — Montserrat, where the *product* speaks: the co-brand lockup, card header.
+  /** The card / brand header. */
+  brand:    { fontSize: 40,  fontWeight: 600, letterSpacing: "0.02em",  fontFamily: FONT.brand },
+  /** The end-card co-brand lockup, letter-spaced wide. */
+  lockup:   { fontSize: 26,  fontWeight: 700, letterSpacing: "0.22em",  fontFamily: FONT.brand },
+
+  // FAR-PLANE TEXTURE — the giant cropped ghost word behind the device (Ignite).
+  // Not read as type; named so it stays authoritative rather than free-floating.
+  ghost:    { fontSize: 300, fontWeight: 800, letterSpacing: "-0.06em", fontFamily: FONT.display },
 };
 
 export const FPS = 30;

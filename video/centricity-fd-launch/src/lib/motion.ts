@@ -47,6 +47,32 @@ export const at = (
 ) => interpolate(frame, range, out, { ...clamp, easing });
 
 /**
+ * Perceptual-scale interpolation. The eye reads scale geometrically, not
+ * linearly (Weber–Fechner): 1→2 and 2→4 look like equal steps. A linear
+ * interpolate on `scale()` decelerates too early on a large grow, so the object
+ * looks like it "arrives" a beat before it settles. This walks the ratio —
+ *   s(p) = from · (to / from) ^ p
+ * — so equal progress is equal *perceived* size change. Timing and easing are
+ * unchanged: `p` still comes from `at`, only the mapping of p→scale differs.
+ *
+ * Remotion 4.0.416 has no native `output:'perceptual-scale'` (InterpolateOptions
+ * exposes only easing / extrapolate*), so the geometry is done here by hand; on
+ * a version that ships it this is a one-line swap. Falls back to linear when an
+ * endpoint is ≤0 (a ratio through zero is undefined) — nothing here scales from 0.
+ */
+export const atScale = (
+  frame: number,
+  range: [number, number],
+  out: [number, number],
+  easing = EASE.outExpo
+) => {
+  const [from, to] = out;
+  const p = at(frame, range, [0, 1], easing);
+  if (from <= 0 || to <= 0) return interpolate(p, [0, 1], out, clamp);
+  return from * Math.pow(to / from, p);
+};
+
+/**
  * Standard entrance: opacity 0→1 with a 24px rise, 700ms (21f).
  * `exitAt` fades the layer out over 400ms with a −16px lift.
  */
