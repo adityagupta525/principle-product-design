@@ -66,11 +66,16 @@ export const Book: React.FC = () => {
       : frame < 140
       ? at(frame, [100, 140], [2.52, 2.46], EASE.inOut)
       : frame < 190
-      ? atScale(frame, [140, 190], [2.46, 1.52], EASE.inOut)
-      : at(frame, [190, len], [1.52, 1.45], EASE.inOut);
+      ? atScale(frame, [140, 190], [2.46, 1.62], EASE.inOut)
+      : at(frame, [190, len], [1.62, 1.56], EASE.inOut);
 
-  // Vertical travel, in 375x812 screen space: the recommendation block, down to
-  // the CTA, down to the checklist, then up and open onto the result.
+  /**
+   * Vertical travel, in 375x812 screen space: the recommendation block, down to
+   * the CTA, down to the checklist, then up and open onto the result. The
+   * success payload sits high — the tick lands at y112 and the booked FD row
+   * ends at y440 — so the release resolves on y262, not on the sheet's old
+   * position, or the tick crops off the top and the frame fills with empty.
+   */
   const fy =
     frame < PRESS
       ? at(frame, [0, PRESS], [520, 585], EASE.inOut)
@@ -78,9 +83,11 @@ export const Book: React.FC = () => {
       ? at(frame, [PRESS, 100], [585, 690], EASE.out)
       : frame < 140
       ? at(frame, [100, 140], [690, 678], EASE.inOut)
-      : frame < 190
-      ? at(frame, [140, 190], [678, 420], EASE.inOut)
-      : at(frame, [190, len], [420, 432], EASE.inOut);
+      : frame < 162
+      ? at(frame, [140, 162], [678, 560], EASE.inOut)
+      : frame < 196
+      ? at(frame, [162, 196], [560, 262], EASE.out)
+      : at(frame, [196, len], [262, 274], EASE.inOut);
 
   const fx =
     frame < 100
