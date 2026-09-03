@@ -55,6 +55,19 @@ export const Ignite: React.FC = () => {
   // to a steady glow. The physical bloom of a screen powering on.
   const spill = at(frame, [2, 9], [0, 1.3], EASE.outExpo) - at(frame, [9, 28], [0, 0.3], EASE.inOut);
 
+  // ── MICRO PHYSICAL RESPONSE — the switch *causing* the system to wake ──
+  // A tiny damped impact on the strike: the device presses ~5px and recovers,
+  // and the camera gains a hair of push-in energy for ~half a second. One damped
+  // inflection, not a shake — the frame flexing to the power-on, not vibrating.
+  const impact = at(frame, [2, 4], [0, 5], EASE.out) * (1 - at(frame, [4, 16], [0, 1], EASE.outQuint));
+  const camKick = at(frame, [2, 4], [0, 0.008], EASE.out) * (1 - at(frame, [4, 18], [0, 1], EASE.outQuint));
+  // Extremely subtle optical aberration on the impulse ONLY — the screen edge
+  // splits for a few frames as the panel strikes, then resolves. Ignite-local;
+  // the global finish is untouched.
+  const aberr = at(frame, [2, 5], [0, 0.14], EASE.out) - at(frame, [6, 12], [0, 0.14], EASE.inOut);
+  // The camera with its activation micro-inflection folded in, for every plane.
+  const camA = { ...cam, z: cam.z + camKick };
+
   // Device stays whole-shot in motion (the stillness cure): a slow rise and a
   // counter-drift against the ghost, so the two planes separate as we watch.
   const lift = at(frame, [0, len], [30, -10], EASE.outQuart);
@@ -85,7 +98,7 @@ export const Ignite: React.FC = () => {
       <Room offset={40} keyX="30%" keyY="54%" lift={at(frame, [0, 12], [0.34, 1], EASE.outQuart)} />
       <Composite>
         {/* the ghost word — the far plane, cropped by the frame */}
-        <Plane depth={0.04} cam={cam}>
+        <Plane depth={0.04} cam={camA}>
           <div
             style={{
               ...TYPE.ghost,
@@ -100,7 +113,7 @@ export const Ignite: React.FC = () => {
           </div>
         </Plane>
 
-        <Plane depth={0.13} cam={cam}>
+        <Plane depth={0.13} cam={camA}>
           {/* relative wrapper so the Ignite-only light overlays share the plate's
               coordinate origin; the plate div is P.w×P.h at scale S from here. */}
           <div
@@ -108,7 +121,7 @@ export const Ignite: React.FC = () => {
               position: "relative",
               width: P.w * S,
               height: P.h * S,
-              transform: `translate(${-445 + drift}px, ${lift + 168}px)`,
+              transform: `translate(${-445 + drift}px, ${lift + 168 + impact}px)`,
             }}
           >
             <DevicePlate scale={S} on={on} spill={spill} spillRadius={620}>
@@ -157,6 +170,25 @@ export const Ignite: React.FC = () => {
                 pointerEvents: "none",
               }}
             />
+
+            {/* activation aberration — the screen edge splits red/blue for a few
+                frames on the strike, then resolves. Impulse only, extremely subtle. */}
+            <div
+              style={{
+                position: "absolute",
+                left: gx,
+                top: gy,
+                width: gw,
+                height: gh,
+                borderRadius: 9 * S,
+                mixBlendMode: "screen",
+                opacity: aberr,
+                boxShadow: `inset ${2.4 * S}px 0 ${2 * S}px rgba(255,42,42,0.55), inset ${-2.4 * S}px 0 ${
+                  2 * S
+                }px rgba(46,120,255,0.55)`,
+                pointerEvents: "none",
+              }}
+            />
           </div>
         </Plane>
 
@@ -171,7 +203,7 @@ export const Ignite: React.FC = () => {
           }}
         />
 
-        <Plane depth={0.22} cam={cam}>
+        <Plane depth={0.22} cam={camA}>
           <div style={{ width: 660, transform: "translateX(510px)" }}>
             <Kicker text={COPY.ignite.kicker} delay={20} />
             <div
