@@ -3,67 +3,82 @@ import { AbsoluteFill, useCurrentFrame } from "remotion";
 import { COPY } from "../copy";
 import { CINE, TYPE } from "../lib/tokens";
 import { at, EASE } from "../lib/motion";
-import { Room, Composite, useCamera, Plane, DevicePlate, Kicker, Smear } from "../lib/cinema";
+import { Room, Composite, useCamera, Plane, DevicePlate, DEVICE_FLAT, Kicker, Smear } from "../lib/cinema";
 import { CompareScreen } from "../screens/AppScreens";
 import { shotLen, SHOT } from "../lib/beat";
 
 /**
- * Shot 2 · ignition, on a real device.
+ * Shot 2 · IGNITE — "an intelligent financial product wakes up."
  *
- * Rebuilt against a 0.2s teardown of the reference. Three things it was doing
- * wrong, all visible once the frames are laid side by side:
+ * The hero is the real photographed device (env/device-flat.jpg) carrying the
+ * LIVE compare UI behind its measured glass. R3F was inspected and rejected: a
+ * synthesised body would compete with — and lose to — the photograph, and WebGL
+ * cannot texture the live DOM UI without baking it. So the "wake" is built
+ * causally on the existing photographic pipeline, on the grid, in four acts:
  *
- *  1 CONTRAST. The screen's spill reached the headline. Measured behind the
- *    word: a 7.3x luminance swing, with the bright part of the bloom reading
- *    BRIGHTER (L 0.416) than the glyphs sitting on it (L 0.394) — so the type
- *    dissolved into the light rather than sitting on it. That is a light
- *    placement fault, not a colour one, so the fix is to keep the spill on the
- *    device where it belongs and let the right of frame stay dark.
+ *   REVEAL     0–2    the object sits in the near-black room, screen off,
+ *                     read only by its rim. The camera is already pushing in.
+ *   FOCUS      2–14   THE SWITCH — the causal event, landed on the existing
+ *                     "product switching on" SFX tick at bar(3) ≈ in-shot f2.
+ *                     A readiness glow on the top bezel resolves INTO the screen
+ *                     igniting (brightness, never a scale-from-0), a specular
+ *                     sweep travels across the glass, the warm spill overshoots
+ *                     then settles — the physical light response of a power-on.
+ *   TRANSFORM 14–90   the interface is alive; the camera keeps moving toward the
+ *                     rate column; the headline rises beside it in the dark.
+ *   RESOLVE   90–130  the meaningful UI state — the winning rate goes active
+ *                     (its row emphasises, the rest dim back) via the screen's
+ *                     own focus mechanic. Information becomes active.
  *
- *  2 MOCKUP vs SCREEN. A whole dense compare list was shrunk into a 300px
- *    phone: the device said "look at me" and its content was illegible. The
- *    reference never does this — its devices carry either a simple hero state
- *    or a crop. The glass now magnifies into the rate column, so the mockup
- *    and the screen composition are about the same thing.
- *
- *  3 STILLNESS. Frames 5.6s through 8.8s of the last cut were near identical —
- *    four seconds of a still image. The reference changes something every
- *    0.2s. The device now rises and keeps rising, the ghost word drifts
- *    against it, and the key light travels across the whole shot.
- *
- * The ghost word behind the device is ref1's move at 16.0s and 20.4s: a huge
- * dim word, cropped by the frame, that gives the object something to stand in
- * front of and the frame a second depth plane.
+ * Everything below is at()/EASE/beat-locked; typography is the authoritative
+ * TYPE roles; the ghost word gives the frame its second depth plane.
  */
 export const Ignite: React.FC = () => {
   const frame = useCurrentFrame();
   const len = shotLen(SHOT.ignite);
-  const cam = useCamera(len, { z: [1.03, 1.13], x: [0.7, -0.7] });
 
-  const on = at(frame, [8, 11], [0, 1], EASE.outQuart);
-  const surge = at(frame, [8, 26], [1.9, 1], EASE.outQuart);
-  // NO CROP INSIDE THE GLASS. Magnifying the screen to make it readable cut
-  // the left column off — the issuer logos fell outside the glass entirely.
-  // The screen must sit whole inside the frame; readability comes from making
-  // the DEVICE bigger, not from cropping its content. At 4.6x the glass is
-  // 469px for 375pt (1.25px per point, so 10pt UI text renders at ~13px) and
-  // the body is 1150px tall, which no longer fits 1080 — so the phone runs off
-  // the bottom, which this beat was already doing on purpose.
-  // The whole phone, the whole screen, and readable text do not fit together
-  // in a 1080 frame; the crop is the thing that gives.
+  // ONE motivated camera move — establish the object, push toward the product,
+  // still running at the cut. No orbit. (Plane depth turns this into parallax.)
+  const cam = useCamera(len, { z: [1.02, 1.15], x: [0.55, -0.4], y: [0.05, -0.05] });
+
+  // ── THE SWITCH — causal activation, anchored to the SFX tick (in-shot f≈2) ──
+  // The screen wakes as BRIGHTNESS, not a scale-from-0: nothing in the room pops
+  // into existence, the surface already there lights up.
+  const on = at(frame, [2, 13], [0, 1], EASE.outExpo);
+  // A brief readiness glow on the top bezel that the ignition then consumes —
+  // the "intent" before the surface answers.
+  const rim = at(frame, [0, 3], [0, 0.6], EASE.out) * (1 - at(frame, [7, 19], [0, 1], EASE.out));
+  // The screen's own light sweeping across the glass as it comes alive.
+  const sweepP = at(frame, [2, 24], [0, 1], EASE.outQuint);
+  const sweepO = at(frame, [2, 9], [0, 0.55], EASE.out) - at(frame, [11, 26], [0, 0.55], EASE.inOut);
+  // Warm spill thrown back into the room — overshoots on the strike, then settles
+  // to a steady glow. The physical bloom of a screen powering on.
+  const spill = at(frame, [2, 9], [0, 1.3], EASE.outExpo) - at(frame, [9, 28], [0, 0.3], EASE.inOut);
+
+  // Device stays whole-shot in motion (the stillness cure): a slow rise and a
+  // counter-drift against the ghost, so the two planes separate as we watch.
   const lift = at(frame, [0, len], [30, -10], EASE.outQuart);
-  // No fake tilt. device-flat.jpg is lit dead-on: its rim highlight is
-  // symmetric and its floor pool sits square under it. Rotate that in CSS and
-  // the geometry says "angled" while the light still says "head-on", which is
-  // the single most obvious tell of a faked mockup. The plate stays front-on
-  // and the frame does the work instead — the device is pushed large and
-  // cropped by the bottom edge, which is how ref1 handles every device it
-  // shows (15.4-16.8s, 17.0-18.6s: never a whole phone, always a cropped one).
   const drift = at(frame, [0, len], [-14, 16], EASE.outQuart);
-  // The ghost drifts the other way, so the two planes separate as we watch.
+
+  // The ghost word — the far plane, cropped by the frame, drifting the other way.
   const ghost = at(frame, [4, len], [70, -30], EASE.outQuart);
   const ghostIn = at(frame, [4, 30], [0, 1], EASE.outQuart);
+
+  // RESOLVE: the winning rate becomes the active state, on the screen's own
+  // focus mechanic (best row emphasises, the rest blur/dim back).
+  const focusAt = 90;
+
   const words = COPY.ignite.title.split(" ");
+
+  // Glass rectangle in the plate's local space (measured), for the Ignite-only
+  // light overlays on the screen surface. DevicePlate itself is untouched.
+  const S = 4.6;
+  const P = DEVICE_FLAT.plate;
+  const G = DEVICE_FLAT.glass;
+  const gx = G.x * S;
+  const gy = G.y * S;
+  const gw = G.w * S;
+  const gh = G.h * S;
 
   return (
     <AbsoluteFill>
@@ -86,15 +101,62 @@ export const Ignite: React.FC = () => {
         </Plane>
 
         <Plane depth={0.13} cam={cam}>
-          <div style={{ transform: `translate(${-445 + drift}px, ${lift + 168}px)` }}>
-            <DevicePlate
-              scale={4.6}
-              on={on}
-              spill={surge}
-              spillRadius={620}
-            >
-              <CompareScreen delay={-200} />
+          {/* relative wrapper so the Ignite-only light overlays share the plate's
+              coordinate origin; the plate div is P.w×P.h at scale S from here. */}
+          <div
+            style={{
+              position: "relative",
+              width: P.w * S,
+              height: P.h * S,
+              transform: `translate(${-445 + drift}px, ${lift + 168}px)`,
+            }}
+          >
+            <DevicePlate scale={S} on={on} spill={spill} spillRadius={620}>
+              <CompareScreen delay={-200} focusAt={focusAt} />
             </DevicePlate>
+
+            {/* the screen's light sweeping across the glass as it ignites */}
+            <div
+              style={{
+                position: "absolute",
+                left: gx,
+                top: gy,
+                width: gw,
+                height: gh,
+                borderRadius: 9 * S,
+                overflow: "hidden",
+                mixBlendMode: "screen",
+                opacity: sweepO,
+                pointerEvents: "none",
+              }}
+            >
+              <div
+                style={{
+                  position: "absolute",
+                  inset: "-20%",
+                  background: `linear-gradient(112deg, transparent ${sweepP * 150 - 46}%, ${CINE.keyHot}88 ${
+                    sweepP * 150 - 24
+                  }%, transparent ${sweepP * 150 - 4}%)`,
+                }}
+              />
+            </div>
+
+            {/* readiness glow on the top bezel — the intent before the surface answers */}
+            <div
+              style={{
+                position: "absolute",
+                left: gx,
+                top: gy - 4 * S,
+                width: gw,
+                height: 12 * S,
+                borderRadius: 9 * S,
+                mixBlendMode: "screen",
+                opacity: rim,
+                background: `linear-gradient(180deg, ${CINE.keyHot} 0%, transparent 100%)`,
+                filter: `blur(${2 * S}px)`,
+                pointerEvents: "none",
+              }}
+            />
           </div>
         </Plane>
 
