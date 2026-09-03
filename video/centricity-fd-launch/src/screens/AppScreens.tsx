@@ -1042,6 +1042,11 @@ export const DownloadScreen: React.FC<{ delay?: number; cardLeavesAt: number }> 
 export const BookScreen: React.FC<{ tapAt: number; doneAt: number }> = ({ tapAt, doneAt }) => {
   const frame = useCurrentFrame();
   const b = COPY.book;
+  // The booked row states the terms the recommendation actually offered. These
+  // were hardcoded to "3Y 3M · Quarterly payout" and "7.80%" while the sheet
+  // above them offered 8.25% · 3Y — the same shot contradicting itself. Both now
+  // read from COPY.book.issuerTerms, which is the single source of truth.
+  const [bookedRate, bookedTenure, bookedPayout] = b.issuerTerms.split(" · ");
   const press = at(frame, [tapAt, tapAt + TIME.press], [1, 0.97], EASE.out);
   const sheetOut = at(frame, [doneAt - TIME.exit, doneAt], [1, 0], EASE.out);
   const okIn = at(frame, [doneAt, doneAt + TIME.sheet], [0, 1], EASE.out);
@@ -1223,11 +1228,13 @@ export const BookScreen: React.FC<{ tapAt: number; doneAt: number }> = ({ tapAt,
             >
               <span>
                 <div style={{ ...T.row, fontSize: 13 }}>{b.issuer}</div>
-                <div style={{ ...T.meta, fontSize: 10, marginTop: 3 }}>3Y 3M · Quarterly payout</div>
+                <div style={{ ...T.meta, fontSize: 10, marginTop: 3 }}>
+                  {bookedTenure} · {bookedPayout.charAt(0) + bookedPayout.slice(1).toLowerCase()} payout
+                </div>
               </span>
               <span style={{ textAlign: "right" }}>
                 <div style={{ ...T.rate, fontSize: 13, color: C.textPrimary }}>₹5,00,000</div>
-                <div style={{ ...T.rate, fontSize: 11, marginTop: 3 }}>7.80%</div>
+                <div style={{ ...T.rate, fontSize: 11, marginTop: 3 }}>{bookedRate}</div>
               </span>
             </div>
           </div>
