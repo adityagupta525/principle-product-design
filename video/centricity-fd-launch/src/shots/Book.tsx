@@ -2,7 +2,7 @@ import React from "react";
 import { AbsoluteFill, Sequence, useCurrentFrame } from "remotion";
 import { COPY } from "../copy";
 import { at, EASE } from "../lib/motion";
-import { Room, Composite, useCamera, Plane, LitPanel, Macro, TypeCard, EdgeFalloff } from "../lib/cinema";
+import { Room, Composite, useCamera, Plane, LitPanel, DevicePlate, Macro, TypeCard, EdgeFalloff } from "../lib/cinema";
 import { BookScreen } from "../screens/AppScreens";
 import { shotLen, SHOT, BEAT } from "../lib/beat";
 
@@ -22,13 +22,19 @@ const Beat: React.FC<{ i: number; zoom: number; fx: number; fy: number; tap: num
       <Room offset={100} keyX={`${40 + (i % 3) * 6}%`} keyY="48%" />
       <Composite>
         <Plane depth={0.12} cam={cam}>
-          <Macro zoom={zoom} fx={fx} fy={fy}>
-            {/* Tight crops are inside the screen; the two wide ones step back
-                far enough that the device belongs in frame again. */}
-            <LitPanel bare={zoom >= 2} bloom={0.75}>
+          {zoom >= 2 ? (
+            <Macro zoom={zoom} fx={fx} fy={fy}>
+              {/* inside the screen — no chrome belongs in a 3x crop */}
+              <LitPanel bare bloom={0.75}>
+                <BookScreen tapAt={tap} doneAt={done} />
+              </LitPanel>
+            </Macro>
+          ) : (
+            /* stepped back far enough that the device belongs in frame */
+            <DevicePlate scale={2.75} spillRadius={600}>
               <BookScreen tapAt={tap} doneAt={done} />
-            </LitPanel>
-          </Macro>
+            </DevicePlate>
+          )}
         </Plane>
         {zoom >= 2 && <EdgeFalloff side="both" at={34} />}
       </Composite>

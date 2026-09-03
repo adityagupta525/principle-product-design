@@ -45,7 +45,9 @@ export const Compare: React.FC = () => {
   const lift = at(frame, [LIFT, LIFT + 26], [0, 1], EASE.outExpo);
   const zoom = at(frame, [0, len], [4.5, 3.4], EASE.outQuart) * (1 - lift * 0.34);
 
-  const liftDrift = at(frame, [LIFT, len], [0, -22], EASE.inOut);
+  const liftDrift = at(frame, [LIFT, len], [0, -46], EASE.inOut);
+  // the figure keeps opening after it lands, so the hold is never a stop
+  const settle = at(frame, [LIFT + 26, len], [0, 0.12], EASE.inOut);
   const vy = (at(frame, [LIFT, LIFT + 26], [0, 1], EASE.outExpo) -
               at(frame - 1, [LIFT, LIFT + 26], [0, 1], EASE.outExpo)) * 260;
 
@@ -55,7 +57,7 @@ export const Compare: React.FC = () => {
       <Composite>
         {/* the device, softening as the figure comes forward */}
         <Plane depth={0.12} cam={cam} blur={lift * 11}>
-          <div style={{ opacity: 1 - lift * 0.66, transform: `translateX(${lift * 360}px)` }}>
+          <div style={{ opacity: 1 - lift * 0.66, transform: `translateX(${lift * 360 + settle * 620}px)` }}>
             <Macro zoom={zoom} fx={187} fy={fy}>
               <LitPanel bare>
                 <CompareScreen delay={4} step={ROW_STEP} focusAt={LIFT - 8} />
@@ -79,7 +81,7 @@ export const Compare: React.FC = () => {
           <Smear vy={vy} gain={0.5} max={26}>
             <div
               style={{
-                transform: `translate(-470px, ${liftDrift}px) scale(${0.82 + lift * 0.18})`,
+                transform: `translate(-470px, ${liftDrift}px) scale(${0.82 + lift * 0.18 + settle})`,
                 textAlign: "left",
               }}
             >

@@ -962,7 +962,7 @@ export const BookScreen: React.FC<{ tapAt: number; doneAt: number }> = ({ tapAt,
         </div>
 
         <div style={{ display: "flex", gap: 12, marginTop: 20 }}>
-          <LogoTile color="#E0342C" size={44} />
+          <LogoTile color={ISSUERS.find((r) => r.name === COPY.book.issuer)?.logo ?? C.accent} size={44} />
           <span>
             <div style={{ ...T.row, fontSize: 15 }}>{b.issuer}</div>
             <div style={{ ...T.meta, fontSize: 9, letterSpacing: "0.06em", marginTop: 3 }}>{b.issuerMeta}</div>

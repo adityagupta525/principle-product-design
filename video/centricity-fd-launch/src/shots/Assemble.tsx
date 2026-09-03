@@ -44,7 +44,7 @@ export const Assemble: React.FC = () => {
           <div
             style={{
               perspective: 2400,
-              transform: `translateX(${-286 + at(frame, [0, len], [-16, 16], EASE.inOut)}px) scale(1.92)`,
+              transform: `translateX(${-286 + at(frame, [0, len], [-16, 16], EASE.inOut)}px) scale(2.24)`,
             }}
           >
             <div
@@ -61,9 +61,9 @@ export const Assemble: React.FC = () => {
         {/* the annotation layer sits in frame space, not card space, so the
             leaders stay horizontal while the card plane drifts with the camera */}
         <AbsoluteFill style={{ opacity: at(frame, [34, 42], [0, 1], EASE.out) * fall }}>
-          <Annotate x={1004} y={245} run={120} light text={COPY.share.notes[0]} delay={38} exitAt={off} />
-          <Annotate x={1004} y={620} run={188} light text={COPY.share.notes[1]} delay={52} exitAt={off + 3} />
-          <Annotate x={1004} y={905} run={148} light text={COPY.share.notes[2]} delay={66} exitAt={off + 6} />
+          <Annotate x={1084} y={245} run={120} light text={COPY.share.notes[0]} delay={38} exitAt={off} />
+          <Annotate x={1084} y={620} run={188} light text={COPY.share.notes[1]} delay={52} exitAt={off + 3} />
+          <Annotate x={1084} y={905} run={148} light text={COPY.share.notes[2]} delay={66} exitAt={off + 6} />
         </AbsoluteFill>
       </Composite>
     </AbsoluteFill>

@@ -2,7 +2,7 @@ import React from "react";
 import { AbsoluteFill, useCurrentFrame } from "remotion";
 import { CINE, FONT } from "../lib/tokens";
 import { at, EASE } from "../lib/motion";
-import { Room, Composite, useCamera, Plane, LitPanel } from "../lib/cinema";
+import { Room, Composite, useCamera, Plane, DevicePlate } from "../lib/cinema";
 import { AskChatScreen } from "../screens/AppScreens";
 import { shotLen, SHOT, BEAT } from "../lib/beat";
 
@@ -41,9 +41,9 @@ export const Ask: React.FC = () => {
               filter: `blur(${pull * 10}px)`,
             }}
           >
-            <LitPanel scale={0.88} bloom={0.75}>
+            <DevicePlate scale={2.9} spillRadius={640}>
               <AskChatScreen beats={beats} />
-            </LitPanel>
+            </DevicePlate>
           </div>
         </Plane>
 

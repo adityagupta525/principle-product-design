@@ -114,9 +114,9 @@ export const COPY = {
   book: {
     caption: { lead: "Booked in", accent: "under 3 minutes.", tail: "" } as Caption,
     sheetTitle: "Select client",
-    issuer: "Mahindra Finance",
+    issuer: "Utkarsh SF Bank",
     issuerMeta: "BANK · SENIOR CITIZEN · WOMEN",
-    issuerTerms: "7.80% · 3Y 3M · QUARTERLY",
+    issuerTerms: "8.25% · 3Y · QUARTERLY",
     clientName: "Sneha Patel",
     clientPhone: "9876543210",
     action: "Invest now",

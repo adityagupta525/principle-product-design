@@ -3,7 +3,7 @@ import { AbsoluteFill, useCurrentFrame } from "remotion";
 import { COPY } from "../copy";
 import { CINE, FONT } from "../lib/tokens";
 import { at, EASE } from "../lib/motion";
-import { Room, Composite, useCamera, Plane, LitPanel, TypeCard, DeviceProp } from "../lib/cinema";
+import { Room, Composite, useCamera, Plane, LitPanel, DevicePlate, TypeCard, DeviceProp } from "../lib/cinema";
 import { BookScreen, AskChatScreen } from "../screens/AppScreens";
 import { shotLen, SHOT } from "../lib/beat";
 
@@ -32,9 +32,9 @@ export const Resolve: React.FC = () => {
       <Composite grain={0.07}>
         <Plane depth={0.1} cam={cam}>
           <div style={{ opacity: dim * out, filter: `blur(${at(frame, [0, 70], [0, 16], EASE.outQuart)}px)` }}>
-            <LitPanel scale={0.92} bloom={dim}>
+            <DevicePlate scale={2.5} on={dim} spill={dim} spillRadius={560}>
               <BookScreen tapAt={-400} doneAt={-300} />
-            </LitPanel>
+            </DevicePlate>
           </div>
         </Plane>
 
@@ -57,9 +57,9 @@ export const Resolve: React.FC = () => {
                 gap: 26,
                 opacity: lock,
                 fontFamily: FONT.brand,
-                fontSize: 34,
-                fontWeight: 600,
-                letterSpacing: "0.16em",
+                fontSize: 26,
+                fontWeight: 700,
+                letterSpacing: "0.22em",
                 color: CINE.type,
               }}
             >
@@ -71,7 +71,7 @@ export const Resolve: React.FC = () => {
             <TypeCard
               caption={COPY.end.line}
               delay={44}
-              size={56}
+              size={82}
               align="center"
               style={{ marginTop: 40, marginLeft: "auto", marginRight: "auto" }}
             />
@@ -94,9 +94,9 @@ export const Resolve: React.FC = () => {
         {/* the loop turning over — the next client, same thread */}
         <AbsoluteFill style={{ alignItems: "center", justifyContent: "center" }}>
           <div style={{ opacity: nextAsk, transform: `scale(0.84)` }}>
-            <LitPanel scale={0.84} bloom={0.5}>
+            <DevicePlate scale={2.3} spill={0.5} spillRadius={520}>
               <AskChatScreen beats={[-999, 9999, 9999]} />
-            </LitPanel>
+            </DevicePlate>
           </div>
         </AbsoluteFill>
       </Composite>
