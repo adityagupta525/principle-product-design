@@ -65,7 +65,7 @@ const inr = (n: number) => "₹" + Math.round(n).toLocaleString("en-IN");
 export const Curve: React.FC = () => {
   const frame = useCurrentFrame();
   const len = shotLen(SHOT.curve);
-  const cam = useCamera(len, { z: [1.0, 1.07] });
+  const cam = useCamera(len, { z: [1.0, 1.15], x: [0.55, -0.55] });
 
   /* ── bar 1: the way in ─────────────────────────────────────────────── */
   // Overexposure on the cut, gone in ten frames.
@@ -94,14 +94,20 @@ export const Curve: React.FC = () => {
     <AbsoluteFill>
       <DayRoom bloom={bloom} drift={0.7} />
       <Composite light>
-        <Plane depth={0.1} cam={cam}>
+        <Plane depth={0.1} cam={cam} style={{ paddingRight: 190 }}>
           <div
             style={{
               position: "relative",
               width: W,
               height: H,
               opacity: bodyIn,
-              transform: `translateY(${at(frame, [BEAT * 2.8, BEAT * 3.4], [26, 0], EASE.outQuart)}px)`,
+              // The rise settles, then keeps travelling a few more pixels for
+              // the rest of the shot. A diagram needs a hold to be read; it
+              // does not need the frame to stop.
+              transform: `translateY(${
+                at(frame, [BEAT * 2.8, BEAT * 3.4], [26, 0], EASE.outQuart) +
+                at(frame, [BEAT * 3.4, len], [0, -14], EASE.inOut)
+              }px)`,
             }}
           >
             <svg width={W} height={H} style={{ overflow: "visible" }}>
@@ -157,6 +163,20 @@ export const Curve: React.FC = () => {
                 strokeDasharray={LEN}
                 strokeDashoffset={LEN * (1 - drawHigh)}
                 style={{ filter: `drop-shadow(0 3px 10px ${C.gain}44)` }}
+              />
+
+              {/* the sheen — a short bright segment running the accent line on a
+                  loop, so the frame keeps moving after the diagram has landed */}
+              <path
+                d={path(HIGH)}
+                fill="none"
+                stroke="#FFFFFF"
+                strokeWidth={5}
+                strokeLinecap="round"
+                strokeDasharray="46 1354"
+                strokeDashoffset={-((frame * 5.2) % 1400)}
+                opacity={drawHigh * 0.55}
+                style={{ mixBlendMode: "overlay" }}
               />
 
               <circle cx={lo.x} cy={lo.y} r={5 * dots} fill="rgba(43,30,25,0.45)" />

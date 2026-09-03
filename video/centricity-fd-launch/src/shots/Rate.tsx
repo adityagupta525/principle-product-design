@@ -15,7 +15,7 @@ import { shotLen, SHOT } from "../lib/beat";
 export const Rate: React.FC = () => {
   const frame = useCurrentFrame();
   const len = shotLen(SHOT.rate);
-  const cam = useCamera(len, { z: [1.0, 1.12] });
+  const cam = useCamera(len, { z: [1.0, 1.34] });
   const glow = at(frame, [0, 14], [0, 1], EASE.outQuart);
 
   return (

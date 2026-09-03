@@ -12,7 +12,7 @@ import { shotLen, SHOT, BEAT } from "../lib/beat";
  */
 export const Rows: React.FC = () => {
   const len = shotLen(SHOT.rows);
-  const cam = useCamera(len, { z: [1.0, 1.07], y: [0.45, -0.45] });
+  const cam = useCamera(len, { z: [1.0, 1.18], y: [0.85, -0.85] });
   return (
     <AbsoluteFill>
       <Room offset={80} keyX="42%" keyY="48%" />

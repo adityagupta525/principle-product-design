@@ -23,7 +23,7 @@ import { shotLen, SHOT } from "../lib/beat";
 export const Assemble: React.FC = () => {
   const frame = useCurrentFrame();
   const len = shotLen(SHOT.assemble);
-  const cam = useCamera(len, { z: [1.0, 1.06], x: [-0.35, 0.35] });
+  const cam = useCamera(len, { z: [1.0, 1.17], x: [-0.75, 0.75] });
   // Focus travels from the panel behind to the card in front.
   const rack = at(frame, [14, 52], [0, 1], EASE.outQuart);
   // Labels leave together, a beat before the cut, so the frame is clean on it.
@@ -41,8 +41,20 @@ export const Assemble: React.FC = () => {
             reference holds its components alone on the paper. The depth here
             comes from the cast shadow and the empty half of the frame. */}
         <Plane depth={0.24} cam={cam} blur={(1 - rack) * 6}>
-          <div style={{ transform: "translateX(-286px) scale(1.92)" }}>
-            <ShareCard delay={20} width={340} />
+          <div
+            style={{
+              perspective: 2400,
+              transform: `translateX(${-286 + at(frame, [0, len], [-16, 16], EASE.inOut)}px) scale(1.92)`,
+            }}
+          >
+            <div
+              style={{
+                transform: `rotateY(${at(frame, [0, len], [4.5, -4.5], EASE.inOut)}deg)`,
+                transformStyle: "preserve-3d",
+              }}
+            >
+              <ShareCard delay={20} width={340} />
+            </div>
           </div>
         </Plane>
 
