@@ -35,7 +35,7 @@ export const Resolve: React.FC = () => {
   const len = shotLen(SHOT.resolve);
   const cam = useCamera(len, { z: [1.1, 0.94] });
 
-  const dim = at(frame, [0, 62], [1, 0.05], EASE.outQuart);
+  const dim = at(frame, [0, 56], [1, 0], EASE.outQuart);
   // The glass comes up as the panel goes down — one exchange, not two events.
   const glass = at(frame, [6, 58], [0, 1], EASE.outQuart);
   const kicker = at(frame, [30, 48], [0, 1], EASE.outQuart);
@@ -64,7 +64,7 @@ export const Resolve: React.FC = () => {
         <AbsoluteFill
           style={{
             background:
-              "radial-gradient(ellipse 44% 30% at 50% 42%, rgba(10,10,12,0.62) 0%, rgba(10,10,12,0.30) 52%, transparent 100%)",
+              "radial-gradient(ellipse 52% 40% at 50% 44%, rgba(10,10,12,0.84) 0%, rgba(10,10,12,0.62) 40%, rgba(10,10,12,0.24) 74%, transparent 100%)",
             opacity: glass * out,
           }}
         />
@@ -73,16 +73,18 @@ export const Resolve: React.FC = () => {
           {/* the collection line, top of frame */}
           <div
             style={{
-              marginTop: 112,
+              marginTop: 104,
               fontFamily: FONT.brand,
-              fontSize: 15,
-              fontWeight: 600,
-              letterSpacing: "0.20em",
-              color: "rgba(236,231,225,0.62)",
+              fontSize: 27,
+              fontWeight: 700,
+              letterSpacing: "0.26em",
+              color: "#FFFFFF",
               opacity: kicker,
+              textShadow: "0 2px 30px rgba(10,10,12,0.95), 0 0 70px rgba(10,10,12,0.8)",
             }}
           >
-            CENTRICITY <span style={{ opacity: 0.5 }}>×</span> {COPY.end.coBrand}
+            CENTRICITY <span style={{ color: CINE.keyHot, margin: "0 2px" }}>×</span>{" "}
+            {COPY.end.coBrand}
           </div>
 
           {/* the headline — two lines, each graduating cream into copper */}
@@ -99,10 +101,10 @@ export const Resolve: React.FC = () => {
                         transform: `translateY(${riseAt(frame)}%)`,
                         fontFamily: FONT.display,
                         fontSize: 116,
-                        fontWeight: 500,
+                        fontWeight: 600,
                         letterSpacing: "-0.035em",
                         lineHeight: 1.1,
-                        backgroundImage: `linear-gradient(96deg, #F4EDE4 6%, ${CINE.keyHot} 62%, #C08E5F 100%)`,
+                        backgroundImage: "linear-gradient(96deg, #FFFFFF 4%, #FBF0E2 34%, #F2CFA6 72%, #E8BC8A 100%)",
                         WebkitBackgroundClip: "text",
                         backgroundClip: "text",
                         color: "transparent",
@@ -123,7 +125,8 @@ export const Resolve: React.FC = () => {
               fontSize: 27,
               fontWeight: 500,
               letterSpacing: "0.02em",
-              color: "rgba(236,231,225,0.80)",
+              color: "rgba(255,252,248,0.92)",
+              textShadow: "0 2px 26px rgba(10,10,12,0.9)",
               opacity: sub,
             }}
           >
