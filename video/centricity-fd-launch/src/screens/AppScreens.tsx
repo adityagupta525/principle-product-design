@@ -440,12 +440,37 @@ export const CompareScreen: React.FC<{ delay?: number; focusAt?: number; step?: 
 };
 
 /** Beat 2 — Calculator. Amount types in, then every maturity figure counts up. */
-export const CalculatorScreen: React.FC<{ delay?: number }> = ({ delay = 0 }) => {
+/** "3Y 6M" -> 3.5. The screen states tenure this way; the maths needs years. */
+const years = (t: string) => {
+  const y = /(\d+)\s*Y/.exec(t);
+  const m = /(\d+)\s*M/.exec(t);
+  return (y ? +y[1] : 0) + (m ? +m[1] / 12 : 0);
+};
+
+/** Indian grouping, tabular — the product's own numeral law. */
+export const rupees = (n: number) => "₹" + Math.round(n).toLocaleString("en-IN");
+
+/**
+ * The calculator, driven live.
+ *
+ * `amount` is the investment in rupees. Every maturity figure is computed from
+ * it against that issuer's own rate and tenure, so when the amount moves the
+ * whole list moves with it and the arithmetic stays true at every step. The
+ * Figma screen's own maturity figures are placeholder values that do not
+ * compute against its stated principal (Utkarsh shows a maturity BELOW the
+ * ₹1,00,000 it is calculated on), so they are not carried across.
+ */
+export const CalculatorScreen: React.FC<{
+  delay?: number;
+  amount?: number;
+  activeChip?: number;
+}> = ({ delay = 0, amount, activeChip = -1 }) => {
   const frame = useCurrentFrame();
   const c = COPY.calculate;
-  const typed = Math.round(at(frame, [delay, delay + c.amount.length * 2], [0, c.amount.length]));
-  const caret = frame % 20 < 10 && typed < c.amount.length ? 1 : 0;
-  const listAt = delay + c.amount.length * 2 + 4;
+  const live = amount !== undefined;
+  const typed = live ? c.amount.length : Math.round(at(frame, [delay, delay + c.amount.length * 2], [0, c.amount.length]));
+  const caret = !live && frame % 20 < 10 && typed < c.amount.length ? 1 : 0;
+  const listAt = live ? -999 : delay + c.amount.length * 2 + 4;
 
   return (
     <div style={{ height: "100%", background: C.surface, position: "relative" }}>
@@ -456,17 +481,29 @@ export const CalculatorScreen: React.FC<{ delay?: number }> = ({ delay = 0 }) =>
           <div style={T.col}>{c.amountLabel}</div>
           <div style={{ display: "flex", alignItems: "center", marginTop: 6 }}>
             <span style={{ fontFamily: FONT.app, fontSize: 21, fontWeight: 700, color: C.textPrimary, fontVariantNumeric: "tabular-nums" }}>
-              {c.amount.slice(0, typed)}
+              {live ? "₹ " + Math.round(amount!).toLocaleString("en-IN") : c.amount.slice(0, typed)}
             </span>
             <span style={{ opacity: caret, width: 2, height: 20, background: C.accent, marginLeft: 3 }} />
           </div>
         </div>
         <div style={{ display: "flex", gap: 8, marginTop: 12 }}>
-          {c.chips.map((chip) => (
-            <Pill key={chip} bg={C.surface} style={{ padding: "6px 14px", border: `1px solid ${C.hairline}` }}>
-              {chip}
-            </Pill>
-          ))}
+          {c.chips.map((chip, i) => {
+            const on = i === activeChip;
+            return (
+              <Pill
+                key={chip}
+                bg={on ? C.headerInk : C.surface}
+                style={{
+                  padding: "6px 14px",
+                  border: `1px solid ${on ? C.headerInk : C.hairline}`,
+                  color: on ? "#FFFFFF" : undefined,
+                  transform: `scale(${on ? 1.06 : 1})`,
+                }}
+              >
+                {chip}
+              </Pill>
+            );
+          })}
         </div>
       </div>
 
@@ -481,8 +518,8 @@ export const CalculatorScreen: React.FC<{ delay?: number }> = ({ delay = 0 }) =>
 
       {ISSUERS.map((row, i) => {
         const d = listAt + i * 6;
-        const opacity = at(frame, [d, d + TIME.row], [0, 1], EASE.out);
-        const y = at(frame, [d, d + TIME.row], [14, 0], EASE.out);
+        const opacity = live ? 1 : at(frame, [d, d + TIME.row], [0, 1], EASE.out);
+        const y = live ? 0 : at(frame, [d, d + TIME.row], [14, 0], EASE.out);
         return (
           <div
             key={row.name}
@@ -505,8 +542,14 @@ export const CalculatorScreen: React.FC<{ delay?: number }> = ({ delay = 0 }) =>
               </div>
             </span>
             <span style={{ textAlign: "right" }}>
-              <div style={{ ...T.rate, fontSize: 14 }}>{row.maturity}</div>
-              <div style={{ ...T.meta, marginTop: 2, fontFamily: FONT.data }}>{row.interest}</div>
+              <div style={{ ...T.rate, fontSize: 14, fontVariantNumeric: "tabular-nums" }}>
+                {live ? rupees(amount! * Math.pow(1 + parseFloat(row.rate) / 100, years(row.tenure))) : row.maturity}
+              </div>
+              <div style={{ ...T.meta, marginTop: 2, fontFamily: FONT.data, fontVariantNumeric: "tabular-nums" }}>
+                {live
+                  ? "+" + rupees(amount! * (Math.pow(1 + parseFloat(row.rate) / 100, years(row.tenure)) - 1))
+                  : row.interest}
+              </div>
             </span>
           </div>
         );

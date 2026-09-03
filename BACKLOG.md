@@ -115,3 +115,28 @@ and the filled gap — where it is a graphic, not type.
 
 **The gap:** there is no darker green for gain-coloured *text* on light grounds. A `gain/strong`
 around 4.5:1 on `canvas` would close it. Not hand-forked anywhere — logged for a version sprint.
+
+## FD source screens disagree on rates and tenures
+
+Read off the file directly (`j0omeDtNA2FOVVx97g485n`):
+
+| issuer | Compare `296:4562` | Return calculator `208:787` |
+|---|---|---|
+| ICICI Home Finance | 2Y · 7.50% | 2Y 3M · 7.1% |
+| Suryoday Small Fin… | 3Y 3M · 7.50% | 2Y · 7.5% |
+| Unity Small Financ… | 1Y · 7.50% | 3Y · 7.3% |
+| Utkarsh SF Bank | 3Y · **8.25%** | 1Y · 6.8% |
+| Shriram Finance | 3Y 6M · 7.50% | 2Y 3M · 7.1% |
+| Mahindra Finance | 2Y · 7.50% | 2Y 3M · **8.1%** |
+
+The two screens name a different winner — Utkarsh on Compare, Mahindra on the calculator — which
+matters because the launch film's whole argument is built on the best rate. The film uses the
+Compare values throughout so it is at least internally consistent, but one of these screens is
+wrong and the owner should say which.
+
+Separately, the calculator's maturity figures are placeholders that do not compute against its own
+stated principal of ₹1,00,000 — Utkarsh shows a maturity of ₹87,000, i.e. below the amount
+invested. The film therefore computes maturity from rate and tenure rather than carrying those
+figures across.
+
+Neither is touched on canvas; logged for an owner decision.
