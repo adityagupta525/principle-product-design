@@ -4,6 +4,7 @@ import { loadFonts } from "./lib/fonts";
 import { Film } from "./Film";
 import { Sheet } from "./Sheet";
 import { IgniteProof } from "./shots/ignite/Proof";
+import { BookProof } from "./shots/book/Proof";
 import { DURATION, SHOT, shotLen } from "./lib/beat";
 import { FPS } from "./lib/tokens";
 
@@ -20,6 +21,15 @@ export const RemotionRoot: React.FC = () => (
       height={1080}
       fps={FPS}
       durationInFrames={shotLen(SHOT.ignite)}
+    />
+    {/* Book hero, rendered in isolation for review — never part of the film. */}
+    <Composition
+      id="BookProof"
+      component={BookProof}
+      width={1920}
+      height={1080}
+      fps={FPS}
+      durationInFrames={shotLen(SHOT.book)}
     />
     {/* Teardown contact sheets — analysis only, never part of the film. */}
     <Composition

@@ -1,86 +1,122 @@
 import React from "react";
-import { AbsoluteFill, Sequence, useCurrentFrame } from "remotion";
+import { AbsoluteFill, useCurrentFrame } from "remotion";
 import { COPY } from "../copy";
-import { at, EASE } from "../lib/motion";
-import { Room, Composite, useCamera, Plane, LitPanel, DevicePlate, Macro, TypeCard, EdgeFalloff } from "../lib/cinema";
+import { TYPE } from "../lib/tokens";
+import { at, atScale, EASE } from "../lib/motion";
+import { Room, Composite, useCamera, Plane, LitPanel, Macro, TypeCard, EdgeFalloff } from "../lib/cinema";
 import { BookScreen } from "../screens/AppScreens";
 import { shotLen, SHOT, BEAT } from "../lib/beat";
 
 /**
- * Shot 11 · 1172–1431 · 8.6s
- * The montage, on the track's loudest bars. Fastest cutting in the film: one
- * frame per beat, each a macro on a different part of the same booking, so the
- * viewer assembles the flow rather than being walked through it.
+ * Shot 11 · BOOK — "intelligence becomes action."
+ *
+ * Ignite was the product waking. This is the product ACTING, so it is a
+ * different register entirely: no device treatment, no copper spill, no
+ * aberration, no camera kick. We are inside the interface, on a lit panel in
+ * the dark, and the only thing happening is a decision being executed.
+ *
+ * The shot was a montage of SEVEN equal 32-frame hard cuts, each re-mounting
+ * the room and restarting the same canned push. Three faults followed from
+ * that: the cadence was metronomic (equal cuts read as even, not composed);
+ * causality was severed (the press lived in one cut, its consequence in the
+ * next); and the seven beats covered only 0–225 of a 259-frame shot, so the
+ * last 33 frames rendered flat near-black — 1.10s of measured dead air.
+ *
+ * It is now ONE CONTINUOUS TAKE. Nothing cuts. The camera makes a single
+ * motivated arc — it tightens down THROUGH the action, then opens to receive
+ * the result — and the interface does the rest, at its own timing:
+ *
+ *   RECOMMENDATION  0–64    the sheet, calm. Issuer, rate, client, the CTA.
+ *                           Nothing animates; hierarchy does the talking.
+ *   EXECUTE         64      the CTA presses, ON the existing tick (f64).
+ *   PREPARE         72–96   the three checks resolve at the product's own
+ *                           12-frame rhythm; the last lands on the tick at f96.
+ *   CONFIRM         155–171 the sheet dismisses and the result arrives exactly
+ *                           on the existing chime (f160). Everything else quiets.
+ *   RESOLVE         171–258 the booked FD joins My FDs as an ACTIVE row, the
+ *                           statement resolves AFTER the action, and the frame
+ *                           holds — deliberate stillness, with content in it.
+ *
+ * One BookScreen mount for the whole take, so the press and its consequence
+ * are the same continuous event rather than two shots that merely follow.
  */
-const Beat: React.FC<{ i: number; zoom: number; fx: number; fy: number; tap: number; done: number }> = ({
-  i, zoom, fx, fy, tap, done,
-}) => {
-  const len = Math.round(BEAT * 2);
-  const cam = useCamera(len, { z: [1.0, 1.08] });
-  return (
-    <AbsoluteFill>
-      <Room offset={100} keyX={`${40 + (i % 3) * 6}%`} keyY="48%" />
-      <Composite>
-        <Plane depth={0.12} cam={cam}>
-          {zoom >= 2 ? (
-            <Macro zoom={zoom} fx={fx} fy={fy}>
-              {/* inside the screen — no chrome belongs in a 3x crop */}
-              <LitPanel bare bloom={0.75}>
-                <BookScreen tapAt={tap} doneAt={done} />
-              </LitPanel>
-            </Macro>
-          ) : (
-            /* stepped back far enough that the device belongs in frame */
-            <DevicePlate scale={2.75} spillRadius={600}>
-              <BookScreen tapAt={tap} doneAt={done} />
-            </DevicePlate>
-          )}
-        </Plane>
-        {zoom >= 2 && <EdgeFalloff side="both" at={34} />}
-      </Composite>
-    </AbsoluteFill>
-  );
-};
+
+/** The action lands on the existing SFX tick; the result on the existing chime. */
+const PRESS = Math.round(BEAT * 2) * 2; // 64 — tick
+const DONE = Math.round(BEAT * 2) * 5; // 160 — chime
 
 export const Book: React.FC = () => {
   const frame = useCurrentFrame();
   const len = shotLen(SHOT.book);
-  const step = Math.round(BEAT * 2);
 
-  /* Each cut re-mounts the sheet at a later point in its own timeline, so the
-     booking advances across the montage while every shot stays a macro. */
-  const beats: Array<[number, number, number, number, number]> = [
-    // zoom, fx,  fy,  tapAt, doneAt   (tap/done are relative to that mount)
-    [2.3, 187, 470, 999, 999],   // client selected
-    [2.7, 187, 585, 2, 999],     // Invest now, pressed
-    [3.0, 150, 660, -14, 999],   // first tick
-    [3.0, 150, 690, -30, 999],   // second tick
-    [3.0, 150, 720, -46, 999],   // third tick
-    [1.55, 187, 330, -80, 4],    // FD Booked
-    [1.35, 187, 420, -120, -30], // it joins My FDs
-  ];
+  // A subtle depth breath under the move — one plane, felt not seen.
+  const cam = useCamera(len, { z: [1.0, 1.04] });
+
+  /**
+   * ONE motivated arc, piecewise but continuous (each segment starts where the
+   * last ended, and at() clamps): establish → move toward the action → release
+   * onto the outcome. The release is a genuinely large scale change (2.46→1.52,
+   * a 1.6× ratio), so it — and only it — runs on perceptual scale.
+   */
+  const zoom =
+    frame < PRESS
+      ? at(frame, [0, PRESS], [1.95, 2.28], EASE.inOut)
+      : frame < 100
+      ? at(frame, [PRESS, 100], [2.28, 2.52], EASE.out)
+      : frame < 140
+      ? at(frame, [100, 140], [2.52, 2.46], EASE.inOut)
+      : frame < 190
+      ? atScale(frame, [140, 190], [2.46, 1.52], EASE.inOut)
+      : at(frame, [190, len], [1.52, 1.45], EASE.inOut);
+
+  // Vertical travel, in 375x812 screen space: the recommendation block, down to
+  // the CTA, down to the checklist, then up and open onto the result.
+  const fy =
+    frame < PRESS
+      ? at(frame, [0, PRESS], [520, 585], EASE.inOut)
+      : frame < 100
+      ? at(frame, [PRESS, 100], [585, 690], EASE.out)
+      : frame < 140
+      ? at(frame, [100, 140], [690, 678], EASE.inOut)
+      : frame < 190
+      ? at(frame, [140, 190], [678, 420], EASE.inOut)
+      : at(frame, [190, len], [420, 432], EASE.inOut);
+
+  const fx =
+    frame < 100
+      ? at(frame, [PRESS, 100], [187, 174], EASE.out)
+      : frame < 190
+      ? at(frame, [140, 190], [174, 187], EASE.inOut)
+      : 187;
 
   return (
     <AbsoluteFill>
-      {beats.map((b, i) => (
-        <Sequence key={i} from={i * step} durationInFrames={step + 2}>
-          <Beat i={i} zoom={b[0]} fx={b[1]} fy={b[2]} tap={b[3]} done={b[4]} />
-        </Sequence>
-      ))}
+      {/* one room, for the whole take */}
+      <Room offset={100} keyX="46%" keyY="48%" />
+      <Composite>
+        <Plane depth={0.12} cam={cam}>
+          <Macro zoom={zoom} fx={fx} fy={fy}>
+            {/* inside the screen — no device chrome belongs in this crop */}
+            <LitPanel bare bloom={0.75}>
+              <BookScreen tapAt={PRESS} doneAt={DONE} />
+            </LitPanel>
+          </Macro>
+        </Plane>
+        <EdgeFalloff side="both" at={34} />
 
-      <AbsoluteFill style={{ alignItems: "center", justifyContent: "flex-end", paddingBottom: 96 }}>
-        <TypeCard
-          caption={COPY.book.caption}
-          delay={step * 5}
-          exitAt={len - 22}
-          size={62}
-          align="center"
-          style={{
-            opacity: at(frame, [step * 5 - 4, step * 5], [0, 1]),
-            textShadow: "0 8px 40px rgba(0,0,0,0.9)",
-          }}
-        />
-      </AbsoluteFill>
+        {/* The statement resolves AFTER the result has landed — it confirms the
+            action rather than competing with it. */}
+        <AbsoluteFill style={{ alignItems: "center", justifyContent: "flex-end", paddingBottom: 96 }}>
+          <TypeCard
+            caption={COPY.book.caption}
+            delay={DONE + 26}
+            exitAt={len - 18}
+            size={TYPE.payoff.fontSize}
+            align="center"
+            style={{ textShadow: "0 8px 40px rgba(0,0,0,0.9)" }}
+          />
+        </AbsoluteFill>
+      </Composite>
     </AbsoluteFill>
   );
 };
