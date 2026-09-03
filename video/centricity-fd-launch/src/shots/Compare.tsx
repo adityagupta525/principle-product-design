@@ -65,9 +65,9 @@ export const Compare: React.FC = () => {
      forward. One gesture: wide -> tight -> open. */
   const fy =
     frame < 96
-      ? at(frame, [4, 96], [430, 470], EASE.inOut)
+      ? at(frame, [4, 96], [300, 430], EASE.inOut)
       : frame < 131
-      ? at(frame, [96, 131], [470, RATE_Y], EASE.inOut)
+      ? at(frame, [96, 131], [430, RATE_Y], EASE.inOut)
       : at(frame, [131, len], [RATE_Y, RATE_Y + 16], EASE.inOut);
 
   // RECOGNITION, then the act — the lift lands on the bar-7 downbeat (131).
@@ -77,11 +77,15 @@ export const Compare: React.FC = () => {
   const p = at(frame, [LIFT, LIFT + LIFT_LEN], [0, 1], EASE.outExpo);
   const pPrev = at(frame - 1, [LIFT, LIFT + LIFT_LEN], [0, 1], EASE.outExpo);
 
+  /* The frame stays FULL of arrived content: it starts tight on the first rows
+     and PULLS BACK as more issuers land, so the field visibly grows rather than
+     the list filling into dead white space. Then it narrows onto the winner
+     through recognition, and opens again as the figure comes forward. */
   const zoomBase =
     frame < 96
-      ? at(frame, [0, 96], [2.55, 3.05], EASE.inOut)
+      ? at(frame, [4, 96], [3.5, 2.62], EASE.inOut)
       : frame < 131
-      ? at(frame, [96, 131], [3.05, 3.75], EASE.inOut)
+      ? at(frame, [96, 131], [2.62, 3.75], EASE.inOut)
       : at(frame, [131, len], [3.75, 3.35], EASE.inOut);
   const zoom = zoomBase * (1 - p * 0.22);
 
