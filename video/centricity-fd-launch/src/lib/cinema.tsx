@@ -534,8 +534,34 @@ export const DevicePlate: React.FC<{
   on?: number;
   /** Warm spill thrown back onto the room as the screen lights. */
   spill?: number;
+  /**
+   * How far the spill is allowed to travel. The screen is the brightest thing
+   * in the frame and its bloom will happily wash across a headline sitting
+   * beside it — measured at a 7.3x luminance swing behind the type, with the
+   * bright part of the spill reading brighter than the glyphs themselves.
+   * Keep it close to the device and the type has a dark ground to sit on.
+   */
+  spillRadius?: number;
+  /**
+   * Magnification of the app screen INSIDE the glass, about `focus` in
+   * 375x812 screen space. A whole dense product screen shrunk into a 300px
+   * phone is unreadable at booth distance, and a device mockup carrying
+   * illegible content is the mockup and the screen composition disagreeing
+   * with each other. Crop in until the content is at the scale the shot is
+   * actually about.
+   */
+  zoom?: number;
+  focus?: [number, number];
   children: React.ReactNode;
-}> = ({ scale = 2.4, on = 1, spill = 1, children }) => {
+}> = ({
+  scale = 2.4,
+  on = 1,
+  spill = 1,
+  spillRadius = 1100,
+  zoom = 1,
+  focus = [187.5, 406],
+  children,
+}) => {
   const P = DEVICE_FLAT.plate;
   const G = DEVICE_FLAT.glass;
   // Fit the 375×812 app screen to the glass by height; the few px that fall
@@ -550,8 +576,8 @@ export const DevicePlate: React.FC<{
           position: "absolute",
           left: (G.x + G.w / 2) * scale,
           top: (G.y + G.h / 2) * scale,
-          width: 1100,
-          height: 1100,
+          width: spillRadius,
+          height: spillRadius,
           transform: "translate(-50%, -50%)",
           borderRadius: "50%",
           background: `radial-gradient(closest-side, ${CINE.keyHot}22, transparent 68%)`,
@@ -582,7 +608,9 @@ export const DevicePlate: React.FC<{
             top: 0,
             width: 375,
             height: 812,
-            transform: `translateX(-50%) scale(${fit})`,
+            transform: `translateX(-50%) scale(${fit * zoom}) translate(${
+              (187.5 - focus[0]) / zoom
+            }px, ${(406 - focus[1]) / zoom}px)`,
             transformOrigin: "top center",
           }}
         >

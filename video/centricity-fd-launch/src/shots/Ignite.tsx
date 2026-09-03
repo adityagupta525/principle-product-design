@@ -8,48 +8,109 @@ import { CompareScreen } from "../screens/AppScreens";
 import { shotLen, SHOT } from "../lib/beat";
 
 /**
- * Shot 2 · frames 135–265 · 4.3s
- * Ignition, on a real device.
+ * Shot 2 · ignition, on a real device.
  *
- * The plate is a photographed phone with the screen off (public/env/
- * device-flat.jpg). For the first eight frames that is all it is — an object in
- * a dark room. Then the glass switches on, the product is inside it, and the
- * screen throws light back into the room. The film's first bright thing is
- * therefore a lit screen rather than a floating rectangle, which is the whole
- * difference between a product film and a mockup reel.
+ * Rebuilt against a 0.2s teardown of the reference. Three things it was doing
+ * wrong, all visible once the frames are laid side by side:
  *
- * Type sets in the void beside it, at display scale and stacked one word per
- * line — the reference language: one idea, enormous, in a lot of air.
+ *  1 CONTRAST. The screen's spill reached the headline. Measured behind the
+ *    word: a 7.3x luminance swing, with the bright part of the bloom reading
+ *    BRIGHTER (L 0.416) than the glyphs sitting on it (L 0.394) — so the type
+ *    dissolved into the light rather than sitting on it. That is a light
+ *    placement fault, not a colour one, so the fix is to keep the spill on the
+ *    device where it belongs and let the right of frame stay dark.
+ *
+ *  2 MOCKUP vs SCREEN. A whole dense compare list was shrunk into a 300px
+ *    phone: the device said "look at me" and its content was illegible. The
+ *    reference never does this — its devices carry either a simple hero state
+ *    or a crop. The glass now magnifies into the rate column, so the mockup
+ *    and the screen composition are about the same thing.
+ *
+ *  3 STILLNESS. Frames 5.6s through 8.8s of the last cut were near identical —
+ *    four seconds of a still image. The reference changes something every
+ *    0.2s. The device now rises and keeps rising, the ghost word drifts
+ *    against it, and the key light travels across the whole shot.
+ *
+ * The ghost word behind the device is ref1's move at 16.0s and 20.4s: a huge
+ * dim word, cropped by the frame, that gives the object something to stand in
+ * front of and the frame a second depth plane.
  */
 export const Ignite: React.FC = () => {
   const frame = useCurrentFrame();
   const len = shotLen(SHOT.ignite);
-  const cam = useCamera(len, { z: [1.03, 1.11], x: [0.6, -0.6] });
+  const cam = useCamera(len, { z: [1.03, 1.13], x: [0.7, -0.7] });
 
-  // The screen does not fade in. It switches on — 3 frames, with an overshoot.
   const on = at(frame, [8, 11], [0, 1], EASE.outQuart);
   const surge = at(frame, [8, 26], [1.9, 1], EASE.outQuart);
+  // The device never comes to rest: it lifts through the whole shot.
+  const lift = at(frame, [0, len], [26, -14], EASE.outQuart);
+  const tilt = at(frame, [0, len], [-9.5, -5.5], EASE.outQuart);
+  // The ghost drifts the other way, so the two planes separate as we watch.
+  const ghost = at(frame, [4, len], [70, -30], EASE.outQuart);
+  const ghostIn = at(frame, [4, 30], [0, 1], EASE.outQuart);
   const words = COPY.ignite.title.split(" ");
 
   return (
     <AbsoluteFill>
-      <Room offset={40} keyX="34%" keyY="52%" lift={at(frame, [0, 12], [0.34, 1], EASE.outQuart)} />
+      <Room offset={40} keyX="30%" keyY="54%" lift={at(frame, [0, 12], [0.34, 1], EASE.outQuart)} />
       <Composite>
-        <Plane depth={0.12} cam={cam}>
-          <div style={{ transform: "translate(-330px, 6px)" }}>
-            <DevicePlate scale={2.9} on={on} spill={surge}>
+        {/* the ghost word — the far plane, cropped by the frame */}
+        <Plane depth={0.04} cam={cam}>
+          <div
+            style={{
+              fontFamily: FONT.display,
+              fontSize: 300,
+              fontWeight: 800,
+              letterSpacing: "-0.06em",
+              lineHeight: 0.8,
+              whiteSpace: "nowrap",
+              color: "rgba(236,231,225,0.07)",
+              transform: `translate(${ghost - 690}px, 40px)`,
+              opacity: ghostIn,
+            }}
+          >
+            COMPARE
+          </div>
+        </Plane>
+
+        <Plane depth={0.13} cam={cam} style={{ perspective: 2600 }}>
+          <div
+            style={{
+              transform: `translate(-350px, ${lift}px) rotateZ(${tilt * 0.18}deg) rotateY(${tilt}deg)`,
+              transformStyle: "preserve-3d",
+            }}
+          >
+            <DevicePlate
+              scale={3.05}
+              on={on}
+              spill={surge}
+              spillRadius={620}
+              zoom={1.22}
+              focus={[207, 352]}
+            >
               <CompareScreen delay={-200} />
             </DevicePlate>
           </div>
         </Plane>
 
-        <Plane depth={0.2} cam={cam}>
-          <div style={{ width: 640, transform: "translateX(500px)" }}>
+        {/* The type side of the frame is held down so the headline always has a
+            ground darker than itself. Without it the residual bloom peaks at
+            L 0.37 against glyphs at L 0.39 — technically passing, but only just,
+            and it reads as haze on a booth screen. */}
+        <AbsoluteFill
+          style={{
+            background:
+              "radial-gradient(ellipse 46% 60% at 74% 52%, rgba(10,10,12,0.72) 0%, rgba(10,10,12,0.46) 46%, rgba(10,10,12,0) 88%)",
+          }}
+        />
+
+        <Plane depth={0.22} cam={cam}>
+          <div style={{ width: 660, transform: "translateX(510px)" }}>
             <Kicker text={COPY.ignite.kicker} delay={20} />
             <div
               style={{
                 fontFamily: FONT.display,
-                fontSize: 118,
+                fontSize: 122,
                 fontWeight: 700,
                 letterSpacing: "-0.05em",
                 lineHeight: 0.88,
