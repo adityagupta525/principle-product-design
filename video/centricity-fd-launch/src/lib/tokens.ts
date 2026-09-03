@@ -17,6 +17,26 @@ export const CINE = {
 };
 
 /**
+ * THE LIGHT ACT.
+ *
+ * ref1 does not hold one tone for its whole runtime — it opens light, drops to
+ * a dark act, and comes back up for its payoff. Ours is a loop, so it cannot
+ * end on a different tone than it starts (the seam would flash white on a booth
+ * screen every 54 seconds). It therefore goes dark → light → dark, and the
+ * light act carries the argument: the growth curve and the annotated card.
+ *
+ * Every value here is a product token. The ground is the app's own canvas.
+ */
+export const LIT = {
+  ground: C.canvas,        // #F7F2ED — the app's canvas, warm not clinical
+  ink: C.textHeading,      // #2B1E19
+  dim: C.textMuted,        // #7A828A
+  accent: C.tabActive,     // #6B4B41 — copper that holds up on cream
+  hairline: "rgba(43,30,25,0.10)",
+  hairlineFaint: "rgba(43,30,25,0.06)",
+};
+
+/**
  * Urbanist is the primary face (the product owner's call).
  * Montserrat is the file's own `--cen-family-brand`, reserved for the brand
  * lockup and the shareable card's header — the places the app uses it.

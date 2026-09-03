@@ -1,12 +1,12 @@
 import React from "react";
 import { AbsoluteFill, useCurrentFrame } from "remotion";
-import { CINE, C, FONT } from "../lib/tokens";
+import { C, FONT, LIT } from "../lib/tokens";
 import { at, EASE } from "../lib/motion";
-import { Room, Composite, useCamera, Plane } from "../lib/cinema";
+import { DayRoom, Composite, useCamera, Plane, LetterZoom } from "../lib/cinema";
 import { shotLen, SHOT, BEAT } from "../lib/beat";
 
 /**
- * The diagram beat — the one drawn moment in the film.
+ * THE LIGHT ACT OPENS · the diagram beat.
  *
  * Both references make a graphic the hero at least once, and it is the thing
  * this film had none of: everything was a screen or a word. Here the argument
@@ -16,6 +16,13 @@ import { shotLen, SHOT, BEAT } from "../lib/beat";
  * Drawn the way the references draw: faint grid, one accent stroke revealed by
  * stroke-dashoffset, endpoint dots that land last, annotation set beside the
  * line rather than on it, and an enormous amount of empty frame.
+ *
+ * The cut into this shot is where the film changes tone. It arrives on an
+ * overexposure that falls off in a third of a second, and lands on the app's
+ * own canvas — the argument is made in daylight, and the product goes back to
+ * doing its work in the dark room three bars later. The way in is ref2's
+ * letterform pull-back: the frame opens inside a single glyph of the headline
+ * and retreats until the whole line resolves.
  */
 const W = 900;
 const H = 420;
@@ -60,12 +67,24 @@ export const Curve: React.FC = () => {
   const len = shotLen(SHOT.curve);
   const cam = useCamera(len, { z: [1.0, 1.07] });
 
-  const grid = at(frame, [4, 22], [0, 1], EASE.out);
+  /* ── bar 1: the way in ─────────────────────────────────────────────── */
+  // Overexposure on the cut, gone in ten frames.
+  const bloom = at(frame, [0, 10], [1, 0], EASE.outQuart);
+  // The letterform retreats over 13 frames — ref2 does it in about four tenths.
+  const zoom = at(frame, [2, 15], [0, 1], EASE.outExpo);
+  // The headline holds a beat and a half, then leaves upward, fast.
+  const headOut = at(frame, [BEAT * 2.6, BEAT * 3.1], [0, 1], EASE.inOut);
+
+  /* ── bars 2–3: the diagram ─────────────────────────────────────────── */
+  const D = Math.round(BEAT * 3);
+  const grid = at(frame, [D, D + 18], [0, 1], EASE.out);
   // Each line draws over one beat, the accent one starting a beat later.
-  const drawLow = at(frame, [10, 10 + BEAT * 1.6], [0, 1], EASE.inOut);
-  const drawHigh = at(frame, [10 + BEAT, 10 + BEAT * 2.6], [0, 1], EASE.inOut);
-  const dots = at(frame, [10 + BEAT * 2.6, 10 + BEAT * 3], [0, 1], EASE.out);
-  const gap = at(frame, [10 + BEAT * 3, 10 + BEAT * 3.8], [0, 1], EASE.out);
+  const drawLow = at(frame, [D + 6, D + 6 + BEAT * 1.6], [0, 1], EASE.inOut);
+  const drawHigh = at(frame, [D + 6 + BEAT, D + 6 + BEAT * 2.6], [0, 1], EASE.inOut);
+  const dots = at(frame, [D + 6 + BEAT * 2.6, D + 6 + BEAT * 3], [0, 1], EASE.out);
+  const gap = at(frame, [D + 6 + BEAT * 3, D + 6 + BEAT * 3.8], [0, 1], EASE.out);
+  // Everything after the headline rises into place as one body.
+  const bodyIn = at(frame, [BEAT * 2.8, BEAT * 3.4], [0, 1], EASE.outQuart);
 
   const lo = endOf(LOW);
   const hi = endOf(HIGH);
@@ -73,10 +92,18 @@ export const Curve: React.FC = () => {
 
   return (
     <AbsoluteFill>
-      <Room offset={170} variant="pool" keyX="50%" keyY="46%" lift={0.5} drift={0.6} />
-      <Composite>
+      <DayRoom bloom={bloom} drift={0.7} />
+      <Composite light>
         <Plane depth={0.1} cam={cam}>
-          <div style={{ position: "relative", width: W, height: H }}>
+          <div
+            style={{
+              position: "relative",
+              width: W,
+              height: H,
+              opacity: bodyIn,
+              transform: `translateY(${at(frame, [BEAT * 2.8, BEAT * 3.4], [26, 0], EASE.outQuart)}px)`,
+            }}
+          >
             <svg width={W} height={H} style={{ overflow: "visible" }}>
               {/* faint grid — structure, not decoration */}
               <g opacity={grid * 0.5}>
@@ -87,7 +114,7 @@ export const Curve: React.FC = () => {
                     y1={0}
                     x2={PAD + (i / 3) * (W - PAD * 2)}
                     y2={H}
-                    stroke="rgba(236,231,225,0.13)"
+                    stroke={LIT.hairline}
                     strokeWidth={1}
                   />
                 ))}
@@ -98,7 +125,7 @@ export const Curve: React.FC = () => {
                     y1={(i / 4) * H}
                     x2={W}
                     y2={(i / 4) * H}
-                    stroke="rgba(236,231,225,0.09)"
+                    stroke={LIT.hairlineFaint}
                     strokeWidth={1}
                   />
                 ))}
@@ -108,14 +135,14 @@ export const Curve: React.FC = () => {
               <path
                 d={`${path(HIGH)} L${lo.x},${lo.y} ${path([...LOW].reverse())
                   .replace(/^M/, "L")} Z`}
-                fill={CINE.keyHot}
-                opacity={gap * 0.1}
+                fill={C.gain}
+                opacity={gap * 0.14}
               />
 
               <path
                 d={path(LOW)}
                 fill="none"
-                stroke="rgba(236,231,225,0.34)"
+                stroke="rgba(43,30,25,0.30)"
                 strokeWidth={2.5}
                 strokeLinecap="round"
                 strokeDasharray={LEN}
@@ -129,10 +156,10 @@ export const Curve: React.FC = () => {
                 strokeLinecap="round"
                 strokeDasharray={LEN}
                 strokeDashoffset={LEN * (1 - drawHigh)}
-                style={{ filter: `drop-shadow(0 0 16px ${C.gain}88)` }}
+                style={{ filter: `drop-shadow(0 3px 10px ${C.gain}44)` }}
               />
 
-              <circle cx={lo.x} cy={lo.y} r={5 * dots} fill="rgba(236,231,225,0.5)" />
+              <circle cx={lo.x} cy={lo.y} r={5 * dots} fill="rgba(43,30,25,0.45)" />
               <circle cx={hi.x} cy={hi.y} r={6.5 * dots} fill={C.gain} />
             </svg>
 
@@ -149,7 +176,7 @@ export const Curve: React.FC = () => {
               <div style={{ fontFamily: FONT.app, fontSize: 32, fontWeight: 700, color: C.gain, whiteSpace: "nowrap" }}>
                 {inr(hi.v)}
               </div>
-              <div style={{ fontFamily: FONT.display, fontSize: 14, letterSpacing: "0.14em", color: CINE.typeDim, marginTop: 4 }}>
+              <div style={{ fontFamily: FONT.display, fontSize: 14, letterSpacing: "0.14em", color: LIT.dim, marginTop: 4 }}>
                 AT 8.25%
               </div>
             </div>
@@ -161,10 +188,10 @@ export const Curve: React.FC = () => {
                 opacity: dots * 0.75,
               }}
             >
-              <div style={{ fontFamily: FONT.app, fontSize: 22, fontWeight: 600, color: CINE.typeDim, whiteSpace: "nowrap" }}>
+              <div style={{ fontFamily: FONT.app, fontSize: 22, fontWeight: 600, color: LIT.dim, whiteSpace: "nowrap" }}>
                 {inr(lo.v)}
               </div>
-              <div style={{ fontFamily: FONT.display, fontSize: 13, letterSpacing: "0.14em", color: CINE.typeDim, opacity: 0.7, marginTop: 3 }}>
+              <div style={{ fontFamily: FONT.display, fontSize: 13, letterSpacing: "0.14em", color: LIT.dim, opacity: 0.7, marginTop: 3 }}>
                 IN SAVINGS
               </div>
             </div>
@@ -182,7 +209,7 @@ export const Curve: React.FC = () => {
                 fontFamily: FONT.display,
                 fontSize: 13,
                 letterSpacing: "0.16em",
-                color: CINE.typeDim,
+                color: LIT.dim,
               }}
             >
               <span>TODAY</span>
@@ -193,23 +220,28 @@ export const Curve: React.FC = () => {
           </div>
         </Plane>
 
-        {/* One line, centred, with room around it — the reference way. */}
-        <AbsoluteFill style={{ alignItems: "center", justifyContent: "flex-start", paddingTop: 96 }}>
-          <div
-            style={{
-              opacity: gap,
-              fontFamily: FONT.display,
-              fontSize: 34,
-              fontWeight: 500,
-              letterSpacing: "-0.02em",
-              color: CINE.type,
-              transform: `translateY(${at(frame, [10 + BEAT * 3, 10 + BEAT * 3.6], [14, 0], EASE.out)}px)`,
-            }}
-          >
-            Same money.{" "}
-            <span style={{ color: C.gain, fontWeight: 700 }}>{inr(hi.v - lo.v)} more.</span>
-          </div>
+        {/* The way in, and the claim: the frame opens inside the rupee glyph of
+            the number and retreats until the whole line resolves. It is the
+            same line the beat ends on, so the shot states its conclusion first
+            and then spends two bars proving it. */}
+        <AbsoluteFill
+          style={{
+            alignItems: "center",
+            justifyContent: "center",
+            opacity: 1 - headOut,
+            transform: `translateY(${-headOut * 190}px) scale(${1 - headOut * 0.06})`,
+          }}
+        >
+          <LetterZoom
+            text={`Same money. ${inr(hi.v - lo.v)} more.`}
+            t={zoom}
+            size={132}
+            color={LIT.ink}
+            accent={{ from: 12, color: C.gain }}
+            focus={12}
+          />
         </AbsoluteFill>
+
       </Composite>
     </AbsoluteFill>
   );

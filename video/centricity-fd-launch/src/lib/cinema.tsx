@@ -1,6 +1,6 @@
 import React from "react";
 import { AbsoluteFill, Img, OffthreadVideo, staticFile, useCurrentFrame, useVideoConfig } from "remotion";
-import { CINE, FONT, TYPE } from "./tokens";
+import { CINE, FONT, LIT, TYPE } from "./tokens";
 import { at, EASE } from "./motion";
 import type { Caption } from "../copy";
 
@@ -186,9 +186,36 @@ export const LitPanel: React.FC<{
    * and bloom blow the frame out. Bare drops all of it and leaves the surface.
    */
   bare?: boolean;
+  /**
+   * Light-act mode. In the dark room the panel is a light source and its rim
+   * and bloom are what stop it reading as a rectangle. On a cream ground it is
+   * an object instead, and the thing that gives it presence is a real cast
+   * shadow — so the glow comes off entirely rather than being dimmed.
+   */
+  day?: boolean;
   children: React.ReactNode;
-}> = ({ width = 375, height = 812, scale = 1, yaw = 0, bloom = 1, bare = false, children }) =>
-  bare ? (
+}> = ({ width = 375, height = 812, scale = 1, yaw = 0, bloom = 1, bare = false, day = false, children }) =>
+  day ? (
+    <div style={{ position: "relative", transform: `scale(${scale}) rotateY(${yaw}deg)` }}>
+      <div
+        style={{
+          position: "relative",
+          width,
+          height,
+          borderRadius: 30,
+          overflow: "hidden",
+          background: "#FFFFFF",
+          boxShadow: `
+            0 1px 0 0 rgba(43,30,25,0.10),
+            0 2px 8px -2px rgba(43,30,25,0.10),
+            0 30px 60px -18px rgba(43,30,25,0.30),
+            0 70px 120px -40px rgba(43,30,25,0.34)`,
+        }}
+      >
+        {children}
+      </div>
+    </div>
+  ) : bare ? (
     <div style={{ width, height, background: "#FFFFFF", overflow: "hidden", transform: `scale(${scale})` }}>
       {children}
     </div>
@@ -442,15 +469,39 @@ export const useSmear = (vx: number, vy: number, gain = 0.34, max = 26) => {
 /** Velocity of an interpolation, sampled across one frame. */
 export const velocity = (fn: (f: number) => number, frame: number) => fn(frame) - fn(frame - 1);
 
-/** Every shot is composited through this, so the finish is identical throughout. */
-export const Composite: React.FC<{ children: React.ReactNode; grain?: number }> = ({ children, grain }) => (
-  <>
-    {children}
-    <Vignette />
-    <Aberration />
-    <Grain amount={grain} />
-  </>
-);
+/**
+ * Every shot is composited through this, so the finish is identical throughout.
+ *
+ * `light` is not a smaller vignette — it is a different finish. The dark room's
+ * pass burns the edges to near-black and fringes them violet, which on a cream
+ * ground turns the whole frame the colour of dishwater. The light act instead
+ * gets a warm edge falloff, no fringing, and half the grain: paper, not film.
+ */
+export const Composite: React.FC<{
+  children: React.ReactNode;
+  grain?: number;
+  light?: boolean;
+}> = ({ children, grain, light = false }) =>
+  light ? (
+    <>
+      {children}
+      <AbsoluteFill
+        style={{
+          background:
+            "radial-gradient(ellipse 96% 88% at 50% 46%, transparent 58%, rgba(74,53,36,0.055) 84%, rgba(74,53,36,0.13) 100%)",
+          pointerEvents: "none",
+        }}
+      />
+      <Grain amount={grain ?? 0.03} />
+    </>
+  ) : (
+    <>
+      {children}
+      <Vignette />
+      <Aberration />
+      <Grain amount={grain} />
+    </>
+  );
 
 /* ────────────────────────────────────────────────────────────────────────────
  *  REAL DEVICE PLATES
@@ -617,7 +668,9 @@ export const Annotate: React.FC<{
   text: string;
   delay?: number;
   exitAt?: number;
-}> = ({ x, y, run = 150, text, delay = 0, exitAt }) => {
+  /** Ink on cream, for the light act. */
+  light?: boolean;
+}> = ({ x, y, run = 150, text, delay = 0, exitAt, light = false }) => {
   const frame = useCurrentFrame();
   const draw = at(frame, [delay, delay + 12], [0, 1], EASE.outQuart);
   const dot = at(frame, [delay, delay + 8], [0, 1], EASE.outExpo);
@@ -625,6 +678,8 @@ export const Annotate: React.FC<{
   const lift = at(frame, [delay + 8, delay + 20], [10, 0], EASE.outQuart);
   const out = exitAt === undefined ? 1 : at(frame, [exitAt, exitAt + 6], [1, 0], EASE.out);
   const left = run < 0;
+  const mark = light ? LIT.accent : CINE.keyHot;
+  const ink = light ? LIT.ink : CINE.type;
 
   return (
     <div
@@ -645,10 +700,10 @@ export const Annotate: React.FC<{
           width: 7,
           height: 7,
           borderRadius: "50%",
-          background: CINE.keyHot,
+          background: mark,
           flexShrink: 0,
           transform: `scale(${dot})`,
-          boxShadow: `0 0 14px ${CINE.keyHot}`,
+          boxShadow: light ? "none" : `0 0 14px ${mark}`,
         }}
       />
       {/* the leader */}
@@ -656,7 +711,7 @@ export const Annotate: React.FC<{
         style={{
           width: Math.abs(run) * draw,
           height: 1,
-          background: `linear-gradient(${left ? 270 : 90}deg, ${CINE.keyHot}CC, ${CINE.keyHot}44)`,
+          background: `linear-gradient(${left ? 270 : 90}deg, ${mark}${light ? "AA" : "CC"}, ${mark}33)`,
         }}
       />
       <div
@@ -664,8 +719,8 @@ export const Annotate: React.FC<{
           ...TYPE.label,
           fontSize: 19,
           fontWeight: 700,
-          color: CINE.type,
-          textShadow: "0 2px 18px rgba(0,0,0,0.9)",
+          color: ink,
+          textShadow: light ? "none" : "0 2px 18px rgba(0,0,0,0.9)",
           whiteSpace: "nowrap",
           opacity: type,
           transform: `translateY(${lift}px)`,
@@ -674,6 +729,103 @@ export const Annotate: React.FC<{
       >
         {text}
       </div>
+    </div>
+  );
+};
+
+/**
+ * THE LIGHT ACT'S ROOM.
+ *
+ * Not a palette inversion of `Room` — a different room. There is no key light
+ * to point, because on a cream ground light is ambient; what shapes the frame
+ * instead is a large soft highlight drifting behind the subject and a vignette
+ * so slight it reads as paper rather than as a lens.
+ *
+ * `bloom` is the way in. ref1 cuts into its light passages on an overexposure
+ * that falls off over about a third of a second, which is what stops the change
+ * of tone reading as a mistake. Pass the shot's own falling ramp.
+ */
+export const DayRoom: React.FC<{ bloom?: number; fall?: number; drift?: number }> = ({
+  bloom = 0,
+  fall = 1,
+  drift = 1,
+}) => {
+  const frame = useCurrentFrame();
+  const hx = 50 + Math.sin(frame / 300) * 5 * drift;
+  const hy = 44 + Math.cos(frame / 360) * 4 * drift;
+
+  return (
+    <AbsoluteFill style={{ background: LIT.ground }}>
+      <AbsoluteFill
+        style={{
+          background: `radial-gradient(74% 62% at ${hx}% ${hy}%, #FFFFFF 0%, rgba(255,255,255,0) 66%)`,
+          opacity: 0.5,
+        }}
+      />
+      {/* the faintest warm cast in the lower corners, so the ground is not flat */}
+      <AbsoluteFill
+        style={{
+          background: `radial-gradient(120% 80% at 50% 118%, ${LIT.accent}14 0%, transparent 62%)`,
+        }}
+      />
+      {/* the cut-in overexposure */}
+      <AbsoluteFill style={{ background: "#FFFFFF", opacity: bloom }} />
+      {/* and the fall back to the dark room on the way out */}
+      <AbsoluteFill style={{ background: CINE.void, opacity: 1 - fall }} />
+    </AbsoluteFill>
+  );
+};
+
+/**
+ * LETTERFORM ZOOM — ref2's transition, and the one it uses to get into a
+ * headline. It holds a single glyph so large that only its counter is in frame,
+ * then pulls back over about four tenths of a second to reveal the whole line.
+ * The glyph the film lands on is a real character of the headline, in place, so
+ * the pull-back resolves rather than cuts.
+ *
+ * `focus` is the index of the character the zoom is centred on.
+ */
+export const LetterZoom: React.FC<{
+  text: string;
+  /** 0 → the glyph fills the frame, 1 → the line sits at its final size. */
+  t: number;
+  size?: number;
+  color?: string;
+  accent?: { from: number; color: string };
+  focus?: number;
+  style?: React.CSSProperties;
+}> = ({ text, t, size = 132, color = "#000", accent, focus = 0, style }) => {
+  // At t=0 the type is ~14× up; the eye reads that as being inside a letter.
+  const scale = 1 + (1 - t) * 13;
+  // Track the focused glyph to frame centre while zoomed in, releasing to 0.
+  const chars = [...text];
+  const per = 0.52; // rough advance width in em, good enough to centre a glyph
+  const offEm = (focus + 0.5 - chars.length / 2) * per;
+  const shift = -offEm * size * (1 - t);
+
+  return (
+    <div
+      style={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        whiteSpace: "nowrap",
+        transform: `translateX(${shift}px) scale(${scale})`,
+        transformOrigin: "center center",
+        fontFamily: FONT.display,
+        fontSize: size,
+        fontWeight: 800,
+        letterSpacing: "-0.045em",
+        lineHeight: 1,
+        color,
+        ...style,
+      }}
+    >
+      {chars.map((c, i) => (
+        <span key={i} style={accent && i >= accent.from ? { color: accent.color } : undefined}>
+          {c === " " ? " " : c}
+        </span>
+      ))}
     </div>
   );
 };

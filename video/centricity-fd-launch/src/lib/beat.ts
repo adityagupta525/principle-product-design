@@ -35,8 +35,10 @@ export const SHOT = {
   rate:       [cutAtBar(7), cutAtBar(8)],
   table:      [cutAtBar(8), cutAtBar(9)],
   calculate:  [cutAtBar(9), cutAtBar(11)],
-  curve:      [cutAtBar(11), cutAtBar(13)],
-  assemble:   [cutAtBar(13), cutAtBar(16)],
+  /* ── the light act: bars 11–16 ───────────────────────────────────── */
+  curve:      [cutAtBar(11), cutAtBar(14)],
+  assemble:   [cutAtBar(14), cutAtBar(16)],
+  /* ── back to the dark room ───────────────────────────────────────── */
   detach:     [cutAtBar(16), cutAtBar(17)],
   flight:     [cutAtBar(17), cutAtBar(18)],
   land:       [cutAtBar(18), cutAtBar(19)],
