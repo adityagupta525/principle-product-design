@@ -9,6 +9,7 @@ import { Rows } from "./shots/Rows";
 import { Rate } from "./shots/Rate";
 import { Table } from "./shots/Table";
 import { Calculate } from "./shots/Calculate";
+import { Curve } from "./shots/Curve";
 import { Assemble } from "./shots/Assemble";
 import { Detach } from "./shots/Detach";
 import { Flight } from "./shots/Flight";
@@ -28,6 +29,7 @@ const SHOTS = [
   [SHOT.rate, Rate],
   [SHOT.table, Table],
   [SHOT.calculate, Calculate],
+  [SHOT.curve, Curve],
   [SHOT.assemble, Assemble],
   [SHOT.detach, Detach],
   [SHOT.flight, Flight],

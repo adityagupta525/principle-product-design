@@ -97,6 +97,17 @@ export const COPY = {
     chatName: "Sneha Patel",
     chatMessage: "Ye comparison dekh lijiye.",
     chatTime: "9:41 AM",
+
+    /**
+     * Annotation labels for the card-at-scale beat. Each one names a part of
+     * the artefact, in four words or fewer, and each one is a *partner*
+     * benefit — not a feature list. Order runs top-down with the card.
+     */
+    notes: [
+      "Live rates, not a screenshot",
+      "Four issuers, one view",
+      "Your name on it",
+    ],
   },
 
   /** Beat 4 — Book. */

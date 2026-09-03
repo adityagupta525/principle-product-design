@@ -17,6 +17,7 @@ import { COPY, ISSUERS } from "../copy";
 import { C, FONT } from "../lib/tokens";
 import { at, EASE, TIME } from "../lib/motion";
 import { Pill } from "../lib/atoms";
+import { useSmear } from "../lib/cinema";
 
 /**
  * Type ramp taken verbatim from the Figma layers. The app is Montserrat
@@ -356,9 +357,12 @@ export const CompareScreen: React.FC<{ delay?: number; focusAt?: number; step?: 
         {ISSUERS.map((row, i) => {
           const d = delay + i * step;
           const opacity = at(frame, [d, d + TIME.row], [0, 1], EASE.out);
-          // Overshoot 4px past target and settle — a real row lands, it does not glide.
-          const x = at(frame, [d, d + TIME.row], [-18, 3], EASE.out) +
-            at(frame, [d + TIME.row, d + TIME.row + 4], [0, -3], EASE.out);
+          // Overshoot 3px past target and settle — a real row lands, it does not glide.
+          const xAt = (f: number) =>
+            at(f, [d, d + TIME.row], [-18, 3], EASE.out) +
+            at(f, [d + TIME.row, d + TIME.row + 4], [0, -3], EASE.out);
+          const x = xAt(frame);
+          const smear = useSmear(xAt(frame) - xAt(frame - 1), 0, 0.5, 14);
           const check = at(frame, [d + 4, d + 4 + TIME.tick], [0, 1], EASE.out);
 
           const pull = focusAt === undefined ? 0 : at(frame, [focusAt, focusAt + 22], [0, 1], EASE.outQuart);
@@ -372,8 +376,8 @@ export const CompareScreen: React.FC<{ delay?: number; focusAt?: number; step?: 
               key={row.name}
               style={{
                 opacity: opacity * dim,
-                filter: `blur(${blur}px)`,
                 transform: `translateX(${x}px) scale(${scale})`,
+                filter: [blur ? `blur(${blur}px)` : "", smear.filter ?? ""].filter(Boolean).join(" ") || undefined,
                 height: 72,
                 marginBottom: 8,
                 display: "flex",
@@ -382,6 +386,7 @@ export const CompareScreen: React.FC<{ delay?: number; focusAt?: number; step?: 
                 borderBottom: `0.5px solid ${C.hairline}`,
               }}
             >
+              {smear.defs}
               <LogoTile color={row.logo} checked={check > 0.5} />
               <span style={{ ...T.row, flex: 1, minWidth: 0, whiteSpace: "nowrap", overflow: "hidden" }}>
                 {row.short}

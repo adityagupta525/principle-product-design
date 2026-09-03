@@ -295,21 +295,26 @@ export const TypeCard: React.FC<{
       {parts.map((p, i) => {
         // 2-frame stagger (~65ms). Long delays read as slow, however grand the type.
         const d = delay + i * 2;
-        const rise = at(frame, [d, d + 12], [100, 0], EASE.out);
+        const riseAt = (f: number) => at(f, [d, d + 12], [100, 0], EASE.out);
+        const rise = riseAt(frame);
+        // Velocity is in % of line height; scale it to px for the blur.
+        const vy = (riseAt(frame) - riseAt(frame - 1)) * size * 0.011;
         const wt = p.a ? at(frame, [d + 5, d + 16], [500, 800], EASE.out) : 500;
         return (
           <span key={i} style={{ display: "inline-block", overflow: "hidden", verticalAlign: "bottom", marginRight: "0.26em" }}>
-            <span
-              style={{
-                display: "inline-block",
-                transform: `translateY(${rise}%)`,
-                opacity: out,
-                fontWeight: Math.round(wt),
-                color: p.a ? CINE.keyHot : undefined,
-              }}
-            >
-              {p.w}
-            </span>
+            <Smear vy={vy} gain={0.9} max={18}>
+              <span
+                style={{
+                  display: "inline-block",
+                  transform: `translateY(${rise}%)`,
+                  opacity: out,
+                  fontWeight: Math.round(wt),
+                  color: p.a ? CINE.keyHot : undefined,
+                }}
+              >
+                {p.w}
+              </span>
+            </Smear>
           </span>
         );
       })}
@@ -368,6 +373,75 @@ export const EdgeFalloff: React.FC<{ side?: "right" | "left" | "both"; at?: numb
     />
   );
 
+/**
+ * MOTION BLUR.
+ *
+ * The single biggest thing separating this film from the references. Nothing
+ * in the previous cut smeared: type snapped into place perfectly sharp, rows
+ * arrived sharp, the card crossed the frame sharp. Real footage — and every
+ * good motion piece — smears in the direction of travel, and the eye reads its
+ * absence instantly even when it cannot name it.
+ *
+ * Directional, via an SVG Gaussian with separate x and y deviations, so a
+ * horizontal move smears horizontally instead of going soft in all directions.
+ * Drive `vx`/`vy` from the element's own per-frame velocity: the blur then
+ * appears only while the thing is moving and clears the moment it lands.
+ */
+let smearId = 0;
+
+export const Smear: React.FC<{
+  vx?: number;
+  vy?: number;
+  /** px of blur per px-per-frame of velocity */
+  gain?: number;
+  max?: number;
+  children: React.ReactNode;
+  style?: React.CSSProperties;
+}> = ({ vx = 0, vy = 0, gain = 0.34, max = 26, children, style }) => {
+  const id = React.useMemo(() => `smear${smearId++}`, []);
+  const bx = Math.min(Math.abs(vx) * gain, max);
+  const by = Math.min(Math.abs(vy) * gain, max);
+  const on = bx > 0.35 || by > 0.35;
+
+  return (
+    <div style={{ ...style, filter: on ? `url(#${id})` : undefined, willChange: "filter" }}>
+      {on && (
+        <svg width="0" height="0" style={{ position: "absolute" }}>
+          <filter id={id} x="-40%" y="-40%" width="180%" height="180%" colorInterpolationFilters="sRGB">
+            <feGaussianBlur stdDeviation={`${bx.toFixed(2)} ${by.toFixed(2)}`} />
+          </filter>
+        </svg>
+      )}
+      {children}
+    </div>
+  );
+};
+
+/**
+ * Hook form, for elements that already own their transform and cannot take a
+ * wrapper — a list row, say. Returns the filter string to spread into the
+ * element's own style, plus the <defs> node to render beside it.
+ */
+export const useSmear = (vx: number, vy: number, gain = 0.34, max = 26) => {
+  const id = React.useMemo(() => `smear${smearId++}`, []);
+  const bx = Math.min(Math.abs(vx) * gain, max);
+  const by = Math.min(Math.abs(vy) * gain, max);
+  const on = bx > 0.35 || by > 0.35;
+  return {
+    filter: on ? `url(#${id})` : undefined,
+    defs: on ? (
+      <svg width="0" height="0" style={{ position: "absolute" }}>
+        <filter id={id} x="-40%" y="-40%" width="180%" height="180%" colorInterpolationFilters="sRGB">
+          <feGaussianBlur stdDeviation={`${bx.toFixed(2)} ${by.toFixed(2)}`} />
+        </filter>
+      </svg>
+    ) : null,
+  };
+};
+
+/** Velocity of an interpolation, sampled across one frame. */
+export const velocity = (fn: (f: number) => number, frame: number) => fn(frame) - fn(frame - 1);
+
 /** Every shot is composited through this, so the finish is identical throughout. */
 export const Composite: React.FC<{ children: React.ReactNode; grain?: number }> = ({ children, grain }) => (
   <>
@@ -377,3 +451,229 @@ export const Composite: React.FC<{ children: React.ReactNode; grain?: number }> 
     <Grain amount={grain} />
   </>
 );
+
+/* ────────────────────────────────────────────────────────────────────────────
+ *  REAL DEVICE PLATES
+ *
+ *  public/env/device-flat.jpg is a photographed phone on a lit surface, screen
+ *  off. The screen rectangle was measured off the plate (dark-region scan, not
+ *  eyeballed): the body spans y 40–290 of a 600×335 frame, the glass sits at
+ *  x 243–345, y 46–281.
+ *
+ *  The plate is laid over the shot in `screen` blend mode, which is what makes
+ *  this work with no mask: the plate's near-black background contributes
+ *  nothing over our near-black room, its copper rim and floor pool add, and the
+ *  black glass lets the live UI underneath show through. The device is soft
+ *  (it is a 600px plate pushed to ~2.5×); the UI composited into it renders at
+ *  native resolution and stays sharp. That is the right way round — it reads
+ *  like a photograph of a screen, which is exactly what it is.
+ * ──────────────────────────────────────────────────────────────────────────── */
+const FEATHER =
+  "radial-gradient(ellipse 44% 74% at 49% 50%, #000 0%, #000 44%, transparent 96%)";
+
+export const DEVICE_FLAT = {
+  plate: { w: 600, h: 335 },
+  glass: { x: 243, y: 46, w: 102, h: 235 },
+} as const;
+
+export const DevicePlate: React.FC<{
+  /** Plate scale. 2.4 puts the body at ~600px tall on a 1080 frame. */
+  scale?: number;
+  /** 0 → screen off (the plate as shot), 1 → screen at full brightness. */
+  on?: number;
+  /** Warm spill thrown back onto the room as the screen lights. */
+  spill?: number;
+  children: React.ReactNode;
+}> = ({ scale = 2.4, on = 1, spill = 1, children }) => {
+  const P = DEVICE_FLAT.plate;
+  const G = DEVICE_FLAT.glass;
+  // Fit the 375×812 app screen to the glass by height; the few px that fall
+  // outside the glass width are clipped by the bezel, as they would be.
+  const fit = (G.h * scale) / 812;
+
+  return (
+    <div style={{ position: "relative", width: P.w * scale, height: P.h * scale }}>
+      {/* spill — the screen lighting the room back, behind everything */}
+      <div
+        style={{
+          position: "absolute",
+          left: (G.x + G.w / 2) * scale,
+          top: (G.y + G.h / 2) * scale,
+          width: 1100,
+          height: 1100,
+          transform: "translate(-50%, -50%)",
+          borderRadius: "50%",
+          background: `radial-gradient(closest-side, ${CINE.keyHot}22, transparent 68%)`,
+          filter: "blur(60px)",
+          opacity: on * spill,
+        }}
+      />
+
+      {/* the live screen, under the plate */}
+      <div
+        style={{
+          position: "absolute",
+          left: G.x * scale,
+          top: G.y * scale,
+          width: G.w * scale,
+          height: G.h * scale,
+          borderRadius: 8 * scale,
+          overflow: "hidden",
+          background: "#FFFFFF",
+          opacity: on,
+          boxShadow: `0 0 ${70 * on}px ${10 * on}px ${CINE.keyHot}44`,
+        }}
+      >
+        <div
+          style={{
+            position: "absolute",
+            left: "50%",
+            top: 0,
+            width: 375,
+            height: 812,
+            transform: `translateX(-50%) scale(${fit})`,
+            transformOrigin: "top center",
+          }}
+        >
+          {children}
+        </div>
+      </div>
+
+      {/* the photograph itself, added over the top */}
+      <Img
+        src={staticFile("env/device-flat.jpg")}
+        style={{
+          position: "absolute",
+          inset: 0,
+          width: "100%",
+          height: "100%",
+          mixBlendMode: "screen",
+          // the plate is upscaled; a hair of blur reads as focus, not as JPEG
+          filter: "blur(0.7px) saturate(1.06)",
+          // Feather the plate's own border. Screen blend lifts even its near-
+          // black background, which would otherwise draw a visible rectangle
+          // in the room; the falloff also reads as the light dying off.
+          WebkitMaskImage: FEATHER,
+          maskImage: FEATHER,
+        }}
+      />
+
+      {/* glass reflection — a photographed phone with a live screen has one */}
+      <div
+        style={{
+          position: "absolute",
+          left: G.x * scale,
+          top: G.y * scale,
+          width: G.w * scale,
+          height: G.h * scale,
+          borderRadius: 8 * scale,
+          background:
+            "linear-gradient(146deg, rgba(255,255,255,0.16) 0%, rgba(255,255,255,0.03) 26%, transparent 44%)",
+          opacity: on,
+          pointerEvents: "none",
+        }}
+      />
+    </div>
+  );
+};
+
+/**
+ * The angled plate, used as a prop rather than a screen carrier — its glass is
+ * a perspective quad and faking a composite into it would look faked. It sits
+ * far back, defocused, as a real object in the room.
+ */
+export const DeviceProp: React.FC<{ scale?: number; blur?: number; opacity?: number }> = ({
+  scale = 2.2,
+  blur = 14,
+  opacity = 0.5,
+}) => (
+  <Img
+    src={staticFile("env/device-angle.jpg")}
+    style={{
+      width: 600 * scale,
+      height: 335 * scale,
+      mixBlendMode: "screen",
+      filter: `blur(${blur}px)`,
+      opacity,
+      WebkitMaskImage: FEATHER,
+      maskImage: FEATHER,
+    }}
+  />
+);
+
+/**
+ * ANNOTATION LABEL — the reference reel's signature move: a component held at
+ * scale while short labels tick on beside it, each tethered by a hairline that
+ * draws out from the part it names. The label is the film explaining the
+ * product without a voice-over, and it is the reason a component shot holds for
+ * two bars without going dead.
+ */
+export const Annotate: React.FC<{
+  /** Anchor, in the coordinate space of the parent. */
+  x: number;
+  y: number;
+  /** Leader length and direction. Negative runs left. */
+  run?: number;
+  text: string;
+  delay?: number;
+  exitAt?: number;
+}> = ({ x, y, run = 150, text, delay = 0, exitAt }) => {
+  const frame = useCurrentFrame();
+  const draw = at(frame, [delay, delay + 12], [0, 1], EASE.outQuart);
+  const dot = at(frame, [delay, delay + 8], [0, 1], EASE.outExpo);
+  const type = at(frame, [delay + 8, delay + 20], [0, 1], EASE.outQuart);
+  const lift = at(frame, [delay + 8, delay + 20], [10, 0], EASE.outQuart);
+  const out = exitAt === undefined ? 1 : at(frame, [exitAt, exitAt + 6], [1, 0], EASE.out);
+  const left = run < 0;
+
+  return (
+    <div
+      style={{
+        position: "absolute",
+        left: x,
+        top: y,
+        opacity: out,
+        display: "flex",
+        flexDirection: left ? "row-reverse" : "row",
+        alignItems: "center",
+        transform: left ? "translate(-100%, -50%)" : "translateY(-50%)",
+      }}
+    >
+      {/* the tether point, on the component */}
+      <div
+        style={{
+          width: 7,
+          height: 7,
+          borderRadius: "50%",
+          background: CINE.keyHot,
+          flexShrink: 0,
+          transform: `scale(${dot})`,
+          boxShadow: `0 0 14px ${CINE.keyHot}`,
+        }}
+      />
+      {/* the leader */}
+      <div
+        style={{
+          width: Math.abs(run) * draw,
+          height: 1,
+          background: `linear-gradient(${left ? 270 : 90}deg, ${CINE.keyHot}CC, ${CINE.keyHot}44)`,
+        }}
+      />
+      <div
+        style={{
+          ...TYPE.label,
+          fontSize: 19,
+          fontWeight: 700,
+          color: CINE.type,
+          textShadow: "0 2px 18px rgba(0,0,0,0.9)",
+          whiteSpace: "nowrap",
+          opacity: type,
+          transform: `translateY(${lift}px)`,
+          margin: left ? "0 14px 0 0" : "0 0 0 14px",
+        }}
+      >
+        {text}
+      </div>
+    </div>
+  );
+};

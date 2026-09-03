@@ -2,7 +2,7 @@ import React from "react";
 import { AbsoluteFill, useCurrentFrame } from "remotion";
 import { at, EASE } from "../lib/motion";
 import { CINE } from "../lib/tokens";
-import { Room, Composite, useCamera, Plane } from "../lib/cinema";
+import { Room, Composite, useCamera, Plane, Smear } from "../lib/cinema";
 import { ShareCard } from "../screens/AppScreens";
 import { shotLen, SHOT } from "../lib/beat";
 
@@ -50,6 +50,7 @@ export const Flight: React.FC = () => {
           />
           {TRAIL.map((lag, i) => {
             const q = pose(frame - lag);
+            const prev = pose(frame - lag - 1);
             return (
               <div
                 key={lag}
@@ -57,10 +58,19 @@ export const Flight: React.FC = () => {
                   position: "absolute",
                   transform: `translate(${q.x}px, ${q.y}px) scale(${q.s}) rotateZ(${q.r}deg)`,
                   opacity: i === 0 ? 1 : 0.16 * (1 - i / TRAIL.length),
-                  filter: i === 0 ? `drop-shadow(0 0 42px ${CINE.key}66)` : "blur(4px)",
                 }}
               >
-                <ShareCard delay={-140} width={340} />
+                {/* Smears along its own direction of travel — the reference
+                    films never move anything this fast without it. */}
+                <Smear
+                  vx={q.x - prev.x}
+                  vy={q.y - prev.y}
+                  gain={0.42}
+                  max={30}
+                  style={{ filter: i === 0 ? `drop-shadow(0 0 42px ${CINE.key}66)` : "blur(4px)" }}
+                >
+                  <ShareCard delay={-140} width={340} />
+                </Smear>
               </div>
             );
           })}

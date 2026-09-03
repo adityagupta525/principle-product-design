@@ -3,7 +3,7 @@ import { AbsoluteFill, useCurrentFrame } from "remotion";
 import { COPY } from "../copy";
 import { CINE, FONT } from "../lib/tokens";
 import { at, EASE } from "../lib/motion";
-import { Room, Composite, useCamera, Plane, LitPanel, TypeCard } from "../lib/cinema";
+import { Room, Composite, useCamera, Plane, LitPanel, TypeCard, DeviceProp } from "../lib/cinema";
 import { BookScreen, AskChatScreen } from "../screens/AppScreens";
 import { shotLen, SHOT } from "../lib/beat";
 
@@ -35,6 +35,15 @@ export const Resolve: React.FC = () => {
             <LitPanel scale={0.92} bloom={dim}>
               <BookScreen tapAt={-400} doneAt={-300} />
             </LitPanel>
+          </div>
+        </Plane>
+
+        {/* A real object in the room behind the lockup. The end card is the one
+            place the film is allowed to be still, and a void with type in it is
+            not a room — this gives the type something to sit in front of. */}
+        <Plane depth={0.04} cam={cam}>
+          <div style={{ transform: "translate(60px, 40px)" }}>
+            <DeviceProp scale={2.6} blur={22} opacity={at(frame, [30, 74], [0, 0.42], EASE.outQuart) * out} />
           </div>
         </Plane>
 
