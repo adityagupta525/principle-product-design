@@ -519,8 +519,21 @@ export const Composite: React.FC<{
  *  native resolution and stays sharp. That is the right way round — it reads
  *  like a photograph of a screen, which is exactly what it is.
  * ──────────────────────────────────────────────────────────────────────────── */
-const FEATHER =
-  "radial-gradient(ellipse 44% 74% at 49% 50%, #000 0%, #000 44%, transparent 96%)";
+/**
+ * The plate's own border must never be visible. A single radial is not enough:
+ * pushed large enough to crop against the frame, the ellipse still has ~35%
+ * alpha where the image actually ends, which draws a hard horizontal step
+ * across the shot (measured: a 10-level jump at y≈37). So the radial is
+ * intersected with linear feathers on all four sides, which reach zero at the
+ * edge itself whatever the plate's scale or position.
+ */
+const FEATHER_RADIAL =
+  "radial-gradient(ellipse 46% 78% at 49% 50%, #000 0%, #000 46%, transparent 98%)";
+const FEATHER_V = "linear-gradient(180deg, transparent 0%, #000 7%, #000 93%, transparent 100%)";
+const FEATHER_H = "linear-gradient(90deg, transparent 0%, #000 5%, #000 95%, transparent 100%)";
+const FEATHER = `${FEATHER_RADIAL}, ${FEATHER_V}, ${FEATHER_H}`;
+/** Every layer must be opaque for a pixel to survive — i.e. the darkest wins. */
+const FEATHER_MODE = "intersect, intersect, intersect";
 
 export const DEVICE_FLAT = {
   plate: { w: 600, h: 335 },
@@ -634,6 +647,8 @@ export const DevicePlate: React.FC<{
           // in the room; the falloff also reads as the light dying off.
           WebkitMaskImage: FEATHER,
           maskImage: FEATHER,
+          WebkitMaskComposite: "source-in, source-in",
+          maskComposite: FEATHER_MODE,
         }}
       />
 
@@ -676,6 +691,8 @@ export const DeviceProp: React.FC<{ scale?: number; blur?: number; opacity?: num
       opacity,
       WebkitMaskImage: FEATHER,
       maskImage: FEATHER,
+      WebkitMaskComposite: "source-in, source-in",
+      maskComposite: FEATHER_MODE,
     }}
   />
 );

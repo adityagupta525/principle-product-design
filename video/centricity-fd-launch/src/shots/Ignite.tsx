@@ -43,8 +43,15 @@ export const Ignite: React.FC = () => {
   const on = at(frame, [8, 11], [0, 1], EASE.outQuart);
   const surge = at(frame, [8, 26], [1.9, 1], EASE.outQuart);
   // The device never comes to rest: it lifts through the whole shot.
-  const lift = at(frame, [0, len], [26, -14], EASE.outQuart);
-  const tilt = at(frame, [0, len], [-9.5, -5.5], EASE.outQuart);
+  const lift = at(frame, [0, len], [30, -10], EASE.outQuart);
+  // No fake tilt. device-flat.jpg is lit dead-on: its rim highlight is
+  // symmetric and its floor pool sits square under it. Rotate that in CSS and
+  // the geometry says "angled" while the light still says "head-on", which is
+  // the single most obvious tell of a faked mockup. The plate stays front-on
+  // and the frame does the work instead — the device is pushed large and
+  // cropped by the bottom edge, which is how ref1 handles every device it
+  // shows (15.4-16.8s, 17.0-18.6s: never a whole phone, always a cropped one).
+  const drift = at(frame, [0, len], [-14, 16], EASE.outQuart);
   // The ghost drifts the other way, so the two planes separate as we watch.
   const ghost = at(frame, [4, len], [70, -30], EASE.outQuart);
   const ghostIn = at(frame, [4, 30], [0, 1], EASE.outQuart);
@@ -73,15 +80,10 @@ export const Ignite: React.FC = () => {
           </div>
         </Plane>
 
-        <Plane depth={0.13} cam={cam} style={{ perspective: 2600 }}>
-          <div
-            style={{
-              transform: `translate(-350px, ${lift}px) rotateZ(${tilt * 0.18}deg) rotateY(${tilt}deg)`,
-              transformStyle: "preserve-3d",
-            }}
-          >
+        <Plane depth={0.13} cam={cam}>
+          <div style={{ transform: `translate(${-372 + drift}px, ${lift + 176}px)` }}>
             <DevicePlate
-              scale={3.05}
+              scale={3.62}
               on={on}
               spill={surge}
               spillRadius={620}
