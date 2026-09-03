@@ -12,7 +12,8 @@
  * Everything else — copy, columns, rates, layout, chrome — matches the file.
  */
 import React from "react";
-import { useCurrentFrame } from "remotion";
+import { Img, useCurrentFrame } from "remotion";
+import { hasLogo, logoSrc } from "../lib/logos";
 import { COPY, ISSUERS } from "../copy";
 import { C, FONT } from "../lib/tokens";
 import { at, EASE, TIME } from "../lib/motion";
@@ -97,12 +98,14 @@ const Header: React.FC<{ title: string }> = ({ title }) => (
  * inside a 50px box at 10,10 and the 20px checkbox overlaps its top-left
  * corner at 2,2 — a badge on the logo, not a control in the row flow.
  */
-const LogoTile: React.FC<{ color: string; size?: number; checked?: boolean; plain?: boolean }> = ({
-  color,
-  size = 40,
-  checked,
-  plain,
-}) => (
+const LogoTile: React.FC<{
+  color: string;
+  /** Issuer slug — when public/logos/<slug>.png exists it replaces the tile. */
+  slug?: string;
+  size?: number;
+  checked?: boolean;
+  plain?: boolean;
+}> = ({ color, slug, size = 40, checked, plain }) => (
   <span style={{ position: "relative", width: size + 10, height: size + 10, flex: "none" }}>
     <span
       style={{
@@ -113,8 +116,16 @@ const LogoTile: React.FC<{ color: string; size?: number; checked?: boolean; plai
         height: size,
         borderRadius: 3,
         background: color,
+        overflow: "hidden",
       }}
-    />
+    >
+      {hasLogo(slug) && (
+        <Img
+          src={logoSrc(slug!)}
+          style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+        />
+      )}
+    </span>
     {/* The shared card is an output artefact, not a control surface — it
         carries no select badge. */}
     <span
@@ -387,7 +398,7 @@ export const CompareScreen: React.FC<{ delay?: number; focusAt?: number; step?: 
               }}
             >
               {smear.defs}
-              <LogoTile color={row.logo} checked={check > 0.5} />
+              <LogoTile color={row.logo} slug={row.slug} checked={check > 0.5} />
               <span style={{ ...T.row, flex: 1, minWidth: 0, whiteSpace: "nowrap", overflow: "hidden" }}>
                 {row.short}
               </span>
@@ -534,7 +545,7 @@ export const CalculatorScreen: React.FC<{
             }}
           >
             <span style={{ color: C.textMuted, fontSize: 15, flex: "none" }}>⊕</span>
-            <LogoTile color={row.logo} size={32} />
+            <LogoTile color={row.logo} slug={row.slug} size={32} />
             <span style={{ flex: 1 }}>
               <div style={T.row}>{row.short}</div>
               <div style={{ ...T.meta, marginTop: 2 }}>
@@ -581,7 +592,11 @@ export const ShareCard: React.FC<{ delay?: number; width?: number }> = ({ delay 
           padding: "16px 16px 18px",
         }}
       >
-        <div style={{ fontFamily: FONT.brand, fontSize: 17, fontWeight: 600, color: "#FFF" }}>◍ Centricity</div>
+        {hasLogo("centricity") ? (
+          <Img src={logoSrc("centricity")} style={{ height: 18, display: "block" }} />
+        ) : (
+          <div style={{ fontFamily: FONT.brand, fontSize: 17, fontWeight: 600, color: "#FFF" }}>◍ Centricity</div>
+        )}
         <div style={{ fontFamily: FONT.app, fontSize: 10, fontWeight: 700, letterSpacing: "0.10em", color: "#FFF", marginTop: 14 }}>
           {s.cardTitle}
         </div>
@@ -612,7 +627,7 @@ export const ShareCard: React.FC<{ delay?: number; width?: number }> = ({ delay 
                 borderTop: i === 0 ? "none" : `1px solid ${C.hairline}`,
               }}
             >
-              <LogoTile color={row.logo} size={22} plain />
+              <LogoTile color={row.logo} slug={row.slug} size={22} plain />
               <span style={{ ...T.row, fontSize: 10, flex: 1 }}>{row.short}</span>
               <span style={{ ...T.meta, fontSize: 9, width: 30, textAlign: "right" }}>{row.tenure}</span>
               <span style={{ ...T.rate, fontSize: 10, width: 34, textAlign: "right" }}>{row.rate}</span>
@@ -962,7 +977,11 @@ export const BookScreen: React.FC<{ tapAt: number; doneAt: number }> = ({ tapAt,
         </div>
 
         <div style={{ display: "flex", gap: 12, marginTop: 20 }}>
-          <LogoTile color={ISSUERS.find((r) => r.name === COPY.book.issuer)?.logo ?? C.accent} size={44} />
+          <LogoTile
+            color={ISSUERS.find((r) => r.name === COPY.book.issuer)?.logo ?? C.accent}
+            slug={ISSUERS.find((r) => r.name === COPY.book.issuer)?.slug}
+            size={44}
+          />
           <span>
             <div style={{ ...T.row, fontSize: 15 }}>{b.issuer}</div>
             <div style={{ ...T.meta, fontSize: 9, letterSpacing: "0.06em", marginTop: 3 }}>{b.issuerMeta}</div>
