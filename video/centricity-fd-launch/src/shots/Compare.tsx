@@ -119,9 +119,24 @@ export const Compare: React.FC = () => {
         <Plane depth={0.12} cam={cam} blur={p * 8}>
           <div style={{ opacity: 1 - p * 0.56, transform: `translateX(${-p * 170}px)` }}>
             <Macro zoom={zoom} fx={PANEL_FX} fy={fy}>
-              <LitPanel bare>
-                <CompareScreen delay={4} step={ROW_STEP} focusAt={FOCUS} />
-              </LitPanel>
+              {/* Feather the panel's own vertical edges. Opening the reveal wide
+                  enough to hold the field brings those edges inside the frame,
+                  and a bare LitPanel is a raw white rectangle — it drew a hard
+                  step against the room (measured by the audit at col 8). The
+                  mask lives in panel space, so it stays a constant softness in
+                  the panel's own terms at every zoom. */}
+              <div
+                style={{
+                  WebkitMaskImage:
+                    "linear-gradient(90deg, transparent 0%, #000 3.5%, #000 96.5%, transparent 100%)",
+                  maskImage:
+                    "linear-gradient(90deg, transparent 0%, #000 3.5%, #000 96.5%, transparent 100%)",
+                }}
+              >
+                <LitPanel bare>
+                  <CompareScreen delay={4} step={ROW_STEP} focusAt={FOCUS} />
+                </LitPanel>
+              </div>
             </Macro>
           </div>
         </Plane>
