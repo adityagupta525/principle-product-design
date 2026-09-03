@@ -535,9 +535,28 @@ const FEATHER = `${FEATHER_RADIAL}, ${FEATHER_V}, ${FEATHER_H}`;
 /** Every layer must be opaque for a pixel to survive — i.e. the darkest wins. */
 const FEATHER_MODE = "intersect, intersect, intersect";
 
+/**
+ * The glass rectangle, measured at full resolution rather than eyeballed.
+ *
+ * Method: for each row through the body, take the two rim peaks (the brightest
+ * pixel either side) and walk inward to the first pixel below level 13 — that
+ * boundary is the glass. Same again down the columns. The medians are stable to
+ * a pixel across the whole body:
+ *
+ *   x 249 -> 351   (w 102)
+ *   y  43 -> 268   (h 225)
+ *   aspect 0.4533, against 0.4615 for a 19.5:9 phone — so fitting a 375x812
+ *   screen by height overflows the glass width by under a pixel a side.
+ *
+ * The first pass read these off a 6px-per-character ASCII dump and landed at
+ * x 243 / y 46 / h 235: six pixels left and ten too tall, which at the scales
+ * these plates are used is ~22px of screen bleeding past the left bezel and
+ * ~36px hanging below the bottom one. That is the mockup and its content
+ * visibly disagreeing, and it is why this now lives on a measurement.
+ */
 export const DEVICE_FLAT = {
   plate: { w: 600, h: 335 },
-  glass: { x: 243, y: 46, w: 102, h: 235 },
+  glass: { x: 249, y: 43, w: 102, h: 225 },
 } as const;
 
 export const DevicePlate: React.FC<{
@@ -607,7 +626,7 @@ export const DevicePlate: React.FC<{
           top: G.y * scale,
           width: G.w * scale,
           height: G.h * scale,
-          borderRadius: 8 * scale,
+          borderRadius: 9 * scale,
           overflow: "hidden",
           background: "#FFFFFF",
           opacity: on,
@@ -660,7 +679,7 @@ export const DevicePlate: React.FC<{
           top: G.y * scale,
           width: G.w * scale,
           height: G.h * scale,
-          borderRadius: 8 * scale,
+          borderRadius: 9 * scale,
           background:
             "linear-gradient(146deg, rgba(255,255,255,0.16) 0%, rgba(255,255,255,0.03) 26%, transparent 44%)",
           opacity: on,
