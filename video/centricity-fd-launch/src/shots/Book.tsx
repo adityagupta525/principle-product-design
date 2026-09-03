@@ -112,15 +112,18 @@ export const Book: React.FC = () => {
         <EdgeFalloff side="both" at={34} />
 
         {/* The statement resolves AFTER the result has landed — it confirms the
-            action rather than competing with it. */}
-        <AbsoluteFill style={{ alignItems: "center", justifyContent: "flex-end", paddingBottom: 96 }}>
+            action rather than competing with it. It sits in the void beside the
+            panel, never over it: a bottom-centred card lands on the success
+            screen itself, where cream type on white is not type. Held at caption
+            scale so the UI stays the hero of the confirmation. */}
+        <AbsoluteFill style={{ alignItems: "flex-end", justifyContent: "center", paddingRight: 76 }}>
           <TypeCard
             caption={COPY.book.caption}
             delay={DONE + 26}
             exitAt={len - 18}
-            size={TYPE.payoff.fontSize}
-            align="center"
-            style={{ textShadow: "0 8px 40px rgba(0,0,0,0.9)" }}
+            size={TYPE.caption.fontSize}
+            align="left"
+            style={{ width: 520, textShadow: "0 8px 40px rgba(0,0,0,0.9)" }}
           />
         </AbsoluteFill>
       </Composite>
