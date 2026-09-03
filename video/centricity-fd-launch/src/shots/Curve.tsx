@@ -167,31 +167,69 @@ export const Curve: React.FC = () => {
             <div
               style={{
                 position: "absolute",
-                left: hi.x + 26,
-                top: hi.y - 34,
+                left: hi.x + 34,
+                top: hi.y - 62,
                 opacity: dots,
                 transform: `translateX(${at(frame, [10 + BEAT * 2.6, 10 + BEAT * 3.2], [-12, 0], EASE.out)}px)`,
               }}
             >
-              <div style={{ fontFamily: FONT.app, fontSize: 32, fontWeight: 700, color: C.gain, whiteSpace: "nowrap" }}>
+              <div
+                style={{
+                  fontFamily: FONT.app,
+                  fontSize: 64,
+                  fontWeight: 700,
+                  letterSpacing: "-0.02em",
+                  color: LIT.ink,
+                  whiteSpace: "nowrap",
+                  fontVariantNumeric: "tabular-nums",
+                }}
+              >
                 {inr(hi.v)}
               </div>
-              <div style={{ fontFamily: FONT.display, fontSize: 14, letterSpacing: "0.14em", color: LIT.dim, marginTop: 4 }}>
+              <div
+                style={{
+                  fontFamily: FONT.display,
+                  fontSize: 19,
+                  fontWeight: 700,
+                  letterSpacing: "0.14em",
+                  color: C.textSecondary,
+                  marginTop: 8,
+                }}
+              >
                 AT 8.25%
               </div>
             </div>
             <div
               style={{
                 position: "absolute",
-                left: lo.x + 26,
-                top: lo.y - 10,
+                left: lo.x + 34,
+                top: lo.y - 22,
                 opacity: dots * 0.75,
               }}
             >
-              <div style={{ fontFamily: FONT.app, fontSize: 22, fontWeight: 600, color: LIT.dim, whiteSpace: "nowrap" }}>
+              <div
+                style={{
+                  fontFamily: FONT.app,
+                  fontSize: 42,
+                  fontWeight: 600,
+                  letterSpacing: "-0.015em",
+                  color: C.textSecondary,
+                  whiteSpace: "nowrap",
+                  fontVariantNumeric: "tabular-nums",
+                }}
+              >
                 {inr(lo.v)}
               </div>
-              <div style={{ fontFamily: FONT.display, fontSize: 13, letterSpacing: "0.14em", color: LIT.dim, opacity: 0.7, marginTop: 3 }}>
+              <div
+                style={{
+                  fontFamily: FONT.display,
+                  fontSize: 16,
+                  fontWeight: 600,
+                  letterSpacing: "0.14em",
+                  color: C.textSecondary,
+                  marginTop: 5,
+                }}
+              >
                 IN SAVINGS
               </div>
             </div>
@@ -205,11 +243,12 @@ export const Curve: React.FC = () => {
                 top: H + 18,
                 display: "flex",
                 justifyContent: "space-between",
-                opacity: grid * 0.6,
+                opacity: grid,
                 fontFamily: FONT.display,
-                fontSize: 13,
+                fontSize: 16,
+                fontWeight: 600,
                 letterSpacing: "0.16em",
-                color: LIT.dim,
+                color: C.textSecondary,
               }}
             >
               <span>TODAY</span>

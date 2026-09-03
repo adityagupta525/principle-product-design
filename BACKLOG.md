@@ -95,3 +95,23 @@ Risk profiling is explicitly NOT in onboarding (scope amendment). Flagged out-of
   retry, insufficient-eligibility/cut-off block, order pending/reversed states.
 - Mobbin: Groww/INDmoney/Revolut didn't surface → fintech alternatives (Wealthsimple, Public,
   Wealthfront, KakaoBank, Plum) for layout patterns only.
+
+## DS gap — `gain` green is unusable as text on the light canvas
+
+Measured against `canvas` (#F7F2ED), the light ground the app itself uses:
+
+| token | hex | ratio on canvas | verdict |
+|---|---|---|---|
+| `gain` | `#12B76A` | **2.36 : 1** | fails even the 3.0 large-text floor |
+| `textMuted` | `#7A828A` | **3.50 : 1** | passes large text only; fails the 4.5 body floor |
+| `textSecondary` | `#414141` | 9.18 : 1 | fine |
+| `textHeading` | `#2B1E19` | 14.49 : 1 | fine |
+
+`gain` is sized for small status text on `surface` (#FFFFFF), and it does not survive being used
+as a figure on `canvas`. It surfaced in the launch film's growth-diagram beat, where the maturity
+value was set in `gain` on the canvas ground and was genuinely hard to read; the film now sets
+those figures in `textHeading` / `textSecondary` and keeps `gain` for the line, the endpoint dot
+and the filled gap — where it is a graphic, not type.
+
+**The gap:** there is no darker green for gain-coloured *text* on light grounds. A `gain/strong`
+around 4.5:1 on `canvas` would close it. Not hand-forked anywhere — logged for a version sprint.
