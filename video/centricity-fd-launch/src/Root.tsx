@@ -8,6 +8,7 @@ import { BookProof } from "./shots/book/Proof";
 import { CompareProof } from "./shots/compare/Proof";
 import { CalculateProof } from "./shots/calculate/Proof";
 import { AssembleProof } from "./shots/assemble/Proof";
+import { LandProof } from "./shots/land/Proof";
 import { DURATION, SHOT, shotLen } from "./lib/beat";
 import { FPS } from "./lib/tokens";
 
@@ -60,6 +61,15 @@ export const RemotionRoot: React.FC = () => (
       height={1080}
       fps={FPS}
       durationInFrames={shotLen(SHOT.assemble)}
+    />
+    {/* Land hero, rendered in isolation for review — never part of the film. */}
+    <Composition
+      id="LandProof"
+      component={LandProof}
+      width={1920}
+      height={1080}
+      fps={FPS}
+      durationInFrames={shotLen(SHOT.land)}
     />
     {/* Teardown contact sheets — analysis only, never part of the film. */}
     <Composition
