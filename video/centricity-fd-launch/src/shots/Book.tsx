@@ -3,7 +3,7 @@ import { AbsoluteFill, useCurrentFrame } from "remotion";
 import { COPY } from "../copy";
 import { TYPE } from "../lib/tokens";
 import { at, atScale, EASE } from "../lib/motion";
-import { Room, Composite, useCamera, Plane, LitPanel, Macro, TypeCard, EdgeFalloff } from "../lib/cinema";
+import { Room, Composite, useCamera, Plane, LitPanel, Macro, TypeCard, EdgeFalloff, Kicker } from "../lib/cinema";
 import { BookScreen } from "../screens/AppScreens";
 import { shotLen, SHOT, BEAT } from "../lib/beat";
 
@@ -117,14 +117,36 @@ export const Book: React.FC = () => {
             screen itself, where cream type on white is not type. Held at caption
             scale so the UI stays the hero of the confirmation. */}
         <AbsoluteFill style={{ alignItems: "flex-end", justifyContent: "center", paddingRight: 76 }}>
-          <TypeCard
-            caption={COPY.book.caption}
-            delay={DONE + 26}
-            exitAt={len - 18}
-            size={TYPE.caption.fontSize}
-            align="left"
-            style={{ width: 520, textShadow: "0 8px 40px rgba(0,0,0,0.9)" }}
-          />
+          <div style={{ width: 520 }}>
+            <TypeCard
+              caption={COPY.book.caption}
+              delay={DONE + 16}
+              exitAt={len - 53}
+              size={TYPE.caption.fontSize}
+              align="left"
+              style={{ textShadow: "0 8px 40px rgba(0,0,0,0.9)" }}
+            />
+            {/* The lifecycle label takes the caption's place rather than
+                sitting beside it — one thing in the void at a time. It lands
+                as the statement clears and holds the last 39 frames, which is
+                the stretch where the My FDs list is fully open and both stage
+                badges (ACTIVE, MATURING IN 7 DAYS) are legible on screen. */}
+            {/* Sized up from the film's usual 15px kicker on purpose. Every
+                other kicker sits beside something large — Ignite's next to the
+                title, Resolve's under the statement — and borrows that weight.
+                This one stands alone in an empty void once the statement
+                clears, and at 15px it measured as a hairline nobody reads. */}
+            <Kicker
+              text={COPY.book.track}
+              delay={len - 51}
+              style={{
+                marginTop: 26,
+                fontSize: 28,
+                letterSpacing: "0.2em",
+                textShadow: "0 6px 30px rgba(0,0,0,0.9)",
+              }}
+            />
+          </div>
         </AbsoluteFill>
       </Composite>
     </AbsoluteFill>

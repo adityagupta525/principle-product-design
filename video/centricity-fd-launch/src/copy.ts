@@ -134,6 +134,15 @@ export const COPY = {
     progress: ["Verifying client", "Placing with issuer", "Confirming"],
     successTitle: "FD Booked",
     successSub: "Now in My FDs",
+    /**
+     * The lifecycle, named. The My FDs list already CARRIES the stages — the
+     * booked FD arrives as ACTIVE, Rajesh Kumar's reads MATURING IN 7 DAYS,
+     * and the stat row counts Active against Maturing Soon. None of that was
+     * ever named, so the beat read as "here is a list" rather than "here is
+     * every FD you hold, at the stage it is at". This is a Kicker, not a
+     * second caption: the shot keeps one caption, per the content law above.
+     */
+    track: "TRACKED AT EVERY STAGE",
     myFdsTitle: "My FDs",
     myFdsStats: [
       { value: "₹18.5L", label: "AUM" },
