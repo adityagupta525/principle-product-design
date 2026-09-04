@@ -112,19 +112,37 @@ export const Ask: React.FC = () => {
 
                 return (
                   <div key={i} style={{ transform: `translateZ(${z}px)` }}>
-                    {/* typing dots, then the message resolves in its place */}
-                    {typing > 0.02 ? (
-                      <Bubble typing tint>
-                        <div style={{ display: "flex", gap: 9, alignItems: "center", padding: "6px 4px" }}>
-                          {[0, 1, 2].map((d) => {
-                            const t = ((frame - tAt) / 8 + d * 0.33) % 1;
-                            const up = Math.max(0, Math.sin(t * Math.PI));
-                            return (
-                              <span key={d} style={{ width: 13, height: 13, borderRadius: 999, background: "#8C9A93", opacity: 0.4 + 0.6 * up, transform: `translateY(${-5 * up}px)` }} />
-                            );
-                          })}
-                        </div>
-                      </Bubble>
+                    {/* Typing dots, then the message resolves in its place.
+                        `typing` ramps 0→1→0 and the fade-out runs over the
+                        three frames before the send. That ramp used to be read
+                        as a boolean only — the bubble rendered at full opacity
+                        until the threshold flipped and then vanished between
+                        one frame and the next, which measured as a 6.07 delta
+                        spike at f80 against neighbours of 0.19 and 0.17: the
+                        one hard pop in a film where everything else is eased.
+                        Applying the opacity it already computes, and holding
+                        the mount until the ramp actually reaches zero, makes
+                        the handoff to the message continuous. */}
+                    {typing > 0.002 ? (
+                      <div
+                        style={{
+                          opacity: typing,
+                          transform: `scale(${0.94 + typing * 0.06})`,
+                          transformOrigin: "left bottom",
+                        }}
+                      >
+                        <Bubble>
+                          <div style={{ display: "flex", gap: 9, alignItems: "center", padding: "6px 4px" }}>
+                            {[0, 1, 2].map((d) => {
+                              const t = ((frame - tAt) / 8 + d * 0.33) % 1;
+                              const up = Math.max(0, Math.sin(t * Math.PI));
+                              return (
+                                <span key={d} style={{ width: 13, height: 13, borderRadius: 999, background: "#8C9A93", opacity: 0.4 + 0.6 * up, transform: `translateY(${-5 * up}px)` }} />
+                              );
+                            })}
+                          </div>
+                        </Bubble>
+                      </div>
                     ) : (
                       <div style={{ opacity: send, transform: `translateY(${riseAt(frame)}px)` }}>
                         <Smear vy={vy} gain={0.5} max={22}>
@@ -173,7 +191,7 @@ export const Ask: React.FC = () => {
 };
 
 /** An incoming chat bubble as a lit 3D UI component — white, tail bottom-left. */
-const Bubble: React.FC<{ children: React.ReactNode; typing?: boolean; tint?: boolean }> = ({ children }) => (
+const Bubble: React.FC<{ children: React.ReactNode }> = ({ children }) => (
   <div
     style={{
       display: "inline-flex",

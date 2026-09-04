@@ -21,7 +21,7 @@ What it answers:
   PER SHOT     all of the above bucketed by the cut list in lib/beat.ts
 
 Usage:
-    python3 tools/inspect.py <video> [--shots] [--csv out.csv] [--quiet-holds N]
+    python3 tools/framecheck.py <video> [--shots] [--csv out.csv] [--quiet-holds N]
 
     --shots         group the report by the shot boundaries in lib/beat.ts
     --csv           write the full per-frame table (every frame, every column)
@@ -149,20 +149,44 @@ def main():
         print(f"    frozen frames     {held} of {n} ({100 * held / n:.1f}%)"
               f"   in {len(holds)} runs of >= {a.quiet_holds}f")
 
-        # A jump is a frame far above its own neighbourhood, which is what a cut
-        # is — and also what an unintended pop is. Both deserve to be listed.
+        # A POP is what we are hunting: one frame that leaps and is immediately
+        # back to normal. Fast legitimate motion — a card crossing frame, rows
+        # dealing in — also clears any global threshold, but it does so for a
+        # RUN of frames, because motion has duration. So compare each frame to
+        # its own immediate neighbours rather than to the film's median, and
+        # keep only the isolated spikes. Anything sustained is movement, not a
+        # defect, and belongs in the per-shot motion figure instead.
         med = np.median(moving)
         mad = np.median(np.abs(moving - med)) or 1e-6
-        jumps = [int(i) for i in np.where(delta > med + 12 * mad)[0] if i > 0]
-        print(f"    jumps             {len(jumps)}   (delta > median + 12 MAD)")
+        loud = delta > med + 12 * mad
+        pops = []
+        for i in range(1, n - 1):
+            if not loud[i]:
+                continue
+            local = max(delta[i - 1], delta[i + 1], 1e-6)
+            if delta[i] > 6 * local:          # neighbours are quiet: a spike
+                pops.append(int(i))
 
         boundaries = {b for _, _, b in SHOTS if b < n} | {b for _, b, _ in SHOTS if b > 0}
-        unexplained = [j for j in jumps if not any(abs(j - b) <= 1 for b in boundaries)]
-        if unexplained:
-            print(f"    ⚠ jumps NOT on a cut: {unexplained[:20]}"
-                  + (" …" if len(unexplained) > 20 else ""))
+        on_cut = [p for p in pops if any(abs(p - b) <= 1 for b in boundaries)]
+        stray = [p for p in pops if p not in on_cut]
+        print(f"    spikes            {len(pops)}   ({len(on_cut)} on a cut, {len(stray)} stray)")
+        print(f"    sustained motion  {int(loud.sum()) - len(pops)} frames above"
+              f" median+12MAD but with moving neighbours — travel, not pops")
+
+        if stray:
+            print(f"    ⚠ SPIKES NOT ON A CUT — inspect these:")
+            for p in stray[:20]:
+                print(f"        f{p:<6} {shot_of(p):<10} delta {delta[p]:7.2f}"
+                      f"   neighbours {delta[p-1]:6.2f} / {delta[p+1]:6.2f}")
+            if len(stray) > 20:
+                print(f"        … and {len(stray) - 20} more")
         else:
-            print(f"    ✓ every jump lands on a shot boundary")
+            print(f"    ✓ no stray spikes — every isolated jump is a shot boundary")
+
+        missed = [b for b in sorted(boundaries) if 0 < b < n and not loud[b]]
+        if missed:
+            print(f"    ⚠ boundaries with NO jump (a cut that does not cut): {missed}")
 
         if holds:
             print(f"\n    HOLDS >= {a.quiet_holds}f — where the film stops moving")

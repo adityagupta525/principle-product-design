@@ -3,3 +3,4 @@ out/
 .DS_Store
 public/tear/
 .reference/
+__pycache__/
