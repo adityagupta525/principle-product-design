@@ -7,13 +7,34 @@ import { ShareCard } from "../screens/AppScreens";
 import { shotLen, SHOT } from "../lib/beat";
 
 /**
- * Shot 9 · 1043–1107 · 2.1s
- * The card crosses dark space alone. An arc, not a line; tilted into travel;
- * three ghosted trail frames behind it. The longest single shot in the film,
- * and the picture has to hold it on its own — this track keeps time here, it
- * does not drop away for us.
+ * Shot 9 · 1043-1107 · 64f / 2.13s · FLIGHT — the transit.
+ *
+ * The middle of the three-shot send arc: Detach is the card leaving the panel,
+ * this is it crossing the dark, Land is it arriving in the client's thread. Its
+ * job is continuity, not spectacle — it must not compete with the beats either
+ * side of it, and the only thing it has to prove is that the artefact which
+ * left is the artefact which arrives.
+ *
+ * Kept: the arc rather than a line, the carried glow, the velocity Smear, the
+ * gentle camera pull. Those all work and were left alone.
+ *
+ * Polished, against defects visible in the render:
+ *  - ENTRY CLIPPED. At x=-600 with the plane scaled 1.13 the card's left edge
+ *    sat 42px off-frame, cutting the Centricity brand block on the way in.
+ *    Travel is now +/-530, which clears both edges (61px in, 258px out).
+ *  - THE TRAIL WAS NOT A TRAIL. Lags of 5/10/15 frames at the peak 28px/frame
+ *    put the ghosts 141, 281 and 422px behind the card — four separate cards
+ *    strewn across the frame, reading as a doubling artefact rather than
+ *    persistence. Lags are now 2 and 4 (56 and 113px): a tight echo.
+ *  - +/-12 DEGREES ON A TABLE. Banking into travel is right, but at 12deg a
+ *    four-row rate table shears far enough that each issuer's tenure and rate
+ *    detach from its name, and the card lands into Land — where it sits dead
+ *    level in the bubble — off-axis. 6deg keeps the tilt and the rows.
+ *
+ * (The old header claimed this was "the longest single shot in the film". At
+ * 64 frames it is the shortest.)
  */
-const TRAIL = [0, 5, 10, 15];
+const TRAIL = [0, 2, 4];
 
 export const Flight: React.FC = () => {
   const frame = useCurrentFrame();
@@ -23,10 +44,10 @@ export const Flight: React.FC = () => {
   const pose = (f: number) => {
     const p = at(f, [0, len], [0, 1], EASE.inOut); // even travel, camera-style
     return {
-      x: -600 + p * 1200,
+      x: -530 + p * 1060,
       y: -Math.sin(p * Math.PI) * 120,
       s: 1.42 - p * 0.5,
-      r: -12 + p * 24,
+      r: -6 + p * 12,
       p,
     };
   };
