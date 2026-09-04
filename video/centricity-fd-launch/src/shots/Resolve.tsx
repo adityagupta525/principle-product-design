@@ -1,6 +1,7 @@
 import React from "react";
-import { AbsoluteFill, useCurrentFrame } from "remotion";
+import { AbsoluteFill, Img, useCurrentFrame } from "remotion";
 import { COPY } from "../copy";
+import { hasLogo, logoSrc } from "../lib/logos";
 import { CINE, TYPE } from "../lib/tokens";
 import { at, EASE } from "../lib/motion";
 import { Room, Composite, useCamera, Plane, DevicePlate, TypeCard, DeviceProp } from "../lib/cinema";
@@ -35,6 +36,9 @@ export const Resolve: React.FC = () => {
 
   const dim = at(frame, [0, 62], [1, 0.05], EASE.outQuart);
   const lock = at(frame, [26, 56], [0, 1], EASE.outExpo);
+  /* The claim reads before the lockup — it is the assertion the two brands
+     are then signing, so it cannot arrive after their names. */
+  const claim = at(frame, [14, 44], [0, 1], EASE.outQuart);
   const kick = at(frame, [70, 92], [0, 1], EASE.outQuart);
   /* The hand-back: the conclusion holds, then clears, and the last frames are
      the room alone — which is what Ask opens on and enters into. */
@@ -76,6 +80,18 @@ export const Resolve: React.FC = () => {
           <div style={{ opacity: out, textAlign: "center" }}>
             <div
               style={{
+                ...TYPE.label,
+                letterSpacing: "0.24em",
+                color: CINE.key,
+                opacity: claim,
+                marginBottom: 30,
+              }}
+            >
+              {COPY.end.claim}
+            </div>
+
+            <div
+              style={{
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
@@ -85,9 +101,20 @@ export const Resolve: React.FC = () => {
                 color: CINE.type,
               }}
             >
-              <span>CENTRICITY</span>
+              {/* Real marks the moment they exist in public/logos; until then
+                  the wordmarks the film has always carried. Heights are set,
+                  widths follow the artwork, so neither mark is distorted. */}
+              {hasLogo("centricity") ? (
+                <Img src={logoSrc("centricity")} style={{ height: 30, display: "block" }} />
+              ) : (
+                <span>CENTRICITY</span>
+              )}
               <span style={{ width: 1, height: 30, background: "rgba(236,231,225,0.32)" }} />
-              <span>{COPY.end.coBrand}</span>
+              {hasLogo("blostem") ? (
+                <Img src={logoSrc("blostem")} style={{ height: 26, display: "block" }} />
+              ) : (
+                <span>{COPY.end.coBrand}</span>
+              )}
             </div>
 
             <TypeCard

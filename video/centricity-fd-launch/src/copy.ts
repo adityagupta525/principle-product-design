@@ -110,6 +110,17 @@ export const COPY = {
     ],
   },
 
+  /**
+   * Beat 3b — Detach. The audience, named at the one moment the film shows
+   * the artefact leaving the partner's hands for the client's. Detach and
+   * Flight were the only shots in the film carrying no words at all; this
+   * takes the first of them, and Flight stays silent because its job is
+   * continuity, not spectacle.
+   */
+  detach: {
+    caption: { lead: "Built for", accent: "wealth distributors.", tail: "" } as Caption,
+  },
+
   /** Beat 4 — Book. */
   book: {
     caption: { lead: "Booked in", accent: "under 3 minutes.", tail: "" } as Caption,
@@ -133,6 +144,14 @@ export const COPY = {
 
   /** Beat 5 — End card. */
   end: {
+    /**
+     * ⚠️  SUPERLATIVE CLAIM — needs substantiation before any public showing.
+     *     Same standing as the rate note at the top of this file: the film can
+     *     carry it, but "first in India" is a factual assertion about the
+     *     market, not a design decision. Clear it, or change it to a
+     *     defensible form ("Assisted FD booking, built for distributors").
+     */
+    claim: "INDIA'S FIRST ASSISTED FD PLATFORM",
     coBrand: "BLOSTEM",
     line: { lead: "Fixed Deposits,", accent: "reimagined.", tail: "" } as Caption,
     tagline: "TOGETHER FORWARD",
