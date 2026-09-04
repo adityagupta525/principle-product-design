@@ -48,7 +48,7 @@ import { shotLen, SHOT } from "../lib/beat";
 const CONNECTS = [35, 43, 51];
 const LABELS_OUT = 80;
 const SYNTH = 84;
-const SYNTH_END = 96;
+const SYNTH_END = 100;
 
 export const Assemble: React.FC = () => {
   const frame = useCurrentFrame();
@@ -70,11 +70,15 @@ export const Assemble: React.FC = () => {
   /* The card drifts while it is being read, then settles and stops at the
      synthesis — the resolve is genuinely still, not a slow crawl. */
   const drift = at(frame, [0, SYNTH], [-14, 6], EASE.inOut);
-  // It gathers toward centre as the labels leave: the composition resolving.
-  const gather = at(frame, [SYNTH, SYNTH_END], [0, 136], EASE.outQuart);
-  /* The shot's ONE scale emphasis, and the only place it is warranted: the
-     whole artefact gains authority as its parts stop being called out. */
-  const cardScale = atScale(frame, [SYNTH, SYNTH_END], [2.24, 2.52], EASE.outQuart);
+  // It gathers to frame centre as the labels leave: the composition resolving.
+  const gather = at(frame, [SYNTH, SYNTH_END], [0, 286], EASE.outQuart);
+  /* The shot's ONE scale move, and it eases OUT rather than in. The artefact is
+     432px tall unscaled, so at 2.24 it already fills 968 of the 1080 frame and
+     is grazing both edges — pushing in only crops it. Easing back to 2.12 is
+     what actually resolves the shot: 916px with real air above and below, the
+     whole object legible at once for the first time. Authority here comes from
+     seeing the complete thing, centred and alone, not from size. */
+  const cardScale = atScale(frame, [SYNTH, SYNTH_END], [2.24, 2.12], EASE.outQuart);
 
   /* The last frames fall back to the dark room, so the cut into Detach lands on
      black rather than flashing from cream to void on the beat. */
@@ -105,7 +109,7 @@ export const Assemble: React.FC = () => {
         <AbsoluteFill style={{ opacity: at(frame, [30, 38], [0, 1], EASE.out) * fall }}>
           <Annotate x={anchorX} y={262} run={120} light text={COPY.share.notes[0]} delay={CONNECTS[0]} exitAt={LABELS_OUT} />
           <Annotate x={anchorX} y={580} run={188} light text={COPY.share.notes[1]} delay={CONNECTS[1]} exitAt={LABELS_OUT} />
-          <Annotate x={anchorX} y={858} run={148} light text={COPY.share.notes[2]} delay={CONNECTS[2]} exitAt={LABELS_OUT} />
+          <Annotate x={anchorX} y={942} run={148} light text={COPY.share.notes[2]} delay={CONNECTS[2]} exitAt={LABELS_OUT} />
         </AbsoluteFill>
       </Composite>
     </AbsoluteFill>
