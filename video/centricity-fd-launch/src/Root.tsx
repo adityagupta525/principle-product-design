@@ -7,6 +7,7 @@ import { IgniteProof } from "./shots/ignite/Proof";
 import { BookProof } from "./shots/book/Proof";
 import { CompareProof } from "./shots/compare/Proof";
 import { CalculateProof } from "./shots/calculate/Proof";
+import { AssembleProof } from "./shots/assemble/Proof";
 import { DURATION, SHOT, shotLen } from "./lib/beat";
 import { FPS } from "./lib/tokens";
 
@@ -50,6 +51,15 @@ export const RemotionRoot: React.FC = () => (
       height={1080}
       fps={FPS}
       durationInFrames={shotLen(SHOT.calculate)}
+    />
+    {/* Assemble hero, rendered in isolation for review — never part of the film. */}
+    <Composition
+      id="AssembleProof"
+      component={AssembleProof}
+      width={1920}
+      height={1080}
+      fps={FPS}
+      durationInFrames={shotLen(SHOT.assemble)}
     />
     {/* Teardown contact sheets — analysis only, never part of the film. */}
     <Composition
