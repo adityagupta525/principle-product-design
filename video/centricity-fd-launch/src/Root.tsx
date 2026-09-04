@@ -10,6 +10,7 @@ import { CalculateProof } from "./shots/calculate/Proof";
 import { AssembleProof } from "./shots/assemble/Proof";
 import { LandProof } from "./shots/land/Proof";
 import { FlightProof } from "./shots/flight/Proof";
+import { CurveProof } from "./shots/curve/Proof";
 import { DURATION, SHOT, shotLen } from "./lib/beat";
 import { FPS } from "./lib/tokens";
 
@@ -80,6 +81,15 @@ export const RemotionRoot: React.FC = () => (
       height={1080}
       fps={FPS}
       durationInFrames={shotLen(SHOT.flight)}
+    />
+    {/* Curve diagram, rendered in isolation for review — never part of the film. */}
+    <Composition
+      id="CurveProof"
+      component={CurveProof}
+      width={1920}
+      height={1080}
+      fps={FPS}
+      durationInFrames={shotLen(SHOT.curve)}
     />
     {/* Teardown contact sheets — analysis only, never part of the film. */}
     <Composition

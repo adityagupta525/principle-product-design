@@ -82,7 +82,14 @@ export const Curve: React.FC = () => {
   const drawLow = at(frame, [D + 6, D + 6 + BEAT * 1.6], [0, 1], EASE.inOut);
   const drawHigh = at(frame, [D + 6 + BEAT, D + 6 + BEAT * 2.6], [0, 1], EASE.inOut);
   const dots = at(frame, [D + 6 + BEAT * 2.6, D + 6 + BEAT * 3], [0, 1], EASE.out);
-  const gap = at(frame, [D + 6 + BEAT * 3, D + 6 + BEAT * 3.8], [0, 1], EASE.out);
+  /* The comparison lands in three stages rather than all at once, on beats 6,
+     8 and 9 — the winner, then what it beats, then the gap between them. Every
+     scripted event used to be finished by f117, 60% through a 194-frame shot,
+     which left 2.6s in which nothing was staged: the diagram had made its point
+     and the film was waiting for the bar to end. Reading it in order is also
+     simply clearer than reading it all at once. */
+  const lowIn = at(frame, [BEAT * 8, BEAT * 8 + 12], [0, 1], EASE.out);
+  const gap = at(frame, [BEAT * 9, BEAT * 9 + 16], [0, 1], EASE.out);
   // Everything after the headline rises into place as one body.
   const bodyIn = at(frame, [BEAT * 2.8, BEAT * 3.4], [0, 1], EASE.outQuart);
 
@@ -221,7 +228,7 @@ export const Curve: React.FC = () => {
                 position: "absolute",
                 left: lo.x + 34,
                 top: lo.y - 22,
-                opacity: dots * 0.75,
+                opacity: lowIn * 0.75,
               }}
             >
               <div
