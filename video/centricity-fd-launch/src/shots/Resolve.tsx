@@ -97,17 +97,21 @@ export const Resolve: React.FC = () => {
                 color: CINE.type,
               }}
             >
-              {/* Real marks the moment they exist in public/logos; until then
-                  the wordmarks the film has always carried. Heights are set,
-                  widths follow the artwork, so neither mark is distorted. */}
+              {/* The real marks, sized to match each other OPTICALLY rather
+                  than by box height — the two artworks carry different amounts
+                  of padding and a different wordmark-to-height ratio, so equal
+                  heights would read as unequal logos. Centricity's asset is the
+                  full lockup and carries "Together Forward" inside it, which is
+                  why the film's own tagline line is gone from below: the mark
+                  says it, and saying it twice at two sizes is not a lockup. */}
               {hasLogo("centricity") ? (
-                <Img src={logoSrc("centricity")} style={{ height: 30, display: "block" }} />
+                <Img src={logoSrc("centricity")} style={{ height: 72, display: "block" }} />
               ) : (
                 <span>CENTRICITY</span>
               )}
-              <span style={{ width: 1, height: 30, background: "rgba(236,231,225,0.32)" }} />
+              <span style={{ width: 1, height: 44, background: "rgba(236,231,225,0.32)" }} />
               {hasLogo("blostem") ? (
-                <Img src={logoSrc("blostem")} style={{ height: 26, display: "block" }} />
+                <Img src={logoSrc("blostem")} style={{ height: 60, display: "block" }} />
               ) : (
                 <span>{COPY.end.coBrand}</span>
               )}
@@ -121,17 +125,6 @@ export const Resolve: React.FC = () => {
               style={{ marginTop: 40, marginLeft: "auto", marginRight: "auto" }}
             />
 
-            <div
-              style={{
-                marginTop: 34,
-                ...TYPE.micro,
-                letterSpacing: "0.26em",
-                color: CINE.key,
-                opacity: kick,
-              }}
-            >
-              {COPY.end.tagline}
-            </div>
           </div>
         </AbsoluteFill>
       </Composite>
