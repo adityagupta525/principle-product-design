@@ -1,0 +1,105 @@
+import React from "react";
+import { Composition } from "remotion";
+import { loadFonts } from "./lib/fonts";
+import { Film } from "./Film";
+import { Sheet } from "./Sheet";
+import { IgniteProof } from "./shots/ignite/Proof";
+import { BookProof } from "./shots/book/Proof";
+import { CompareProof } from "./shots/compare/Proof";
+import { CalculateProof } from "./shots/calculate/Proof";
+import { AssembleProof } from "./shots/assemble/Proof";
+import { LandProof } from "./shots/land/Proof";
+import { FlightProof } from "./shots/flight/Proof";
+import { CurveProof } from "./shots/curve/Proof";
+import { DURATION, SHOT, shotLen } from "./lib/beat";
+import { FPS } from "./lib/tokens";
+
+loadFonts();
+
+export const RemotionRoot: React.FC = () => (
+  <>
+    <Composition id="Film" component={Film} width={1920} height={1080} fps={FPS} durationInFrames={DURATION} />
+    {/* Ignite hero, rendered in isolation for review — never part of the film. */}
+    <Composition
+      id="IgniteProof"
+      component={IgniteProof}
+      width={1920}
+      height={1080}
+      fps={FPS}
+      durationInFrames={shotLen(SHOT.ignite)}
+    />
+    {/* Book hero, rendered in isolation for review — never part of the film. */}
+    <Composition
+      id="BookProof"
+      component={BookProof}
+      width={1920}
+      height={1080}
+      fps={FPS}
+      durationInFrames={shotLen(SHOT.book)}
+    />
+    {/* Compare hero, rendered in isolation for review — never part of the film. */}
+    <Composition
+      id="CompareProof"
+      component={CompareProof}
+      width={1920}
+      height={1080}
+      fps={FPS}
+      durationInFrames={shotLen(SHOT.compare)}
+    />
+    {/* Calculate hero, rendered in isolation for review — never part of the film. */}
+    <Composition
+      id="CalculateProof"
+      component={CalculateProof}
+      width={1920}
+      height={1080}
+      fps={FPS}
+      durationInFrames={shotLen(SHOT.calculate)}
+    />
+    {/* Assemble hero, rendered in isolation for review — never part of the film. */}
+    <Composition
+      id="AssembleProof"
+      component={AssembleProof}
+      width={1920}
+      height={1080}
+      fps={FPS}
+      durationInFrames={shotLen(SHOT.assemble)}
+    />
+    {/* Land hero, rendered in isolation for review — never part of the film. */}
+    <Composition
+      id="LandProof"
+      component={LandProof}
+      width={1920}
+      height={1080}
+      fps={FPS}
+      durationInFrames={shotLen(SHOT.land)}
+    />
+    {/* Flight transit, rendered in isolation for review — never part of the film. */}
+    <Composition
+      id="FlightProof"
+      component={FlightProof}
+      width={1920}
+      height={1080}
+      fps={FPS}
+      durationInFrames={shotLen(SHOT.flight)}
+    />
+    {/* Curve diagram, rendered in isolation for review — never part of the film. */}
+    <Composition
+      id="CurveProof"
+      component={CurveProof}
+      width={1920}
+      height={1080}
+      fps={FPS}
+      durationInFrames={shotLen(SHOT.curve)}
+    />
+    {/* Teardown contact sheets — analysis only, never part of the film. */}
+    <Composition
+      id="Sheet"
+      component={Sheet}
+      width={1920}
+      height={1120}
+      fps={1}
+      durationInFrames={1}
+      defaultProps={{ dir: "a", start: 0, count: 30, cols: 6, step: 0.2, label: "" }}
+    />
+  </>
+);

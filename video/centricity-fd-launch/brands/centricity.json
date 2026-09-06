@@ -1,0 +1,37 @@
+{
+  "name": "Centricity FD \u2014 Partner App",
+  "source": "Figma \u00b7 Centricity FD \u2014 Partner App (Design System + Screens), node 196-7021",
+  "note": "Read from the Figma file over the MCP bridge. Every value below is the file's own: variables where it defines them (--accent-primary, --cen-family-brand), and exact layer values from the FINAL DESIGN screens otherwise. Asset FILES (issuer logos) could not be fetched: their URLs sit on www.figma.com, which this session's network egress policy denies (403).",
+  "colors": {
+    "canvas": "#F7F2ED",
+    "surface": "#FFFFFF",
+    "surfaceSunk": "#FAFAFA",
+    "surfaceBand": "#F8F8F8",
+    "headerInk": "#000000",
+    "textPrimary": "#212121",
+    "textHeading": "#2B1E19",
+    "textSecondary": "#414141",
+    "textMuted": "#7A828A",
+    "hairline": "#F1ECE4",
+    "hairlineChip": "#ECECEC",
+    "tabBorder": "#EAE4DA",
+    "tabActive": "#6B4B41",
+    "tabIdle": "#7D736C",
+    "checkboxIdle": "#CBCBCB",
+    "accent": "#B69377",
+    "gain": "#12B76A",
+    "gold": "#C9A227",
+    "alert": "#E0342C"
+  },
+  "fonts": {
+    "app": "Montserrat",
+    "caption": "Urbanist",
+    "note": "The app screens are Montserrat throughout (the file's --cen-family-brand). Urbanist is the film's own voice \u2014 captions and the end card \u2014 per the product owner."
+  },
+  "law": {
+    "accent": "#B69377 is the brand warm \u2014 the Half-yearly link and card chrome. Never a rate.",
+    "gain": "Every rate and return is #12B76A. Green means money, nothing else.",
+    "tab": "The active tab is #6B4B41 with a 2.5px pill ABOVE the icon; idle tabs are #7D736C.",
+    "ink": "Header and primary buttons are pure black on white. One dark mass per screen."
+  }
+}

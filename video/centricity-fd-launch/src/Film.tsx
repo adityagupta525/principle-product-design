@@ -1,0 +1,51 @@
+import React from "react";
+import { AbsoluteFill, Audio, Sequence, staticFile } from "remotion";
+import { CINE } from "./lib/tokens";
+import { SHOT, shotLen, DURATION } from "./lib/beat";
+import { Sfx } from "./lib/sfx";
+import { Ask } from "./shots/Ask";
+import { Ignite } from "./shots/Ignite";
+import { Claim } from "./shots/Claim";
+import { Compare } from "./shots/Compare";
+import { Calculate } from "./shots/Calculate";
+import { Curve } from "./shots/Curve";
+import { Assemble } from "./shots/Assemble";
+import { Detach } from "./shots/Detach";
+import { Flight } from "./shots/Flight";
+import { Land } from "./shots/Land";
+import { Book } from "./shots/Book";
+import { Resolve } from "./shots/Resolve";
+
+/**
+ * Hard cuts, on the grid measured off the track — no dissolves. The cut
+ * boundaries live in lib/beat.ts and sit two frames ahead of each downbeat, so
+ * the eye takes the new frame just before the ear takes the beat.
+ */
+const SHOTS = [
+  [SHOT.ask, Ask],
+  [SHOT.ignite, Ignite],
+  [SHOT.claim, Claim],
+  [SHOT.compare, Compare],
+  [SHOT.calculate, Calculate],
+  [SHOT.curve, Curve],
+  [SHOT.assemble, Assemble],
+  [SHOT.detach, Detach],
+  [SHOT.flight, Flight],
+  [SHOT.land, Land],
+  [SHOT.book, Book],
+  [SHOT.resolve, Resolve],
+] as const;
+
+export const Film: React.FC = () => (
+  <AbsoluteFill style={{ background: CINE.void }}>
+    <Audio src={staticFile("audio/bed.wav")} volume={0.82} />
+    <Sfx />
+    {SHOTS.map(([range, Shot], i) => (
+      <Sequence key={i} from={range[0]} durationInFrames={shotLen(range)}>
+        <Shot />
+      </Sequence>
+    ))}
+  </AbsoluteFill>
+);
+
+export { DURATION };
