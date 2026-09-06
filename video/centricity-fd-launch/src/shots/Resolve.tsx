@@ -34,12 +34,20 @@ export const Resolve: React.FC = () => {
   const len = shotLen(SHOT.resolve);
   const cam = useCamera(len, { z: [1.1, 0.94] });
 
-  const dim = at(frame, [0, 62], [1, 0.05], EASE.outQuart);
-  const lock = at(frame, [26, 56], [0, 1], EASE.outExpo);
-  /* The claim reads before the lockup — it is the assertion the two brands
-     are then signing, so it cannot arrive after their names. */
-  const claim = at(frame, [14, 44], [0, 1], EASE.outQuart);
-  const kick = at(frame, [70, 92], [0, 1], EASE.outQuart);
+  /**
+   * The My FDs handset holds SHARP for 25 frames before it starts to go.
+   *
+   * It was dimming and defocusing from frame 0, which meant the one shot in
+   * the film that shows the booked FD sitting in a real device never showed it
+   * legibly — it existed only as a soft shape behind the lockup, and review
+   * read that as the mockup being absent. 25 frames is 0.83s: long enough to
+   * register the phone and the ACTIVE row, short enough that the end card
+   * still gets 100 of its 115 frames.
+   */
+  const HOLD = 25;
+  const dim = at(frame, [HOLD, HOLD + 55], [1, 0.05], EASE.outQuart);
+  const lock = at(frame, [40, 70], [0, 1], EASE.outExpo);
+  const kick = at(frame, [84, 106], [0, 1], EASE.outQuart);
   /* The hand-back: the conclusion holds, then clears, and the last frames are
      the room alone — which is what Ask opens on and enters into. */
   const out = at(frame, [len - 30, len - 8], [1, 0], EASE.outQuart);
@@ -60,7 +68,7 @@ export const Resolve: React.FC = () => {
       />
       <Composite grain={0.07}>
         <Plane depth={0.1} cam={cam}>
-          <div style={{ opacity: dim * out, filter: `blur(${at(frame, [0, 70], [0, 16], EASE.outQuart)}px)` }}>
+          <div style={{ opacity: dim * out, filter: `blur(${at(frame, [HOLD, HOLD + 60], [0, 16], EASE.outQuart)}px)` }}>
             <DevicePlate scale={2.5} on={dim} spill={dim} spillRadius={560}>
               <BookScreen tapAt={-400} doneAt={-300} />
             </DevicePlate>
@@ -72,24 +80,12 @@ export const Resolve: React.FC = () => {
             not a room — this gives the type something to sit in front of. */}
         <Plane depth={0.04} cam={cam}>
           <div style={{ transform: "translate(60px, 40px)" }}>
-            <DeviceProp scale={2.6} blur={22} opacity={at(frame, [30, 74], [0, 0.42], EASE.outQuart) * out} />
+            <DeviceProp scale={2.6} blur={22} opacity={at(frame, [44, 88], [0, 0.42], EASE.outQuart) * out} />
           </div>
         </Plane>
 
         <AbsoluteFill style={{ alignItems: "center", justifyContent: "center" }}>
           <div style={{ opacity: out, textAlign: "center" }}>
-            <div
-              style={{
-                ...TYPE.label,
-                letterSpacing: "0.24em",
-                color: CINE.key,
-                opacity: claim,
-                marginBottom: 30,
-              }}
-            >
-              {COPY.end.claim}
-            </div>
-
             <div
               style={{
                 display: "flex",
@@ -119,7 +115,7 @@ export const Resolve: React.FC = () => {
 
             <TypeCard
               caption={COPY.end.line}
-              delay={44}
+              delay={58}
               size={TYPE.statement.fontSize}
               align="center"
               style={{ marginTop: 40, marginLeft: "auto", marginRight: "auto" }}

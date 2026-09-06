@@ -3,7 +3,7 @@ import { AbsoluteFill, useCurrentFrame } from "remotion";
 import { COPY } from "../copy";
 import { TYPE } from "../lib/tokens";
 import { at, atScale, EASE } from "../lib/motion";
-import { Room, Composite, useCamera, Plane, LitPanel, Macro, TypeCard, EdgeFalloff, Kicker } from "../lib/cinema";
+import { Room, Composite, useCamera, Plane, LitPanel, Macro, TypeCard, EdgeFalloff } from "../lib/cinema";
 import { BookScreen } from "../screens/AppScreens";
 import { shotLen, SHOT, BEAT } from "../lib/beat";
 
@@ -126,25 +126,18 @@ export const Book: React.FC = () => {
               align="left"
               style={{ textShadow: "0 8px 40px rgba(0,0,0,0.9)" }}
             />
-            {/* The lifecycle label takes the caption's place rather than
-                sitting beside it — one thing in the void at a time. It lands
-                as the statement clears and holds the last 39 frames, which is
-                the stretch where the My FDs list is fully open and both stage
-                badges (ACTIVE, MATURING IN 7 DAYS) are legible on screen. */}
-            {/* Sized up from the film's usual 15px kicker on purpose. Every
-                other kicker sits beside something large — Ignite's next to the
-                title, Resolve's under the statement — and borrows that weight.
-                This one stands alone in an empty void once the statement
-                clears, and at 15px it measured as a hairline nobody reads. */}
-            <Kicker
-              text={COPY.book.track}
-              delay={len - 51}
-              style={{
-                marginTop: 26,
-                fontSize: 28,
-                letterSpacing: "0.2em",
-                textShadow: "0 6px 30px rgba(0,0,0,0.9)",
-              }}
+            {/* The lifecycle, at the same weight as the booking statement it
+                follows. It shipped once as a 28px label and came back as "My
+                FD tracking part is missing" — a label in an empty void reads
+                as chrome, not as a claim. It now takes the statement's place
+                at full caption scale, on the stretch where the My FDs list is
+                open and both stage badges are legible. */}
+            <TypeCard
+              caption={COPY.book.track}
+              delay={len - 57}
+              size={TYPE.caption.fontSize}
+              align="left"
+              style={{ marginTop: 30, textShadow: "0 8px 40px rgba(0,0,0,0.9)" }}
             />
           </div>
         </AbsoluteFill>

@@ -55,6 +55,30 @@ export const COPY = {
   ignite: {
     kicker: "CENTRICITY × BLOSTEM",
     title: "Fixed Deposits",
+
+    /**
+     * The positioning, stated at the reveal rather than the sign-off.
+     *
+     * It first shipped as an 18px label above the end-card lockup and the
+     * stakeholder could not read it: "cant see India's first assisted
+     * platform its too small, starting me kahi reveal karo". Both halves of
+     * that are right. 18px on a 1080 frame is a footnote, and a category
+     * claim that arrives in the last six seconds arrives after the audience
+     * has already decided what the film is about. It now lands here, at
+     * caption scale, on the frame where the product turns on.
+     *
+     * DIY and ASSISTED read as opposites, which is why the method sits on its
+     * own line: the PLATFORM is assisted — a distributor advising a client —
+     * and the BOOKING is DIY, meaning no ops desk and no back-and-forth, the
+     * partner does it themselves. Said as one sentence the two words cancel
+     * out; said as claim and method they are the actual proposition.
+     *
+     * ⚠️  "India's first" is still an unsubstantiated superlative, and it is
+     *     now in the film's most prominent slot rather than its quietest.
+     *     This needs clearing before any public showing.
+     */
+    claim: { lead: "India's first", accent: "assisted", tail: "FD platform." } as Caption,
+    method: "DIY FD BOOKING",
   },
 
   /** Beat 1 — Compare. */
@@ -139,10 +163,20 @@ export const COPY = {
      * booked FD arrives as ACTIVE, Rajesh Kumar's reads MATURING IN 7 DAYS,
      * and the stat row counts Active against Maturing Soon. None of that was
      * ever named, so the beat read as "here is a list" rather than "here is
-     * every FD you hold, at the stage it is at". This is a Kicker, not a
-     * second caption: the shot keeps one caption, per the content law above.
+     * every FD you hold, at the stage it is at".
+     *
+     * This started as a 28px label in the last 39 frames and came back from
+     * review as "My FD tracking part is missing" — that is a label doing a
+     * statement's job at the tail of the film's longest shot, which is the
+     * same failure the claim had at 18px. It is now a full caption, and the
+     * booking statement clears earlier to give it 57 frames of its own.
+     *
+     * KNOWN EXCEPTION to the one-caption-per-beat rule at the top of this
+     * file: Book now carries two, in sequence, never together. The rule is
+     * there so a beat says one thing at a time, and it still does — but the
+     * exception is real and is written down rather than quietly taken.
      */
-    track: "TRACKED AT EVERY STAGE",
+    track: { lead: "Every FD you hold,", accent: "tracked to maturity.", tail: "" } as Caption,
     myFdsTitle: "My FDs",
     myFdsStats: [
       { value: "₹18.5L", label: "AUM" },
@@ -153,14 +187,6 @@ export const COPY = {
 
   /** Beat 5 — End card. */
   end: {
-    /**
-     * ⚠️  SUPERLATIVE CLAIM — needs substantiation before any public showing.
-     *     Same standing as the rate note at the top of this file: the film can
-     *     carry it, but "first in India" is a factual assertion about the
-     *     market, not a design decision. Clear it, or change it to a
-     *     defensible form ("Assisted FD booking, built for distributors").
-     */
-    claim: "INDIA'S FIRST ASSISTED FD PLATFORM",
     coBrand: "BLOSTEM",
     line: { lead: "Fixed Deposits,", accent: "reimagined.", tail: "" } as Caption,
     tagline: "TOGETHER FORWARD",
