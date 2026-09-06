@@ -88,8 +88,17 @@ export const Curve: React.FC = () => {
      which left 2.6s in which nothing was staged: the diagram had made its point
      and the film was waiting for the bar to end. Reading it in order is also
      simply clearer than reading it all at once. */
-  const lowIn = at(frame, [BEAT * 8, BEAT * 8 + 12], [0, 1], EASE.out);
-  const gap = at(frame, [BEAT * 9, BEAT * 9 + 16], [0, 1], EASE.out);
+  /**
+   * RE-TIMED FOR TWO BARS. The shot was three bars / 194 frames, and
+   * tools/framecheck.py measured 57.5% of them frozen — 104 frames, twice the
+   * next-stillest shot, with single holds of 1.03s and 0.90s. Every scripted
+   * event had completed by roughly f117 and the rest was hold. The bar went to
+   * the claim scene; these two annotations move up into the space the holds
+   * were occupying, so the shot now finishes its work at ~f105 of 130 rather
+   * than ~f162 of 194. Nothing was cut — only the waiting.
+   */
+  const lowIn = at(frame, [BEAT * 5.2, BEAT * 5.2 + 12], [0, 1], EASE.out);
+  const gap = at(frame, [BEAT * 6.1, BEAT * 6.1 + 16], [0, 1], EASE.out);
   // Everything after the headline rises into place as one body.
   const bodyIn = at(frame, [BEAT * 2.8, BEAT * 3.4], [0, 1], EASE.outQuart);
 

@@ -3,7 +3,7 @@ import { AbsoluteFill, useCurrentFrame } from "remotion";
 import { COPY } from "../copy";
 import { CINE, TYPE } from "../lib/tokens";
 import { at, EASE } from "../lib/motion";
-import { Room, Composite, useCamera, Plane, DevicePlate, DEVICE_FLAT, Kicker, Smear, TypeCard } from "../lib/cinema";
+import { Room, Composite, useCamera, Plane, DevicePlate, DEVICE_FLAT, Kicker, Smear } from "../lib/cinema";
 import { CompareScreen } from "../screens/AppScreens";
 import { shotLen, SHOT } from "../lib/beat";
 
@@ -235,32 +235,6 @@ export const Ignite: React.FC = () => {
               })}
             </div>
 
-            {/* THE POSITIONING, at the reveal.
-                The hero title is fully set by f44 and the type block then sat
-                unchanged for the remaining 86 frames of the shot — so this
-                costs the film nothing it was using. Claim first at caption
-                scale, method under it as a label: the two need different
-                weights, because "assisted" and "DIY" only stop contradicting
-                each other once one is the category and the other is the
-                mechanism. */}
-            <div style={{ marginTop: 36 }}>
-              {/* 480, not the column's 660: on one line this measures ~760px
-                  in local space, and the camera pushes the block right through
-                  the shot, so the last word left the frame. Wrapped to two
-                  lines it stays inside the safe area for the whole push. */}
-              <TypeCard
-                caption={COPY.ignite.claim}
-                delay={56}
-                size={TYPE.caption.fontSize}
-                align="left"
-                style={{ width: 480 }}
-              />
-              <Kicker
-                text={COPY.ignite.method}
-                delay={74}
-                style={{ marginTop: 20, fontSize: 22, letterSpacing: "0.2em" }}
-              />
-            </div>
           </div>
         </Plane>
       </Composite>

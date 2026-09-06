@@ -1153,15 +1153,15 @@ export const BookScreen: React.FC<{ tapAt: number; doneAt: number }> = ({ tapAt,
       <div style={{ position: "absolute", inset: 0, background: C.surface, opacity: okIn }}>
         <Header title={b.myFdsTitle} />
 
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", paddingTop: 34 }}>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", paddingTop: 22 }}>
           <div
             style={{
-              width: 58,
-              height: 58,
+              width: 48,
+              height: 48,
               borderRadius: 999,
               background: C.gain,
               color: "#FFF",
-              fontSize: 28,
+              fontSize: 23,
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
@@ -1170,11 +1170,73 @@ export const BookScreen: React.FC<{ tapAt: number; doneAt: number }> = ({ tapAt,
           >
             ✓
           </div>
-          <div style={{ ...T.h1, fontSize: 22, marginTop: 16 }}>{b.successTitle}</div>
-          <div style={{ ...T.meta, fontSize: 12, marginTop: 5 }}>{b.successSub}</div>
+          <div style={{ ...T.h1, fontSize: 19, marginTop: 11 }}>{b.successTitle}</div>
+          <div style={{ ...T.meta, fontSize: 11, marginTop: 4 }}>{b.successSub}</div>
         </div>
 
-        <div style={{ display: "flex", gap: 9, padding: "26px 16px 0" }}>
+        {/* THE TWO TABS — the product's actual tracking affordance.
+            My FDs is not one list, it is two: FDs still moving through their
+            journey (KYC, VKYC, bank, payment) and FDs that are booked and now
+            running to maturity. Review asked for "track your FD at each stage"
+            and this row is where the product says that about itself, so the
+            film shows it rather than a generic list. Counts and labels are the
+            product's own. */}
+        <div
+          style={{
+            display: "flex",
+            marginTop: 16,
+            borderBottom: `1px solid ${C.hairline}`,
+            opacity: at(frame, [doneAt + 8, doneAt + 8 + TIME.row], [0, 1], EASE.out),
+          }}
+        >
+          {[
+            { n: "19", label: "In progress", active: false },
+            { n: "12", label: "Booked", active: true },
+          ].map((t) => (
+            <div
+              key={t.label}
+              style={{
+                flex: 1,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: 7,
+                paddingBottom: 10,
+                borderBottom: t.active ? `2px solid ${C.tabActive}` : "2px solid transparent",
+              }}
+            >
+              <span
+                style={{
+                  width: 20,
+                  height: 20,
+                  borderRadius: 999,
+                  background: t.active ? C.tabActive : "rgba(43,30,25,0.10)",
+                  color: t.active ? "#FFF" : C.textMuted,
+                  fontFamily: FONT.app,
+                  fontSize: 10,
+                  fontWeight: 700,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                {t.n}
+              </span>
+              <span
+                style={{
+                  fontFamily: FONT.app,
+                  fontSize: 13,
+                  fontWeight: 600,
+                  color: t.active ? C.tabActive : C.tabIdle,
+                }}
+              >
+                {t.label}
+              </span>
+            </div>
+          ))}
+        </div>
+
+        <div style={{ display: "flex", gap: 9, padding: "16px 16px 0" }}>
           {b.myFdsStats.map((st, i) => (
             <div
               key={st.label}
@@ -1207,11 +1269,18 @@ export const BookScreen: React.FC<{ tapAt: number; doneAt: number }> = ({ tapAt,
               transform: `translateY(${at(frame, [doneAt + 22, doneAt + 22 + TIME.row], [14, 0], EASE.out)}px)`,
             }}
           >
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
               <span style={{ ...T.row, fontSize: 14 }}>{b.clientName}</span>
-              <Pill bg="rgba(23,160,90,0.12)" color={C.gain} style={{ fontSize: 9 }}>
-                ACTIVE
-              </Pill>
+              <span style={{ textAlign: "right" }}>
+                <Pill bg="rgba(23,160,90,0.12)" color={C.gain} style={{ fontSize: 9 }}>
+                  ACTIVE
+                </Pill>
+                {/* The stage is a badge; the DATE is what makes it a stage you
+                    can track rather than a status you can only read. */}
+                <div style={{ ...T.meta, fontFamily: FONT.app, fontSize: 10, marginTop: 5, color: C.textPrimary }}>
+                  Maturity date: 18 Oct '26
+                </div>
+              </span>
             </div>
             <div style={{ ...T.meta, fontFamily: FONT.app, fontSize: 11, marginTop: 3 }}>
               +91 {b.clientPhone}
@@ -1234,7 +1303,7 @@ export const BookScreen: React.FC<{ tapAt: number; doneAt: number }> = ({ tapAt,
               </span>
               <span style={{ textAlign: "right" }}>
                 <div style={{ ...T.rate, fontSize: 13, color: C.textPrimary }}>₹5,00,000</div>
-                <div style={{ ...T.rate, fontSize: 11, marginTop: 3 }}>{bookedRate}</div>
+                <div style={{ ...T.rate, fontSize: 11, marginTop: 3 }}>₹6,34,240</div>
               </span>
             </div>
           </div>
@@ -1244,11 +1313,16 @@ export const BookScreen: React.FC<{ tapAt: number; doneAt: number }> = ({ tapAt,
             not sit alone on an empty screen. */}
         <div style={{ padding: "10px 16px 0", opacity: at(frame, [doneAt + 42, doneAt + 58], [0, 0.72], EASE.outQuint) }}>
           <div style={{ border: `1px solid ${C.hairline}`, borderRadius: 14, padding: "14px 15px" }}>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
               <span style={{ ...T.row, fontSize: 14 }}>Rajesh Kumar</span>
-              <Pill bg="rgba(201,162,39,0.14)" color={C.gold} style={{ fontSize: 9 }}>
-                MATURING IN 7 DAYS
-              </Pill>
+              <span style={{ textAlign: "right" }}>
+                <Pill bg="rgba(201,162,39,0.14)" color={C.gold} style={{ fontSize: 9 }}>
+                  MATURING IN 7 DAYS
+                </Pill>
+                <div style={{ ...T.meta, fontFamily: FONT.app, fontSize: 10, marginTop: 5, color: C.textPrimary }}>
+                  Maturity date: 15 Sep '26
+                </div>
+              </span>
             </div>
             <div style={{ ...T.meta, fontFamily: FONT.app, fontSize: 11, marginTop: 3 }}>+91 9876543210</div>
             <div
@@ -1267,7 +1341,7 @@ export const BookScreen: React.FC<{ tapAt: number; doneAt: number }> = ({ tapAt,
               </span>
               <span style={{ textAlign: "right" }}>
                 <div style={{ ...T.rate, fontSize: 13, color: C.textPrimary }}>₹1,00,000</div>
-                <div style={{ ...T.rate, fontSize: 11, marginTop: 3 }}>7.50%</div>
+                <div style={{ ...T.rate, fontSize: 11, marginTop: 3 }}>₹1,07,500</div>
               </span>
             </div>
           </div>
