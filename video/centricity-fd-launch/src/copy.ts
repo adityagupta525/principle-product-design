@@ -26,17 +26,29 @@
 export type Caption = { lead: string; accent: string; tail?: string };
 
 /**
- * Issuer rows — name, tenure and rate exactly as the Figma Compare screen
- * carries them. `logo` is the tile colour standing in for the real mark
- * (see the asset note in the README).
+ * Issuer rows — name, tenure and rate as the product carries them.
+ *
+ * Names are the issuers' FULL registered names. They were abbreviated for the
+ * 375pt row ("Utkarsh SF Bank", "Suryoday Small Fin…") and review asked for
+ * them in full: an FD comparison is a regulated-product comparison, and the
+ * issuer is the thing being compared, so it is the one string that should
+ * never be truncated to make a layout work. The rows size to the names now,
+ * not the other way round.
+ *
+ * ICICI Home Finance is gone — it is not on the platform. Bajaj Finance takes
+ * its row.
+ *
+ * `logo` is the tile colour standing in for the real mark. Drop the real files
+ * into public/logos/<slug>.png and every tile in the film swaps to them; see
+ * that folder's README.
  */
 export const ISSUERS = [
-  { slug: "icici", name: "ICICI Home Finance",   short: "ICICI Home Finance",   tenure: "2Y",    rate: "7.50%", logo: "#E0532B", maturity: "₹1,15,114", interest: "+₹15,114" },
-  { slug: "suryoday", name: "Suryoday Small Fin…",  short: "Suryoday Small Fin...", tenure: "3Y 3M", rate: "7.50%", logo: "#2B3A8F", maturity: "₹1,22,440", interest: "+₹22,500" },
-  { slug: "unity", name: "Unity Small Financ…",  short: "Unity Small Financ...", tenure: "1Y",    rate: "7.50%", logo: "#FDC937", maturity: "₹1,35,500", interest: "+₹35,040" },
-  { slug: "utkarsh", name: "Utkarsh SF Bank",      short: "Utkarsh SF Bank",      tenure: "3Y",    rate: "8.25%", logo: "#5B2A86", maturity: "₹87,000",   interest: "+₹6,800", best: true },
-  { slug: "shriram", name: "Shriram Finance",      short: "Shriram Finance",      tenure: "3Y 6M", rate: "7.50%", logo: "#F2C230", maturity: "₹2,10,000", interest: "+₹61,478" },
-  { slug: "mahindra", name: "Mahindra Finance",     short: "Mahindra Finance",     tenure: "2Y",    rate: "7.50%", logo: "#E81536", maturity: "₹1,50,000", interest: "+₹50,220" },
+  { slug: "bajaj",    name: "Bajaj Finance",              tenure: "2Y",    rate: "7.50%", logo: "#0A5AA8", maturity: "₹1,15,114", interest: "+₹15,114" },
+  { slug: "suryoday", name: "Suryoday Small Finance Bank", tenure: "3Y 3M", rate: "7.50%", logo: "#2B3A8F", maturity: "₹1,22,440", interest: "+₹22,500" },
+  { slug: "unity",    name: "Unity Small Finance Bank",    tenure: "1Y",    rate: "7.50%", logo: "#FDC937", maturity: "₹1,35,500", interest: "+₹35,040" },
+  { slug: "utkarsh",  name: "Utkarsh Small Finance Bank",  tenure: "3Y",    rate: "8.25%", logo: "#5B2A86", maturity: "₹87,000",   interest: "+₹6,800", best: true },
+  { slug: "shriram",  name: "Shriram Finance",             tenure: "3Y 6M", rate: "7.50%", logo: "#F2C230", maturity: "₹2,10,000", interest: "+₹61,478" },
+  { slug: "mahindra", name: "Mahindra Finance",            tenure: "2Y",    rate: "7.50%", logo: "#E81536", maturity: "₹1,50,000", interest: "+₹50,220" },
 ] as const;
 
 export const COPY = {
@@ -149,7 +161,7 @@ export const COPY = {
   book: {
     caption: { lead: "Booked in", accent: "under 3 minutes.", tail: "" } as Caption,
     sheetTitle: "Select client",
-    issuer: "Utkarsh SF Bank",
+    issuer: "Utkarsh Small Finance Bank",
     issuerMeta: "BANK · SENIOR CITIZEN · WOMEN",
     issuerTerms: "8.25% · 3Y · QUARTERLY",
     clientName: "Sneha Patel",

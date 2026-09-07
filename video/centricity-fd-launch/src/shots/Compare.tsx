@@ -197,7 +197,7 @@ export const Compare: React.FC = () => {
                   opacity: at(frame, [LIFT + 14, LIFT + LIFT_LEN], [0, 1], EASE.out),
                 }}
               >
-                {BEST.short} <span style={{ color: CINE.typeDim }}>· {BEST.tenure}</span>
+                {BEST.name} <span style={{ color: CINE.typeDim }}>· {BEST.tenure}</span>
               </div>
             </div>
           </Smear>

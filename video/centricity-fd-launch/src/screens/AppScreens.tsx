@@ -420,8 +420,13 @@ export const CompareScreen: React.FC<{ delay?: number; focusAt?: number; step?: 
             >
               {smear.defs}
               <LogoTile color={row.logo} slug={row.slug} checked={check > 0.5} />
-              <span style={{ ...T.row, flex: 1, minWidth: 0, whiteSpace: "nowrap", overflow: "hidden" }}>
-                {row.short}
+              {/* Wraps to two lines rather than truncating. The row is 72px
+                  and a two-line name at 16px leading is 32 — there was always
+                  room; the ellipsis was there to keep names on one line, which
+                  is the wrong trade for the one field that identifies the
+                  regulated product being compared. */}
+              <span style={{ ...T.row, flex: 1, minWidth: 0, lineHeight: "16px" }}>
+                {row.name}
               </span>
               <span style={{ ...T.meta, width: 50, textAlign: "right", paddingRight: 8 }}>{row.tenure}</span>
               <span style={{ ...T.rate, width: 47, textAlign: "right" }}>{row.rate}</span>
@@ -568,7 +573,7 @@ export const CalculatorScreen: React.FC<{
             <span style={{ color: C.textMuted, fontSize: 15, flex: "none" }}>⊕</span>
             <LogoTile color={row.logo} slug={row.slug} size={32} />
             <span style={{ flex: 1 }}>
-              <div style={T.row}>{row.short}</div>
+              <div style={T.row}>{row.name}</div>
               <div style={{ ...T.meta, marginTop: 2 }}>
                 {row.tenure} · {row.rate.replace("%", "")}%
               </div>
@@ -649,7 +654,7 @@ export const ShareCard: React.FC<{ delay?: number; width?: number }> = ({ delay 
               }}
             >
               <LogoTile color={row.logo} slug={row.slug} size={22} plain />
-              <span style={{ ...T.row, fontSize: 10, flex: 1 }}>{row.short}</span>
+              <span style={{ ...T.row, fontSize: 10, flex: 1 }}>{row.name}</span>
               <span style={{ ...T.meta, fontSize: 9, width: 30, textAlign: "right" }}>{row.tenure}</span>
               <span style={{ ...T.rate, fontSize: 10, width: 34, textAlign: "right" }}>{row.rate}</span>
             </div>

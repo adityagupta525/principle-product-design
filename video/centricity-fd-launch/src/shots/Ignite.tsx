@@ -1,9 +1,10 @@
 import React from "react";
-import { AbsoluteFill, useCurrentFrame } from "remotion";
+import { AbsoluteFill, Img, useCurrentFrame } from "remotion";
 import { COPY } from "../copy";
 import { CINE, TYPE } from "../lib/tokens";
 import { at, EASE } from "../lib/motion";
 import { Room, Composite, useCamera, Plane, DevicePlate, DEVICE_FLAT, Kicker, Smear } from "../lib/cinema";
+import { hasLogo, logoSrc } from "../lib/logos";
 import { CompareScreen } from "../screens/AppScreens";
 import { shotLen, SHOT } from "../lib/beat";
 
@@ -205,7 +206,31 @@ export const Ignite: React.FC = () => {
 
         <Plane depth={0.22} cam={camA}>
           <div style={{ width: 660, transform: "translateX(510px)" }}>
-            <Kicker text={COPY.ignite.kicker} delay={20} />
+            {/* The co-brand, as marks rather than as set capitals. The names
+                appear in three places in the film and every one of them is a
+                brand lockup, so every one of them uses the artwork — text set
+                in the film's own face is a stand-in, not a logo. Falls back to
+                the wordmarks if the files are ever missing. */}
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: 16,
+                opacity: at(frame, [20, 32], [0, 1], EASE.out),
+              }}
+            >
+              {hasLogo("centricity") ? (
+                <Img src={logoSrc("centricity")} style={{ height: 40, display: "block" }} />
+              ) : (
+                <Kicker text="CENTRICITY" delay={20} />
+              )}
+              <span style={{ width: 1, height: 24, background: "rgba(236,231,225,0.28)" }} />
+              {hasLogo("blostem") ? (
+                <Img src={logoSrc("blostem")} style={{ height: 34, display: "block" }} />
+              ) : (
+                <Kicker text={COPY.end.coBrand} delay={20} />
+              )}
+            </div>
             <div
               style={{
                 ...TYPE.hero,
