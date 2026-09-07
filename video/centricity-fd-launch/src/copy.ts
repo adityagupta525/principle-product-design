@@ -35,15 +35,18 @@ export type Caption = { lead: string; accent: string; tail?: string };
  * never be truncated to make a layout work. The rows size to the names now,
  * not the other way round.
  *
- * ICICI Home Finance is gone — it is not on the platform. Bajaj Finance takes
- * its row.
+ * The first row is ICICI BANK. It was "ICICI Home Finance", which is not on
+ * the platform; the correction is the entity, not the issuer — ICICI Bank
+ * itself stays. Six rows, because the Compare caption counts them out loud
+ * ("Six issuers, one screen."), so the list length is not free to change
+ * without changing that line too.
  *
  * `logo` is the tile colour standing in for the real mark. Drop the real files
  * into public/logos/<slug>.png and every tile in the film swaps to them; see
  * that folder's README.
  */
 export const ISSUERS = [
-  { slug: "bajaj",    name: "Bajaj Finance",              tenure: "2Y",    rate: "7.50%", logo: "#0A5AA8", maturity: "₹1,15,114", interest: "+₹15,114" },
+  { slug: "icici",    name: "ICICI Bank",                  tenure: "2Y",    rate: "7.50%", logo: "#E0532B", maturity: "₹1,15,114", interest: "+₹15,114" },
   { slug: "suryoday", name: "Suryoday Small Finance Bank", tenure: "3Y 3M", rate: "7.50%", logo: "#2B3A8F", maturity: "₹1,22,440", interest: "+₹22,500" },
   { slug: "unity",    name: "Unity Small Finance Bank",    tenure: "1Y",    rate: "7.50%", logo: "#FDC937", maturity: "₹1,35,500", interest: "+₹35,040" },
   { slug: "utkarsh",  name: "Utkarsh Small Finance Bank",  tenure: "3Y",    rate: "8.25%", logo: "#5B2A86", maturity: "₹87,000",   interest: "+₹6,800", best: true },
