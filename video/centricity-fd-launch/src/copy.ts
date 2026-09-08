@@ -35,11 +35,16 @@ export type Caption = { lead: string; accent: string; tail?: string };
  * never be truncated to make a layout work. The rows size to the names now,
  * not the other way round.
  *
- * The first row is ICICI BANK. It was "ICICI Home Finance", which is not on
- * the platform; the correction is the entity, not the issuer — ICICI Bank
- * itself stays. Six rows, because the Compare caption counts them out loud
- * ("Six issuers, one screen."), so the list length is not free to change
- * without changing that line too.
+ * The first row is ICICI BANK — the bank, not a lending arm. It was "ICICI
+ * Home Finance", which is not on the platform, and the tile that arrived for
+ * it was the ICICI Bank HOME LOANS lockup, which put a home-loans brand in a
+ * fixed-deposit comparison. The strapline is cropped off that artwork so the
+ * mark reads "ICICI Bank" and agrees with the row name everywhere it appears.
+ * If a wordmark-only ICICI Bank asset exists, it should replace the crop.
+ *
+ * Six rows, because two lines count them out loud — the issuers wall says
+ * "6 issuers & growing" and Compare's caption says "Six issuers, one screen."
+ * The list length is not free to change without changing both.
  *
  * `logo` is the tile colour standing in for the real mark. Drop the real files
  * into public/logos/<slug>.png and every tile in the film swaps to them; see
