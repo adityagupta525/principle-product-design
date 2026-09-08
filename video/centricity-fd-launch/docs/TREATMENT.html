@@ -1,0 +1,671 @@
+<title>Har Sawaal Ka Jawab</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&family=Urbanist:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+  :root{
+    --ground:#F6F0E8;
+    --ground-2:#EFE5D9;
+    --surface:#FFFFFF;
+    --ink:#1B1613;
+    --ink-2:#4A3F38;
+    --muted:#7A6E64;
+    --rule:#E4D9CC;
+    --copper:#A85C34;
+    --warm:#B69377;
+    --gain:#12B76A;
+    --alert:#C1462F;
+    --dot:rgba(168,92,52,.14);
+    --shadow:0 24px 60px -28px rgba(90,58,36,.38);
+    --measure:66ch;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --ground:#151110;
+      --ground-2:#1D1815;
+      --surface:#211B17;
+      --ink:#F2EAE2;
+      --ink-2:#D3C6BB;
+      --muted:#A29386;
+      --rule:#352C25;
+      --copper:#E08A57;
+      --warm:#C9A98D;
+      --gain:#3DD68C;
+      --alert:#E8705A;
+      --dot:rgba(224,138,87,.13);
+      --shadow:0 24px 60px -28px rgba(0,0,0,.7);
+    }
+  }
+  :root[data-theme="dark"]{
+    --ground:#151110;
+    --ground-2:#1D1815;
+    --surface:#211B17;
+    --ink:#F2EAE2;
+    --ink-2:#D3C6BB;
+    --muted:#A29386;
+    --rule:#352C25;
+    --copper:#E08A57;
+    --warm:#C9A98D;
+    --gain:#3DD68C;
+    --alert:#E8705A;
+    --dot:rgba(224,138,87,.13);
+    --shadow:0 24px 60px -28px rgba(0,0,0,.7);
+  }
+
+  *{box-sizing:border-box}
+  body{
+    background:
+      radial-gradient(circle at 1px 1px, var(--dot) 1px, transparent 0) 0 0/22px 22px,
+      var(--ground);
+    color:var(--ink);
+    font-family:Urbanist,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    font-size:16.5px;
+    line-height:1.62;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1080px;margin:0 auto;padding:0 28px 120px}
+
+  /* ── Masthead ─────────────────────────────────────── */
+  .mast{padding:64px 0 34px;border-bottom:2px solid var(--ink)}
+  .kicker{
+    font-family:"JetBrains Mono",ui-monospace,monospace;
+    font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--copper);font-weight:600;
+  }
+  h1{
+    font-family:Montserrat,sans-serif;font-weight:800;
+    font-size:clamp(2.9rem,7.4vw,5.1rem);line-height:.95;
+    letter-spacing:-.035em;margin:.24em 0 .1em;text-wrap:balance;
+  }
+  h1 em{font-style:normal;color:var(--copper)}
+  .standfirst{
+    font-size:clamp(1.05rem,2vw,1.28rem);color:var(--ink-2);
+    max-width:58ch;margin:.7em 0 0;
+  }
+  .meta{
+    display:flex;flex-wrap:wrap;gap:8px 26px;margin-top:26px;
+    font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--muted);
+  }
+  .meta b{color:var(--ink);font-weight:600}
+
+  /* ── Sections ─────────────────────────────────────── */
+  section{padding:56px 0;border-bottom:1px solid var(--rule)}
+  .sec-head{display:flex;align-items:baseline;gap:16px;margin-bottom:6px}
+  .sec-num{
+    font-family:"JetBrains Mono",monospace;font-size:12px;font-weight:600;
+    color:var(--copper);letter-spacing:.1em;flex:none;padding-top:.35em;
+  }
+  h2{
+    font-family:Montserrat,sans-serif;font-weight:700;
+    font-size:clamp(1.5rem,3.2vw,2.1rem);letter-spacing:-.025em;
+    line-height:1.12;margin:0;text-wrap:balance;
+  }
+  .sec-sub{color:var(--muted);margin:.35em 0 0 46px;max-width:var(--measure)}
+  .body{max-width:var(--measure)}
+  .body p{margin:1.05em 0}
+  h3{
+    font-family:Montserrat,sans-serif;font-weight:700;font-size:1.02rem;
+    letter-spacing:-.005em;margin:2.1em 0 .55em;
+  }
+  .lede{font-size:1.12rem;color:var(--ink-2)}
+  strong{font-weight:600;color:var(--ink)}
+  em.hi{font-style:normal;color:var(--copper);font-weight:600}
+  a{color:var(--copper)}
+  a:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--copper);outline-offset:3px}
+
+  /* ── Diagnosis list ───────────────────────────────── */
+  .diag{list-style:none;padding:0;margin:22px 0 0;display:grid;gap:1px;background:var(--rule);border:1px solid var(--rule)}
+  .diag li{background:var(--ground);padding:16px 20px;display:grid;grid-template-columns:minmax(0,1fr);gap:4px}
+  .diag .said{
+    font-family:"JetBrains Mono",monospace;font-size:11.5px;
+    letter-spacing:.04em;color:var(--alert);text-transform:uppercase;font-weight:600;
+  }
+  .diag .fix{color:var(--ink-2);font-size:.95rem}
+  .diag .fix b{color:var(--ink);font-weight:600}
+
+  /* ── Idea panel ───────────────────────────────────── */
+  .idea{
+    background:var(--surface);border:1px solid var(--rule);
+    padding:38px 34px;margin:26px 0 0;box-shadow:var(--shadow);
+  }
+  .idea .line{
+    font-family:Montserrat,sans-serif;font-weight:800;
+    font-size:clamp(1.6rem,4.2vw,2.6rem);line-height:1.08;
+    letter-spacing:-.03em;margin:0;text-wrap:balance;
+  }
+  .idea .line span{color:var(--copper)}
+  .idea .trans{
+    font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--muted);
+    margin-top:14px;letter-spacing:.02em;
+  }
+  .rejected{display:grid;gap:14px;margin-top:26px}
+  .rej{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:start}
+  .rej .x{color:var(--alert);font-family:"JetBrains Mono",monospace;font-weight:600;font-size:13px;padding-top:2px}
+  .rej p{margin:0;font-size:.95rem;color:var(--ink-2)}
+  .rej b{color:var(--ink);font-weight:600}
+
+  /* ── Beat map ─────────────────────────────────────── */
+  .beatwrap{overflow-x:auto;margin-top:26px;padding-bottom:6px}
+  .beatmap{min-width:700px}
+  .bars{display:grid;gap:3px;align-items:end;height:104px}
+  .bars.n27{grid-template-columns:repeat(27,1fr);gap:2px}
+  .bars.n25{grid-template-columns:repeat(25,1fr);gap:2px}
+  .bars.n15{grid-template-columns:repeat(15,1fr)}
+  .chartlab{
+    display:flex;justify-content:space-between;align-items:baseline;margin:26px 0 8px;
+    font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--muted);
+  }
+  .chartlab b{font-family:Montserrat,sans-serif;font-size:13px;font-weight:700;color:var(--ink);letter-spacing:-.01em}
+  .chartlab .verdictmini{color:var(--copper);font-weight:600}
+  .bar{background:var(--ground-2);border-radius:2px 2px 0 0;position:relative}
+  .bar.m1{background:var(--warm);opacity:.45}
+  .bar.m2{background:var(--warm);opacity:.7}
+  .bar.m3{background:var(--copper);opacity:.55}
+  .bar.m4{background:var(--copper);opacity:.7}
+  .bar.m5{background:var(--copper)}
+  .bar.m6{background:var(--gain);opacity:.72}
+  .bar.m7{background:var(--ink);opacity:.82}
+  .bar.m0{background:transparent;border:1px dashed var(--copper);border-bottom:none}
+  .seg{display:grid;grid-template-columns:repeat(15,1fr);gap:2px;margin-top:9px}
+  .seg span{
+    font-family:"JetBrains Mono",monospace;font-size:9px;color:var(--muted);
+    text-align:center;border-top:1px solid var(--rule);padding-top:5px;
+  }
+  .verdict{
+    display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:start;
+    padding:15px 18px;border:1px solid var(--rule);background:var(--surface);
+  }
+  .verdict+.verdict{border-top:none}
+  .verdict .tag{
+    font-family:"JetBrains Mono",monospace;font-size:10px;font-weight:600;
+    letter-spacing:.08em;padding:3px 8px;white-space:nowrap;
+  }
+  .verdict .tag.bad{background:var(--alert);color:#fff}
+  .verdict .tag.good{background:var(--gain);color:#08130D}
+  .verdict p{margin:0;font-size:.94rem;color:var(--ink-2)}
+  .verdict b{color:var(--ink);font-weight:600}
+  .verdicts{display:grid;margin-top:24px}
+  .refs{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px}
+  .ref{
+    font-family:"JetBrains Mono",monospace;font-size:11px;padding:5px 11px;
+    border:1px solid var(--rule);background:var(--surface);color:var(--ink-2);
+  }
+  .bar .hit{
+    position:absolute;top:-13px;left:50%;transform:translateX(-50%);
+    width:7px;height:7px;border-radius:50%;background:var(--copper);
+  }
+  .ruler{
+    display:grid;grid-template-columns:repeat(15,1fr);gap:3px;margin-top:7px;
+    font-family:"JetBrains Mono",monospace;font-size:9.5px;color:var(--muted);
+    text-align:center;
+  }
+  .legend{
+    display:flex;flex-wrap:wrap;gap:8px 20px;margin-top:20px;
+    font-family:"JetBrains Mono",monospace;font-size:11.5px;color:var(--muted);
+  }
+  .legend span{display:inline-flex;align-items:center;gap:7px}
+  .swatch{width:11px;height:11px;border-radius:2px;flex:none}
+
+  /* ── Tables ───────────────────────────────────────── */
+  .tablewrap{overflow-x:auto;margin-top:24px;border:1px solid var(--rule)}
+  table{border-collapse:collapse;width:100%;min-width:720px;background:var(--surface)}
+  th,td{text-align:left;padding:13px 16px;border-bottom:1px solid var(--rule);vertical-align:top}
+  thead th{
+    font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--muted);font-weight:600;
+    background:var(--ground-2);border-bottom:1px solid var(--rule);
+  }
+  tbody tr:last-child td{border-bottom:none}
+  td.tc{
+    font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--copper);
+    font-variant-numeric:tabular-nums;white-space:nowrap;font-weight:600;
+  }
+  td.what{font-weight:600;font-family:Montserrat,sans-serif;font-size:.9rem;letter-spacing:-.01em}
+  td.how{font-size:.9rem;color:var(--ink-2)}
+  td .say{
+    display:block;margin-top:5px;font-size:.88rem;color:var(--copper);
+    font-style:italic;
+  }
+
+  /* ── Spec grid ────────────────────────────────────── */
+  .grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(268px,1fr));gap:1px;background:var(--rule);border:1px solid var(--rule);margin-top:24px}
+  .cell{background:var(--ground);padding:20px}
+  .cell h4{
+    font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--muted);margin:0 0 10px;font-weight:600;
+  }
+  .cell p{margin:0;font-size:.93rem;color:var(--ink-2)}
+  .cell ul{margin:0;padding-left:18px;font-size:.93rem;color:var(--ink-2)}
+  .cell li{margin:.4em 0}
+
+  /* ── Palette chips ────────────────────────────────── */
+  .chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
+  .chip{
+    display:flex;align-items:center;gap:10px;padding:8px 14px 8px 8px;
+    border:1px solid var(--rule);background:var(--surface);
+  }
+  .chip i{width:26px;height:26px;border-radius:3px;display:block;flex:none;border:1px solid rgba(0,0,0,.08)}
+  .chip b{font-family:"JetBrains Mono",monospace;font-size:11.5px;font-weight:600;display:block}
+  .chip s{text-decoration:none;font-size:10.5px;color:var(--muted);display:block;font-family:"JetBrains Mono",monospace}
+
+  /* ── Motion vocabulary ────────────────────────────── */
+  .moves{display:grid;gap:1px;background:var(--rule);border:1px solid var(--rule);margin-top:24px}
+  .move{background:var(--ground);padding:17px 20px;display:grid;grid-template-columns:200px 1fr;gap:20px}
+  .move dt{font-family:Montserrat,sans-serif;font-weight:700;font-size:.9rem;letter-spacing:-.01em}
+  .move dd{margin:0;font-size:.93rem;color:var(--ink-2)}
+  .move dd .where{display:block;margin-top:5px;font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--muted)}
+  @media(max-width:640px){.move{grid-template-columns:1fr;gap:6px}}
+
+  /* ── Callout ──────────────────────────────────────── */
+  .call{
+    border-left:3px solid var(--copper);background:var(--ground-2);
+    padding:18px 22px;margin:26px 0 0;max-width:var(--measure);
+  }
+  .call p{margin:0;font-size:.96rem;color:var(--ink-2)}
+  .call p+p{margin-top:.7em}
+
+  /* ── Ask list ─────────────────────────────────────── */
+  .ask{list-style:none;padding:0;margin:24px 0 0;display:grid;gap:14px;max-width:var(--measure)}
+  .ask li{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:start}
+  .ask .n{
+    font-family:"JetBrains Mono",monospace;font-size:12px;font-weight:600;
+    color:var(--surface);background:var(--copper);width:22px;height:22px;
+    display:flex;align-items:center;justify-content:center;flex:none;margin-top:2px;
+  }
+  .ask p{margin:0;font-size:.96rem}
+  .ask b{font-weight:600}
+
+  footer{padding:44px 0 0;color:var(--muted);font-family:"JetBrains Mono",monospace;font-size:11.5px}
+</style>
+
+<div class="wrap">
+
+  <header class="mast">
+    <div class="kicker">Treatment v2 · Centricity × Blostem · Fixed Deposits · GFF launch film</div>
+    <h1>Har sawaal ka <em>jawab</em></h1>
+    <p class="standfirst">
+      A director's treatment for the FD launch film. The idea holds; the visual direction is the premium
+      product-film class. Three tracks were written and measured against the room it actually plays in —
+      a looping screen on a GFF booth — and the structure is taken from the one that won.
+    </p>
+    <div class="meta">
+      <span><b>Master</b> 54.0s loop · 1620f · 1920×1080 · 30fps</span>
+      <span><b>Tempo</b> 111.1 BPM · 16.202f beat · 25 bars</span>
+      <span><b>Venue</b> GFF booth · looping</span>
+      <span><b>Status</b> track locked · ready to build</span>
+    </div>
+  </header>
+
+  <section>
+    <div class="sec-head"><span class="sec-num">01</span><h2>What's wrong with the first cut</h2></div>
+    <p class="sec-sub">Your four notes, plus two I'd add before anyone else does.</p>
+    <ul class="diag">
+      <li>
+        <span class="said">"Text bahot simple tha"</span>
+        <span class="fix">Captions were set once and faded up. No weight morph, no mask reveal, no
+        relationship between the words and what the screen was doing. <b>Type has to perform, not label.</b></span>
+      </li>
+      <li>
+        <span class="said">"Effects hi nahi the"</span>
+        <span class="fix">Every beat used the same two moves — panel rises, caption fades.
+        <b>A film needs a vocabulary of eight or ten named moves</b>, each used where it means something.</span>
+      </li>
+      <li>
+        <span class="said">"Screen khaali feel ho rahi thi"</span>
+        <span class="fix">A single phone floating on flat cream, dead space on all four sides.
+        The brand's own launch banner is <b>full</b> — 3D props, halftone texture, warm gradient, big two-tone type.
+        <b>We were ignoring the brand's richest asset.</b></span>
+      </li>
+      <li>
+        <span class="said">"Music chahiye, beats par motion"</span>
+        <span class="fix">There was no audio at all, so nothing had rhythm. <b>The track is now the
+        structure</b>, not a layer added at the end — scene lengths are whole bars.</span>
+      </li>
+      <li>
+        <span class="said">Mine: it was a feature list</span>
+        <span class="fix">Four features in a row with captions naming them. <b>No tension, no turn,
+        nothing at stake.</b> Apple never opens on a feature.</span>
+      </li>
+      <li>
+        <span class="said">Mine: no reason to be 45 seconds</span>
+        <span class="fix">The length came from adding beats up, not from a shape.
+        <b>60 seconds, seven movements, one of them a silence.</b></span>
+      </li>
+    </ul>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="sec-num">02</span><h2>The idea</h2></div>
+    <p class="sec-sub">One thought the whole film hangs off.</p>
+
+    <div class="body">
+      <p class="lede">
+        An MFD's client asks one question more than any other: <em class="hi">"FD ka rate kya chal raha hai?"</em>
+        For years that question was where the conversation <strong>ended</strong>. The partner had nothing to
+        show, nothing to send, nothing to book — so the client went to their bank, and the relationship
+        went with them.
+      </p>
+      <p>
+        This launch isn't about a comparison table. It's about a partner finally being able to answer
+        the question <strong>in their own name</strong>. That's why the emotional centre of the film is not
+        the rate screen — it's the moment the comparison card lands in the client's chat with
+        <strong>"Sent by: Somesh Nayak"</strong> on it. Everything before that beat is setup; everything after
+        is proof.
+      </p>
+    </div>
+
+    <div class="idea">
+      <p class="line">The one question you<br>couldn't answer. <span>Now you can.</span></p>
+      <p class="trans">Working title: <b>Har Sawaal Ka Jawab</b> · On-screen language: English · The Hinglish lives in the product, where it already does</p>
+    </div>
+
+    <div class="rejected">
+      <div class="rej"><span class="x">✕</span><p><b>"Money that grows"</b> — the money-plant metaphor sitting in your own banner. Beautiful, and every FD ad in India has already made it. It says nothing about the partner.</p></div>
+      <div class="rej"><span class="x">✕</span><p><b>"Six tabs → one screen"</b> — true, and it's a feature, not an idea. It would produce exactly the film we just made.</p></div>
+      <div class="rej"><span class="x">✕</span><p><b>"Institutional trust"</b> — AUM figures and SEBI badges. Wrong audience: the partner already trusts you. They need to look good to <em>their</em> client.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="sec-num">03</span><h2>Structure, locked to the track</h2></div>
+    <p class="sec-sub">Venue is settled — <strong>a looping screen on a GFF booth</strong> — and so is the track. Chosen by ear, then engineered for the room. Below is its real energy, measured after prep.</p>
+
+    <div class="chartlab"><span><b>bed.wav</b> — LOCKED · 54.005s · 111.1 BPM · exactly 25 bars</span><span class="verdictmini">0% masked · presence 10.2% → 20.1% after EQ</span></div>
+    <div class="beatwrap"><div class="beatmap">
+      <div class="bars n25">
+          <div class="bar m1" style="height:68%"></div>
+          <div class="bar m1" style="height:66%"></div>
+          <div class="bar m2" style="height:67%"></div>
+          <div class="bar m2" style="height:65%"></div>
+          <div class="bar m3" style="height:73%"></div>
+          <div class="bar m3" style="height:64%"></div>
+          <div class="bar m3" style="height:77%"></div>
+          <div class="bar m3" style="height:74%"></div>
+          <div class="bar m4" style="height:82%"></div>
+          <div class="bar m4" style="height:64%"></div>
+          <div class="bar m4" style="height:76%"></div>
+          <div class="bar m4" style="height:84%"></div>
+          <div class="bar m5" style="height:88%"></div>
+          <div class="bar m5" style="height:86%"></div>
+          <div class="bar m5" style="height:83%"></div>
+          <div class="bar m5" style="height:95%"></div>
+          <div class="bar m5" style="height:93%"></div>
+          <div class="bar m5" style="height:89%"></div>
+          <div class="bar m6" style="height:82%"></div>
+          <div class="bar m6" style="height:100%"><span class="hit"></span></div>
+          <div class="bar m6" style="height:96%"></div>
+          <div class="bar m6" style="height:99%"></div>
+          <div class="bar m7" style="height:93%"></div>
+          <div class="bar m7" style="height:89%"></div>
+          <div class="bar m7" style="height:85%"></div>
+      </div>
+      <div class="seg" style="grid-template-columns:repeat(25,1fr)">
+        <span>·</span><span>ASK</span><span>·</span><span>IGNITE</span>
+        <span>·</span><span>COMPARE</span><span>·</span><span>·</span>
+        <span>·</span><span>CALC</span><span>·</span><span>·</span>
+        <span>·</span><span>·</span><span>SHARE</span><span>·</span><span>·</span><span>·</span>
+        <span>·</span><span>BOOK</span><span>·</span><span>·</span>
+        <span>·</span><span>LOOP</span><span>·</span>
+      </div>
+    </div></div>
+
+    <div class="call">
+      <p><strong>The ear caught what the metrics did not rank.</strong> A different track scored far
+      higher on raw presence and was the measurement winner — but it is flat, with a dip. This one has a
+      <b>gentle rising arc</b>: quietest at bars 1–4, climbing steadily, peaking at bar 20. On a loop that
+      is worth more than presence, because every cycle gets a natural swell and the peak lands exactly on
+      the booking montage. The right call, and not the one the numbers alone would have made.</p>
+    </div>
+
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Bars</th><th>Frames</th><th>Movement</th><th>Note</th></tr></thead>
+        <tbody>
+          <tr><td class="tc">1–2</td><td class="tc">0–130</td><td class="what">The question</td><td class="how">The track's quietest bars, and 4.3 seconds long. A loop cannot afford a slow open — nobody sees frame one.</td></tr>
+          <tr><td class="tc">3–4</td><td class="tc">130–259</td><td class="what">Ignition</td><td class="how">The product arrives, the title sets.</td></tr>
+          <tr><td class="tc">5–8</td><td class="tc">259–518</td><td class="what">Compare</td><td class="how">Rows deal in, then the blur-pull to 8.25%.</td></tr>
+          <tr><td class="tc">9–12</td><td class="tc">518–778</td><td class="what">Calculate</td><td class="how">Numbers resolve together.</td></tr>
+          <tr><td class="tc">13–18</td><td class="tc">778–1167</td><td class="what">Share</td><td class="how">Card assembles, detaches, flies, lands. The film's centre.</td></tr>
+          <tr><td class="tc">19–22</td><td class="tc">1167–1426</td><td class="what">Book</td><td class="how"><b>The track peaks at bar 20, frame 1231</b> — dead centre of the booking montage. Fastest cutting.</td></tr>
+          <tr><td class="tc">23–25</td><td class="tc">1426–1620</td><td class="what">Resolve → loop</td><td class="how">Energy eases and hands back to the question.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="call">
+      <p><strong>Cut grid:</strong> beat <b>0.5401s = 16.202 frames</b>, bar 64.81 frames, first downbeat
+      at frame <b>7.6</b>. Cuts land on that grid minus two frames.</p>
+      <p><strong>Run time 54.005s = 1620 frames</strong>, exactly 25 bars — so the loop closes on a bar
+      line, not a fade.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="sec-num">04</span><h2>What a loop changes</h2></div>
+    <p class="sec-sub">A booth loop is not a film someone sits down to watch. Four constraints follow, and they are not negotiable.</p>
+
+    <div class="verdicts">
+      <div class="verdict"><span class="tag good">1</span><p><b>It has to work muted.</b> Most booth screens are effectively silent — the crowd wins. Every argument the film makes must survive with the sound off, which means the type carries it and the music only keeps time. This is the strongest reason the treatment has no voice-over.</p></div>
+      <div class="verdict"><span class="tag good">2</span><p><b>No slow open.</b> Nobody sees frame one. The question now runs 4.3 seconds instead of sixteen, and the product is on screen by frame 130. Any ten-second window a passer-by catches has to contain a whole idea.</p></div>
+      <div class="verdict"><span class="tag good">3</span><p><b>No hard ending.</b> A film that resolves into black reads as broken on a loop. The last bar resolves and immediately re-poses the question.</p></div>
+      <div class="verdict"><span class="tag good">4</span><p><b>The loop is the idea.</b> The film ends on the wordmark and cuts back to another client asking the same question — and this time there is an answer waiting. The seam stops being a technical problem and becomes the point.</p></div>
+    </div>
+
+    <h3>Shot list</h3>
+    <p class="body">No voice-over, and no walkthrough. An explainer shows a complete journey; a product film shows moments. We never once follow a task from start to finish.</p>
+
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Frames</th><th>Shot</th><th>Craft</th></tr></thead>
+        <tbody>
+          <tr><td class="tc">0–130</td><td class="what">A message arrives
+            <span class="say">"FD ka rate kya chal raha hai?"</span></td>
+            <td class="how">One grey bubble in near-black, lit from nowhere, drifting. Heavy grain. It sits unanswered for two beats — long enough to register, short enough for a loop.</td></tr>
+          <tr><td class="tc">130</td><td class="what">IGNITION — on the device</td><td class="how">A photographed phone sits in the dark with its screen off. Eight frames later the glass switches on, the product is inside it, and the screen throws warm light back into the room. The first bright thing in the film is a lit screen, not a floating rectangle.</td></tr>
+          <tr><td class="tc">130–259</td><td class="what">Wide: the app in space
+            <span class="say">Fixed Deposits</span></td><td class="how">Real device plate (public/env/device-flat.jpg) with the live screen composited into its measured glass in <code>screen</code> blend. The device is soft, the UI in it is sharp — the right way round. Title at 118px, one word per line, in the void beside it.</td></tr>
+          <tr><td class="tc">259–389</td><td class="what">Macro: rows deal in</td><td class="how">3× crop, shallow focus, two rows sharp. One row per beat with elastic overshoot. We never see the whole list.</td></tr>
+          <tr><td class="tc">389–454</td><td class="what">Macro: the winning rate
+            <span class="say">Six issuers. One screen.</span></td><td class="how">On the track's loudest bar. Extreme close on <b>8.25%</b>; everything else falls to blur. The green is a light source, not a colour.</td></tr>
+          <tr><td class="tc">454–518</td><td class="what">Pull to the full table</td><td class="how">Rack focus outward. The one shot in the film that shows the whole screen at once.</td></tr>
+          <tr><td class="tc">518–778</td><td class="what">Macro: numbers resolve
+            <span class="say">Exact returns. Instantly.</span></td><td class="how">₹5,00,000 types in; six maturity figures land together on a digit roll. Camera pushes a few percent throughout and never stops.</td></tr>
+          <tr><td class="tc">778–843</td><td class="what">DIAGRAM: the growth curve
+            <span class="say">Same money. ₹87,877 more.</span></td><td class="how">Two compound paths draw out across a faint grid — 8.25% against a savings account at 3.0%, the money's actual alternative — endpoints annotated, the gap between them filled. The only abstraction in the film, and it earns its place: it is the one claim a screenshot cannot make.</td></tr>
+          <tr><td class="tc">843–940</td><td class="what">The card, held and annotated</td><td class="how">The panel racks to soft and the comparison card is held past life size while three labels tick on beside it, each tethered by a hairline drawn out from the part it names: <i>Live rates, not a screenshot / Four issuers, one view / Your name on it.</i> The beat that explains the artefact without a voice-over.</td></tr>
+          <tr><td class="tc">940–1030</td><td class="what">It detaches</td><td class="how">The card lifts. Rim light rakes across its face as it turns.</td></tr>
+          <tr><td class="tc">1030–1120</td><td class="what">FLIGHT</td><td class="how">The card crosses dark space on an arc, tilting into travel, three ghosted trail frames behind it. Longest single shot in the film — the picture has to hold this on its own — the track keeps time here, it does not drop away.</td></tr>
+          <tr><td class="tc">1120–1167</td><td class="what">It lands
+            <span class="say">Your brand, in your client's chat.</span></td><td class="how">Macro push onto <b>Sent by: Ashish Gupta</b> in copper, held. This is the whole argument.</td></tr>
+          <tr><td class="tc">1167–1426</td><td class="what">Booking — montage</td><td class="how">Fastest cutting: client selected / Invest now / tick / tick / tick / <b>FD Booked</b>. One shot per beat, all macro, all elastic.
+            <span class="say">Booked in under 3 minutes.</span></td></tr>
+          <tr><td class="tc">1426–1620</td><td class="what">Resolve, and hand back
+            <span class="say">Fixed Deposits, reimagined. / Centricity × Blostem</span></td><td class="how">Pull back, panel dims, lockup fades — never scales, with the angled device sitting far back and defocused so the type has a room to stand in. Then the dark deepens and the next message is already arriving as the loop turns over.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="call">
+      <p><strong>Names.</strong> <b>Ashish Gupta</b> is the partner — the person using the app, whose name
+      goes on the card. <b>Sneha Patel</b> is the client receiving it, taken from the file's own My FDs
+      screen rather than invented. <b>Utkarsh SF Bank</b> is an issuer, and is why the client is no longer
+      called Utkarsh: two Utkarshes in one film reads as an error, not a coincidence.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="sec-num">05</span><h2>Art direction</h2></div>
+    <p class="sec-sub">Redirected. The warm-prop treatment is out; this is the premium product-film class — Linear, Stripe, Raycast, Vercel.</p>
+
+    <div class="refs">
+      <span class="ref">Cinematic product motion</span><span class="ref">2.5D depth compositing</span>
+      <span class="ref">Camera-led</span><span class="ref">Macro micro-interaction</span>
+      <span class="ref">Kinetic type in negative space</span><span class="ref">Rhythmic editing</span>
+      <span class="ref">Elastic UI / eased camera</span><span class="ref">Photographic finish</span>
+    </div>
+
+    <div class="verdicts">
+      <div class="verdict"><span class="tag bad">DROPPED</span><p><b>The 3D prop world.</b> Vault, coins, shield, money-plant. It came from your own launch banner, which made it defensible — but a banner has one second to signal warmth, and a film has sixty. Blown up, the props become the subject and the product becomes scenery. And every Indian fintech launch already looks like that.</p></div>
+      <div class="verdict"><span class="tag good">THE RULE</span><p><b>The product is the set.</b> No props, no illustration, no metaphor. The UI is treated as a physical object and photographed — floated in space, lit, moved through, shot in macro. Nothing appears on screen that isn't the product.</p></div>
+      <div class="verdict"><span class="tag good">THE ANGLE</span><p><b>Warm light in a dark room.</b> Almost every film in this class is dark UI on dark ground, keyed cool — Linear violet, Vercel cyan, Stripe indigo. Our app is <em>light</em>. So the panels become the light source: white UI burning in near-black, keyed with the brand's own copper instead of the category's blue. That combination is uncommon, and we get it for free from a design system we already refuse to change.</p></div>
+    </div>
+
+    <div class="chips">
+      <span class="chip"><i style="background:#0A0A0C"></i><b>#0A0A0C</b><s>void — the room</s></span>
+      <span class="chip"><i style="background:#141417"></i><b>#141417</b><s>lifted dark</s></span>
+      <span class="chip"><i style="background:#FFFFFF"></i><b>#FFFFFF</b><s>the panel — a light source</s></span>
+      <span class="chip"><i style="background:#B69377"></i><b>#B69377</b><s>key / rim light · DS token</s></span>
+      <span class="chip"><i style="background:#D9A87E"></i><b>#D9A87E</b><s>bloom highlight</s></span>
+      <span class="chip"><i style="background:#12B76A"></i><b>#12B76A</b><s>rates — glows</s></span>
+      <span class="chip"><i style="background:#ECE7E1"></i><b>#ECE7E1</b><s>type · never pure white</s></span>
+    </div>
+
+    <div class="grid2">
+      <div class="cell">
+        <h4>Light</h4>
+        <ul>
+          <li>Warm copper key from screen left, raking across panel edges</li>
+          <li>Every panel border catches a 1px rim — that edge is what sells it as an object</li>
+          <li>Soft bloom on bright UI and on the green rates</li>
+          <li>Heavy falloff: the room is never fully lit, and we never see its walls</li>
+        </ul>
+      </div>
+      <div class="cell">
+        <h4>Depth</h4>
+        <p>Every shot is composited in three or more planes with real Z separation, so camera moves create true parallax. Shallow depth of field throughout — usually only one plane is sharp. Rack focus is a cut we don't have to make.</p>
+      </div>
+      <div class="cell">
+        <h4>Finish</h4>
+        <ul>
+          <li>Film grain over the whole composite, ~4%</li>
+          <li>Slight chromatic aberration at frame edges only</li>
+          <li>Vignette, always</li>
+          <li>Clean renders read cheap; this has to look photographed</li>
+        </ul>
+      </div>
+      <div class="cell">
+        <h4>Type</h4>
+        <p><b>Urbanist</b>, tight tracking, large, in platinum — set in the void beside the product, never over it. One or two words at a time, mask-revealed. The screens keep Montserrat because that is what the product is.</p>
+      </div>
+    </div>
+
+    <div class="call">
+      <p><strong>This also answers "screen khaali feel ho rahi thi" properly.</strong> The first fix was to
+      fill the frame with objects. The better fix is depth, light and grain: in a dark cinematic frame,
+      empty space reads as atmosphere, not as absence. Nothing gets added — the room gets deeper.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="sec-num">06</span><h2>Motion vocabulary</h2></div>
+    <p class="sec-sub">The one rule that separates this class from everything below it, first.</p>
+
+    <div class="call">
+      <p><strong>Two motion languages, never mixed.</strong> UI elements are <b>elastic</b> — spring, slight
+      overshoot, 200–400ms, because that is how interfaces behave under a finger. The camera and the world
+      are <b>eased</b> — long cubic-bezier moves, 2–4 seconds, no overshoot ever, because that is how a
+      camera behaves on a rig. Springing the camera, or easing a button, is the single loudest tell of
+      amateur work in this genre.</p>
+    </div>
+
+    <dl class="moves">
+      <div class="move"><dt>Eased camera</dt><dd>Push, truck or pull — one per shot, never two. Always still running at the cut; the camera never comes to rest.<span class="where">Every shot</span></dd></div>
+      <div class="move"><dt>Three-plane parallax</dt><dd>Foreground element, panel, background field at 0.35 / 0.12 / 0.04. No shot is flat.<span class="where">Throughout</span></dd></div>
+      <div class="move"><dt>Rack focus</dt><dd>Focus travels between planes instead of cutting. Half the film's "edits" are focus pulls.<span class="where">Opening, card detach</span></dd></div>
+      <div class="move"><dt>Macro insert</dt><dd>2–3× crop on a single interaction, one plane sharp. Roughly half the shots. This is what makes UI look expensive.<span class="where">Rows, rate, digits, ticks</span></dd></div>
+      <div class="move"><dt>Elastic overshoot</dt><dd>Spring on rows, chips, checks and the card — a few percent past target and back. UI only.<span class="where">All product motion</span></dd></div>
+      <div class="move"><dt>Rim-light rake</dt><dd>The key sweeps across a surface as it turns, so the edge lights up through the move. Turns a flat rect into an object.<span class="where">Card detach and flight</span></dd></div>
+      <div class="move"><dt>Mask reveal + weight morph</dt><dd>Type rises out of a clipping edge, and the accent word pulls 500 → 800 on the downbeat. Urbanist is variable, so it interpolates for real.<span class="where">Every type card</span></dd></div>
+      <div class="move"><dt>Shared-element carry</dt><dd>The winning row doesn't cut to the card — it becomes it, matching across the cut.<span class="where">Frame 954</span></dd></div>
+      <div class="move"><dt>Arc flight + trail</dt><dd>Curve, not a line; tilt into travel; three ghosted frames at 12% behind.<span class="where">Frames 1192–1311</span></dd></div>
+      <div class="move"><dt>Accelerating cut rate</dt><dd>5s shots at the open, 1s in the ignition, 0.5s in the booking montage. The edit gets faster as the track does.<span class="where">Structural</span></dd></div>
+    </dl>
+
+    <div class="call">
+      <p><strong>Rules that survive from the first cut:</strong> brand marks fade and never scale; green is
+      money and nothing else; one accent word per type card; every value token-bound to the Figma file.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="sec-num">07</span><h2>The track, and what the audit found</h2></div>
+    <p class="sec-sub">Three tracks written, all measured against the room before a frame was animated to any of them. Then the chosen one was engineered rather than replaced.</p>
+
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Track</th><th>Presence 500Hz–4k</th><th>Masked</th><th>Longest gap</th><th>To full</th><th>DR</th></tr></thead>
+        <tbody>
+          <tr><td class="what">bed.wav — LOCKED</td><td class="tc">20.1%</td><td class="tc">0.0s</td><td class="tc">0.0s</td><td class="tc">0.0s</td><td class="tc">6.3 dB</td></tr>
+          <tr><td class="how">source-hall-b.mp3 (before prep)</td><td class="how">10.2%</td><td class="how">4.0s</td><td class="how">4.0s</td><td class="how">0.8s</td><td class="how">7.7 dB</td></tr>
+          <tr><td class="how">alt-hall-a.mp3</td><td class="how">40.6%</td><td class="how">1.8s</td><td class="how">1.8s</td><td class="how">0.2s</td><td class="how">4.2 dB</td></tr>
+          <tr><td class="how">alt-cinematic-online.mp3</td><td class="how">8.3%</td><td class="how">52%</td><td class="how">9.0s</td><td class="how">16.0s</td><td class="how">36.2 dB</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="verdicts">
+      <div class="verdict"><span class="tag good">FIXED</span><p><b>Spectrum.</b> −4 dB at 300 Hz clears the mud a reverberant hall multiplies; +5 dB at 2.6 kHz puts energy into the band that survives a crowd; +2.5 dB above 7 kHz restores definition; 70 Hz high-pass drops what a booth speaker cannot reproduce anyway. Zero-phase, frequency-domain, so nothing smears. <b>Presence 10.2% → 20.1%.</b></p></div>
+      <div class="verdict"><span class="tag good">FIXED</span><p><b>The loop seam.</b> The 4-second gap was not a hole in the middle — it was the outro fade at 55.2s, which on a booth screen is four seconds of dead air every minute. Trimmed to a whole 25 bars, then the track's own continuation crossfaded over its head across 450 ms at equal power. <b>End runs into start with no join.</b></p></div>
+      <div class="verdict"><span class="tag bad">KEPT ASIDE</span><p><b>alt-cinematic-online.mp3</b> is the best piece of music of the four and the wrong one for this room: 69% of its energy sits below 100 Hz where booth speakers produce nothing, and 52% of it is masked. Its nine-second quiet passage — the best thing about it in headphones — reads as broken audio over a crowd. Keep it for a seated screening; it would need its own edit.</p></div>
+    </div>
+
+    <div class="grid2">
+      <div class="cell">
+        <h4>What the hall does</h4>
+        <ul>
+          <li>75–85 dB crowd noise floor</li>
+          <li>Booth speakers roll off below ~100 Hz</li>
+          <li>Long reverb smears transients and multiplies low-mids</li>
+          <li>Most screens end up effectively muted</li>
+        </ul>
+      </div>
+      <div class="cell">
+        <h4>The tools</h4>
+        <p><b>tools/audit-music.py</b> — onsets, tempo, phase, RMS arc, plus the hall model: dynamic
+        range, masked time, longest gap, time-to-hook, energy per band.<br>
+        <b>tools/prep-track.py</b> — the EQ and the loop trim. Any replacement track goes through both in
+        two commands.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="sec-num">08</span><h2>Production plan</h2></div>
+    <p class="sec-sub">What gets made where, and what only you can supply.</p>
+
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Asset</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td class="what">Environment plates</td><td class="how">Higgsfield image gen</td><td class="how">Dark room grounds with copper falloff, and a grain plate. No props, no illustration — the set is light and shadow only.</td></tr>
+          <tr><td class="what">Depth &amp; light rig</td><td class="how">Remotion, built</td><td class="how">Three-plane compositing, rim light, bloom, DOF, vignette, grain — all in code, so every value stays tunable.</td></tr>
+          <tr><td class="what">Music bed</td><td class="how"><b>Done</b></td><td class="how">Generated and audited. 61.47s, in the repo. Higgsfield could not do this — its audio tool is speech-only and its music model is restricted to another pipeline — so it came from vidIQ.</td></tr>
+          <tr><td class="what">App screens</td><td class="how">Remotion, built</td><td class="how">Already at the Figma file's exact coordinates, type and colour. Reused as-is.</td></tr>
+          <tr><td class="what">All motion &amp; type</td><td class="how">Remotion, built</td><td class="how">Frame-locked to the bar grid. Constants-first, so copy and timing stay editable.</td></tr>
+          <tr><td class="what">Issuer logos</td><td class="how"><b>Needs you</b></td><td class="how">Still the one blocker. The MCP bridge serves specs and screenshots, but asset files sit on a host this session's egress policy denies. Six PNGs and it's done.</td></tr>
+          <tr><td class="what">Approved rates</td><td class="how"><b>Needs you</b></td><td class="how">Compliance-signed values plus the "as on ⟨date⟩" qualifier, before anything ships.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="sec-num">09</span><h2>Before I build</h2></div>
+    <p class="sec-sub">Four decisions. Answer these and I'll take the whole thing to a rendered cut.</p>
+
+    <ol class="ask">
+      <li><span class="n">1</span><p><b>The idea.</b> Does "the one question you couldn't answer" hold as the spine? If it doesn't land with you, the other two territories are on the table and I'll re-treat rather than patch.</p></li>
+      <li><span class="n">2</span><p><b>The redirect.</b> Props out, product-as-object in — dark room, warm key, macro, camera-led. Confirm and I build to it.</p></li>
+      <li><span class="n">3</span><p><b>The track.</b> Locked to <b>public/audio/bed.mp3</b> on the audit above. Listen once — everything is pinned to it.</p></li>
+      <li><span class="n">4</span><p><b>Formats.</b> 16:9 booth loop is the master. Confirm whether you also need a 9:16 vertical for social — the Share beat has to be re-staged for it, which is real work, not a rescale.</p></li>
+    </ol>
+
+    <div class="call">
+      <p>Once these are settled the order is: music first, then props, then the build — because everything
+      downstream is pinned to the track. Nothing gets animated until the bar grid is real.</p>
+    </div>
+  </section>
+
+  <footer>
+    Treatment v1 · Centricity FD — Partner App · design system and screen values read from Figma node 196-7021
+  </footer>
+
+</div>
