@@ -72,6 +72,25 @@ export const COPY = {
     title: "Fixed Deposits",
 
     /**
+     * The headline is a LAUNCH sentence now, not a product name: review asked
+     * for "Launching Fixed Deposits for Wealth Distributors" at 0:06, and at
+     * 0:06 this shot is on frame 45 — the hero has just finished setting, so
+     * the sentence completes exactly there.
+     *
+     * It is set in three weights rather than one line because the middle two
+     * words are the product and the rest is grammar; flattening them to a
+     * single size would make "Launching" and "Fixed Deposits" equally
+     * important, which they are not.
+     *
+     * This is also where "built for wealth distributors" now lives. Detach
+     * carried that line and no longer does — saying it twice in one film,
+     * once as the launch headline and again 26 seconds later, is repetition
+     * rather than reinforcement.
+     */
+    launchPre: "LAUNCHING",
+    launchPost: { lead: "for", accent: "Wealth Distributors.", tail: "" } as Caption,
+
+    /**
      * The positioning, stated at the reveal rather than the sign-off.
      *
      * It first shipped as an 18px label above the end-card lockup and the
@@ -94,6 +113,20 @@ export const COPY = {
      */
     claim: { lead: "India's first", accent: "assisted", tail: "FD platform." } as Caption,
     method: "DIY FD BOOKING",
+  },
+
+  /**
+   * Shot 3 — the shelf. Six marks the audience already trusts, at a size that
+   * reads across a booth, before the film argues about rates.
+   *
+   * "& growing" carries the accent and lands last: six is a list, six that is
+   * going to be more is a platform. If the count changes, this line and the
+   * ISSUERS array have to move together — and so does Compare's caption,
+   * which also counts them out loud.
+   */
+  issuers: {
+    line: { lead: "6 issuers", accent: "& growing.", tail: "" } as Caption,
+    sub: "LIVE ON THE PLATFORM",
   },
 
   /** Beat 1 — Compare. */
@@ -147,17 +180,6 @@ export const COPY = {
       "Four issuers, one view",
       "Your name on it",
     ],
-  },
-
-  /**
-   * Beat 3b — Detach. The audience, named at the one moment the film shows
-   * the artefact leaving the partner's hands for the client's. Detach and
-   * Flight were the only shots in the film carrying no words at all; this
-   * takes the first of them, and Flight stays silent because its job is
-   * continuity, not spectacle.
-   */
-  detach: {
-    caption: { lead: "Built for", accent: "wealth distributors.", tail: "" } as Caption,
   },
 
   /** Beat 4 — Book. */

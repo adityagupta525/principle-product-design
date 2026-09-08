@@ -2,11 +2,9 @@ import React from "react";
 import { AbsoluteFill, useCurrentFrame } from "remotion";
 import { CINE } from "../lib/tokens";
 import { at, EASE } from "../lib/motion";
-import { Room, Composite, useCamera, Plane, LitPanel, TypeCard } from "../lib/cinema";
+import { Room, Composite, useCamera, Plane, LitPanel } from "../lib/cinema";
 import { DownloadScreen, ShareCard } from "../screens/AppScreens";
 import { shotLen, SHOT } from "../lib/beat";
-import { COPY } from "../copy";
-import { TYPE } from "../lib/tokens";
 
 /**
  * Shot 8 · 978–1043 · 2.2s
@@ -14,11 +12,10 @@ import { TYPE } from "../lib/tokens";
  * through the move — that travelling highlight is what makes a rectangle
  * read as an object with a surface.
  *
- * The card travels LEFT of centre through the whole shot, so the right third
- * is the void this film always puts type into. It now carries the film's one
- * statement of who the product is for — placed here because this is the frame
- * where the artefact leaves the partner and goes to the client, which is the
- * distributor's job made visible. Flight, the next shot, stays wordless.
+ * Wordless again. It carried "Built for wealth distributors" for a while, but
+ * that line is now the launch headline in Ignite at 0:06, and a film that says
+ * the same thing twice 26 seconds apart is repeating itself, not landing it.
+ * Detach and Flight are the send arc; they can carry it without commentary.
  */
 export const Detach: React.FC = () => {
   const frame = useCurrentFrame();
@@ -61,18 +58,6 @@ export const Detach: React.FC = () => {
           </div>
         </Plane>
 
-        {/* Right void. Enters at 6 so it is fully set by 24 and holds a full
-            second before the cut — the shot is only 65 frames. */}
-        <AbsoluteFill style={{ alignItems: "flex-end", justifyContent: "center", paddingRight: 104 }}>
-          <div style={{ width: 400, transform: "translateY(150px)" }}>
-            <TypeCard
-              caption={COPY.detach.caption}
-              delay={6}
-              size={TYPE.caption.fontSize}
-              align="left"
-            />
-          </div>
-        </AbsoluteFill>
       </Composite>
     </AbsoluteFill>
   );

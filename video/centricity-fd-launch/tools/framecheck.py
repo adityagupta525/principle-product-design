@@ -43,8 +43,9 @@ BEAT, PHASE = 16.202, 7.6
 BAR = BEAT * 4
 cut = lambda n: round(PHASE + (n - 1) * BAR - 2)
 SHOTS = [
-    ("ask", 0, cut(3)), ("ignite", cut(3), cut(5)), ("claim", cut(5), cut(6)),
-    ("compare", cut(6), cut(10)), ("calculate", cut(10), cut(12)),
+    ("ask", 0, cut(3)), ("ignite", cut(3), cut(5)), ("issuers", cut(5), cut(6)),
+    ("claim", cut(6), cut(7)),
+    ("compare", cut(7), cut(10)), ("calculate", cut(10), cut(12)),
     ("curve", cut(12), cut(14)),
     ("assemble", cut(14), cut(16)), ("detach", cut(16), cut(17)),
     ("flight", cut(17), cut(18)), ("land", cut(18), cut(19)),

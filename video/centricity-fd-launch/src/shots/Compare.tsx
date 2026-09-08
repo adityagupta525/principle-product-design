@@ -208,7 +208,10 @@ export const Compare: React.FC = () => {
           <div style={{ width: 430, transform: "translateY(210px)" }}>
             <TypeCard
               caption={COPY.compare.caption}
-              delay={LIFT + 35}
+              /* LIFT+26, not +35: the shot is 195 frames now and the lift
+                 ends at 157, so entering with the landing rather than nine
+                 frames after it keeps 38 frames of hold to read it in. */
+              delay={LIFT + 26}
               size={TYPE.caption.fontSize}
               align="left"
             />

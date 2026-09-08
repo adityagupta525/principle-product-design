@@ -3,7 +3,7 @@ import { AbsoluteFill, Img, useCurrentFrame } from "remotion";
 import { COPY } from "../copy";
 import { CINE, TYPE } from "../lib/tokens";
 import { at, EASE } from "../lib/motion";
-import { Room, Composite, useCamera, Plane, DevicePlate, DEVICE_FLAT, Kicker, Smear } from "../lib/cinema";
+import { Room, Composite, useCamera, Plane, DevicePlate, DEVICE_FLAT, Kicker, Smear, TypeCard } from "../lib/cinema";
 import { hasLogo, logoSrc } from "../lib/logos";
 import { CompareScreen } from "../screens/AppScreens";
 import { shotLen, SHOT } from "../lib/beat";
@@ -231,12 +231,19 @@ export const Ignite: React.FC = () => {
                 <Kicker text={COPY.end.coBrand} delay={20} />
               )}
             </div>
+            {/* "LAUNCHING" — the word that makes this a launch rather than a
+                product name. Small so the product stays the hero. */}
+            <Kicker
+              text={COPY.ignite.launchPre}
+              delay={22}
+              style={{ marginTop: 26, fontSize: 20, letterSpacing: "0.26em" }}
+            />
             <div
               style={{
                 ...TYPE.hero,
                 lineHeight: 0.88,
                 color: CINE.type,
-                marginTop: 28,
+                marginTop: 16,
               }}
             >
               {words.map((w, i) => {
@@ -260,6 +267,19 @@ export const Ignite: React.FC = () => {
               })}
             </div>
 
+            {/* …for Wealth Distributors. Three lines, three weights: the verb
+                is a label, the product is the hero, the audience is a caption.
+                Flattened to one size, "Launching" would carry the same weight
+                as "Fixed Deposits", which is not what the sentence means. The
+                last word lands at in-shot f50 — film frame 185, the 0:06 the
+                brief asked for. */}
+            <TypeCard
+              caption={COPY.ignite.launchPost}
+              delay={34}
+              size={TYPE.caption.fontSize}
+              align="left"
+              style={{ width: 560, marginTop: 20 }}
+            />
           </div>
         </Plane>
       </Composite>

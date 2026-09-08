@@ -42,7 +42,14 @@ export const SHOT = {
    * of 1.03s and 0.90s. It loses a bar and re-times to 130 frames; every other
    * shot keeps its exact length and simply starts one bar later.
    */
-  claim:      [cutAtBar(5), cutAtBar(6)],
+  /**
+   * "6 Issuers & growing", with the marks. Review asked for it at 0:10; the
+   * grid offers bar boundaries at 8.83s and 11.00s, so it takes the bar that
+   * SPANS ten seconds rather than one that starts near it — the wall is on
+   * screen from 8.83s to 11.00s and the ten-second mark falls in its middle.
+   */
+  issuers:    [cutAtBar(5), cutAtBar(6)],
+  claim:      [cutAtBar(6), cutAtBar(7)],
   /**
    * ONE take, bars 5-9. Was three cuts — Rows, Rate, Table — each of which
    * front-loaded its animation and then sat: Rate measured 95% still frames.
@@ -50,7 +57,13 @@ export const SHOT = {
    * 54 seconds at a 1.7s cut rate, which is a social motion reel's cadence,
    * not a keynote's. Merging them buys the beat room to move continuously.
    */
-  compare:    [cutAtBar(6), cutAtBar(10)],
+  /**
+   * Three bars, not four. The issuers wall needed one and Compare had the
+   * longest tail in the film to give: its scripted acts all land by f157 of
+   * 259 and the rest was a slow drift on a held frame. At 195 the same acts
+   * run unchanged on the same downbeats — only the hold after them is shorter.
+   */
+  compare:    [cutAtBar(7), cutAtBar(10)],
   calculate:  [cutAtBar(10), cutAtBar(12)],
   /* ── the light act: bars 12–16 ───────────────────────────────────── */
   /**
