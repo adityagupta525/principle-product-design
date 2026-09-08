@@ -35,23 +35,22 @@ export type Caption = { lead: string; accent: string; tail?: string };
  * never be truncated to make a layout work. The rows size to the names now,
  * not the other way round.
  *
- * The first row is ICICI BANK — the bank, not a lending arm. It was "ICICI
- * Home Finance", which is not on the platform, and the tile that arrived for
- * it was the ICICI Bank HOME LOANS lockup, which put a home-loans brand in a
- * fixed-deposit comparison. The strapline is cropped off that artwork so the
- * mark reads "ICICI Bank" and agrees with the row name everywhere it appears.
- * If a wordmark-only ICICI Bank asset exists, it should replace the crop.
+ * FIVE rows. ICICI is gone entirely — not the name, not the mark, not the row.
+ * It arrived as "ICICI Home Finance", which is not on the platform; correcting
+ * it to ICICI Bank only moved the problem, because the artwork supplied for it
+ * was the ICICI Bank HOME LOANS lockup, and a home-loans brand does not belong
+ * in a fixed-deposit comparison at all. Removed rather than patched.
  *
- * Six rows, because two lines count them out loud — the issuers wall says
- * "6 issuers & growing" and Compare's caption says "Six issuers, one screen."
- * The list length is not free to change without changing both.
+ * THREE places count these rows out loud and all three move together with this
+ * array: the issuers wall ("5 issuers & growing"), Compare's caption ("Five
+ * issuers, one screen.") and the Calculator's list title ("Top 5 FDs"). Adding
+ * or removing an issuer means editing all three.
  *
  * `logo` is the tile colour standing in for the real mark. Drop the real files
  * into public/logos/<slug>.png and every tile in the film swaps to them; see
  * that folder's README.
  */
 export const ISSUERS = [
-  { slug: "icici",    name: "ICICI Bank",                  tenure: "2Y",    rate: "7.50%", logo: "#E0532B", maturity: "₹1,15,114", interest: "+₹15,114" },
   { slug: "suryoday", name: "Suryoday Small Finance Bank", tenure: "3Y 3M", rate: "7.50%", logo: "#2B3A8F", maturity: "₹1,22,440", interest: "+₹22,500" },
   { slug: "unity",    name: "Unity Small Finance Bank",    tenure: "1Y",    rate: "7.50%", logo: "#FDC937", maturity: "₹1,35,500", interest: "+₹35,040" },
   { slug: "utkarsh",  name: "Utkarsh Small Finance Bank",  tenure: "3Y",    rate: "8.25%", logo: "#5B2A86", maturity: "₹87,000",   interest: "+₹6,800", best: true },
@@ -121,23 +120,24 @@ export const COPY = {
   },
 
   /**
-   * Shot 3 — the shelf. Six marks the audience already trusts, at a size that
+   * Shot 3 — the shelf. Five marks the audience already trusts, at a size that
    * reads across a booth, before the film argues about rates.
    *
-   * "& growing" carries the accent and lands last: six is a list, six that is
-   * going to be more is a platform. If the count changes, this line and the
-   * ISSUERS array have to move together — and so does Compare's caption,
-   * which also counts them out loud.
+   * "& growing" carries the accent and lands last: five is a list, five that is
+   * going to be more is a platform — which is also why the count dropping from
+   * six to five costs the line nothing. If it changes again, this line, the
+   * ISSUERS array, Compare's caption and the Calculator's list title all move
+   * together.
    */
   issuers: {
-    line: { lead: "6 issuers", accent: "& growing.", tail: "" } as Caption,
+    line: { lead: "5 issuers", accent: "& growing.", tail: "" } as Caption,
     sub: "LIVE ON THE PLATFORM",
   },
 
   /** Beat 1 — Compare. */
   compare: {
-    hook: ["Six issuers.", "Six tabs.", "Every single time."],
-    caption: { lead: "Six issuers,", accent: "one screen.", tail: "" } as Caption,
+    hook: ["Five issuers.", "Five tabs.", "Every single time."],
+    caption: { lead: "Five issuers,", accent: "one screen.", tail: "" } as Caption,
     screenTitle: "Fixed Deposit",
     tableTitle: "Compare FD rates",
     payoutLink: "Half-yearly",
@@ -155,7 +155,7 @@ export const COPY = {
     amountLabel: "INVESTMENT AMOUNT",
     amount: "₹ 5,00,000",
     chips: ["₹1L", "₹5L", "₹10L", "₹25L"],
-    listTitle: "Top 6 FDs",
+    listTitle: "Top 5 FDs",
     sortLink: "Tenure: Low to high",
   },
 
